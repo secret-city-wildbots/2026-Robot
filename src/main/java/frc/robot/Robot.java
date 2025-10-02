@@ -58,7 +58,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousPeriodic() {
-    RobotContainer.pivot.updateOutputs();
   }
 
   @Override
@@ -74,7 +73,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    RobotContainer.pivot.updateOutputs();
   }
 
   @Override
@@ -82,7 +80,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic() {
-    RobotContainer.pivot.stop();
   }
 
   @Override
