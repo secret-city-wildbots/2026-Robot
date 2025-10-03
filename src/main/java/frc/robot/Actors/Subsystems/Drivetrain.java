@@ -6,6 +6,7 @@ import com.ctre.phoenix6.hardware.Pigeon2;
 // Import WPI Libraries to help Swerve Drive Management
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -14,15 +15,11 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 // Import Constants and Utils
-import frc.robot.Utils.*;
 import frc.robot.Constants.*;
 
 // Import Subsystems
 import frc.robot.Actors.SwerveModule;
 import frc.robot.Actors.SwerveModules;
-
-// Import States
-import frc.robot.States.DrivetrainState;
 
 
 public class Drivetrain extends SubsystemBase {
@@ -36,9 +33,6 @@ public class Drivetrain extends SubsystemBase {
     private SwerveDriveOdometry odometry;
     private final SwerveDriveKinematics swerveKinematics;
 
-    // state
-    // TODO: Need to investigate how to use this as it is not currently used
-    public DrivetrainState state = new DrivetrainState();
     public SwerveModuleState[] moduleStates;
 
     public Drivetrain() {
@@ -50,13 +44,12 @@ public class Drivetrain extends SubsystemBase {
         this.pigeon = new Pigeon2(6);
 
         // Define the swerve modules
-        // TODO: Test changing the numbers back to how we did last year. Found out how to display the swerves correctly on AdvantageScope
         this.swerveModules = new SwerveModules(
             new SwerveModule[] {
-                new SwerveModule(1, Swerve.swerveModuleDriveConfigs()[1], Swerve.swerveModuleAzimuthConfigs()[1]),
-                new SwerveModule(0, Swerve.swerveModuleDriveConfigs()[0], Swerve.swerveModuleAzimuthConfigs()[0]),
-                new SwerveModule(2, Swerve.swerveModuleDriveConfigs()[2], Swerve.swerveModuleAzimuthConfigs()[2]),
-                new SwerveModule(3, Swerve.swerveModuleDriveConfigs()[3], Swerve.swerveModuleAzimuthConfigs()[3])
+                new SwerveModule(0),
+                new SwerveModule(1),
+                new SwerveModule(2),
+                new SwerveModule(3)
             }
         );
 
@@ -66,15 +59,14 @@ public class Drivetrain extends SubsystemBase {
          * of WPILib. That can be found
          * here: https://docs.wpilib.org/en/stable/docs/software/basic-programming/coordinate-system.html#coordinate-system
          */
-        // TODO: Test changing the numbers back to how we did last year. Found out how to display the swerves correctly on AdvantageScope
         this.swerveModuleLocations_m = new Translation2d[4];
         // Module 0 should be +X and -Y (Front Right - FR)
-        this.swerveModuleLocations_m[1] = new Translation2d(
+        this.swerveModuleLocations_m[0] = new Translation2d(
             Units.inchesToMeters(DrivetrainConstants.moduleToModuleLength_X_in / 2.0),
             Units.inchesToMeters(-DrivetrainConstants.moduleToModuleWidth_Y_in / 2.0)
         );
         // Module 1 should be +X and +Y (Front Left - FL)
-        this.swerveModuleLocations_m[0] = new Translation2d(
+        this.swerveModuleLocations_m[1] = new Translation2d(
             Units.inchesToMeters(DrivetrainConstants.moduleToModuleLength_X_in / 2.0),
             Units.inchesToMeters(DrivetrainConstants.moduleToModuleWidth_Y_in / 2.0)
         );
@@ -95,7 +87,7 @@ public class Drivetrain extends SubsystemBase {
         // Setup the odometry tracking
         this.odometry = new SwerveDriveOdometry(
           this.swerveKinematics,
-          this.pigeon.getRotation2d().unaryMinus(),
+          this.getPigeonRotation(),
           swerveModules.getPosition()
         );
     }
@@ -104,11 +96,18 @@ public class Drivetrain extends SubsystemBase {
     public void periodic() {
         // Update the odometry in the periodic block
         this.odometry.update(
-            this.pigeon.getRotation2d().unaryMinus(),
+            this.getPigeonRotation(),
             this.swerveModules.getPosition()
         );
+    }
 
-        System.out.println(this.pigeon.getRotation2d().unaryMinus().getDegrees());
+    /**
+     * Gets the rotation2d of the pigeon (IMU)
+     * 
+     * @return Rotation2d containing the heading angle
+     */
+    public Rotation2d getPigeonRotation() {
+        return this.pigeon.getRotation2d();
     }
 
     /**
@@ -127,14 +126,28 @@ public class Drivetrain extends SubsystemBase {
      */
     public void resetOdometry(Pose2d pose) {
         this.odometry.resetPosition(
-            this.pigeon.getRotation2d().unaryMinus(),
+            this.getPigeonRotation(),
             this.swerveModules.getPosition(),    
             pose
         );
     }
 
+    /** 
+     * Zero's the azimuths of the drivetrain
+    */
+    public void zeroAzimuths() {
+        this.swerveModules.zeroAzimuths();
+    }
+
     /**
-     * drive the drivetrain at an x, y and h power field relative
+     * Unlock the azimuths of the drivetrain
+     */
+    public void unlockAzimuths() {
+        this.swerveModules.unlockAzimuths();
+    }
+
+    /**
+     * drive the drivetrain at an x, y and h power; field relative
      * 
      * @param xpow        power to drive at in field relative x
      * @param ypow        power to drive at in field relative y
@@ -159,8 +172,7 @@ public class Drivetrain extends SubsystemBase {
                 xpow * DrivetrainConstants.maxGroundSpeed_mPs,
                 ypow * DrivetrainConstants.maxGroundSpeed_mPs,
                 hpow * DrivetrainConstants.maxRotateSpeed_radPs,
-                // Converting pigeon from left hand rule (x+) to a right hand rule (x+)
-                this.pigeon.getRotation2d().unaryMinus()
+                this.getPigeonRotation()
                 ),
                 0.001 * RobotConstants.loopTime_ms
             )
@@ -173,7 +185,9 @@ public class Drivetrain extends SubsystemBase {
         swerveModules.pushModuleStates(moduleStateOutputs, DrivetrainConstants.maxGroundSpeed_mPs);
     }
 
-    /** Zeroes the heading of the robot. */
+    /** 
+     * Zeroes the heading of the robot 
+    */
     public void resetIMU() {
         this.pigeon.reset();
     }
