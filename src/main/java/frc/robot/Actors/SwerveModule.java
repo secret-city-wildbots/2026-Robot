@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 // Import Utils and Constants
 import frc.robot.Utils.MotorType;
+import frc.robot.Utils.RotationDir;
 import frc.robot.Constants.DrivetrainConstants;
 
 public class SwerveModule extends SubsystemBase {
@@ -29,23 +30,27 @@ public class SwerveModule extends SubsystemBase {
 
     // Define our drive and azimuth motors
     private Motor drive;
-    private Motor azimuth;
+    public Motor azimuth;
 
     // Setup variables for tracking the speed and angle of the module
     private double currentDriveSpeed_mPs = 0;
     private double currentAzimuthAngle_rad = 0;
 
-    public SwerveModule(int moduleNumber, TalonFXConfiguration driveMotorConfig, TalonFXConfiguration azimuthMotorConfig) {
+    public SwerveModule(int moduleNumber) {
         // Set the module number of the swerve
         this.moduleNumber = moduleNumber;
 
         // Setup the drive motor configurations
         this.drive = new Motor(10 + this.moduleNumber, MotorType.TFX);
-        this.drive.applyTalonFxConfig(driveMotorConfig);
+        this.drive.motorConfig.direction = (moduleNumber == 1 || moduleNumber == 2) ? RotationDir.Clockwise:RotationDir.CounterClockwise;
+        this.drive.motorConfig.dutyCycleOpenLoopRampPeriod = 0.1;
+        this.drive.motorConfig.dutyCycleClosedLoopRampPeriod = 0.1;
+        this.drive.applyConfig();
 
         // Setup the azimuth motor configurations
         this.azimuth = new Motor(20 + moduleNumber, MotorType.TFX);
-        this.azimuth.applyTalonFxConfig(azimuthMotorConfig);
+        this.azimuth.motorConfig.direction = RotationDir.Clockwise;
+        this.azimuth.applyConfig();
 
         // Setup the Azimuth PID
         this.azimuth.pid(0.15, 0.0, 0.0);

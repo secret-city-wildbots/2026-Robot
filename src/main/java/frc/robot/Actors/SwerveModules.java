@@ -51,10 +51,10 @@ public class SwerveModules extends SubsystemBase {
         // }
 
         // This worked when testing Saturday
-        this.swerveModules[0].pushModuleState(moduleState[1], maxGroundSpeed_mPs);
-        this.swerveModules[1].pushModuleState(moduleState[0], maxGroundSpeed_mPs);
-        this.swerveModules[2].pushModuleState(moduleState[3], maxGroundSpeed_mPs);
-        this.swerveModules[3].pushModuleState(moduleState[2], maxGroundSpeed_mPs);
+        this.swerveModules[0].pushModuleState(moduleState[0], maxGroundSpeed_mPs);
+        this.swerveModules[1].pushModuleState(moduleState[1], maxGroundSpeed_mPs);
+        this.swerveModules[2].pushModuleState(moduleState[2], maxGroundSpeed_mPs);
+        this.swerveModules[3].pushModuleState(moduleState[3], maxGroundSpeed_mPs);
 
         // Logging values for use in Advantage Scope
         double[] loggingState = new double[] {
@@ -69,6 +69,18 @@ public class SwerveModules extends SubsystemBase {
         };
 
         SmartDashboard.putNumberArray("moduleStates", loggingState);
+    }
+
+    public void zeroAzimuths() {
+        for (int i = 0; i < this.swerveModules.length; i++) {
+            this.swerveModules[i].azimuth.resetPos(0);
+        }
+    }
+
+    public void unlockAzimuths() {
+        for (int i = 0; i < this.swerveModules.length; i++) {
+            this.swerveModules[i].azimuth.setBrake(false);
+        }
     }
 
     /**
@@ -96,14 +108,14 @@ public class SwerveModules extends SubsystemBase {
 
         // Logging values for use in Advantage Scope
         double[] loggingState = new double[] {
-            moduleStates[1].angle.getRadians(),
-            moduleStates[1].speedMetersPerSecond,
             moduleStates[0].angle.getRadians(),
             moduleStates[0].speedMetersPerSecond,
-            moduleStates[3].angle.getRadians(),
-            moduleStates[3].speedMetersPerSecond,
+            moduleStates[1].angle.getRadians(),
+            moduleStates[1].speedMetersPerSecond,
             moduleStates[2].angle.getRadians(),
-            moduleStates[2].speedMetersPerSecond
+            moduleStates[2].speedMetersPerSecond,
+            moduleStates[3].angle.getRadians(),
+            moduleStates[3].speedMetersPerSecond
         };
 
         SmartDashboard.putNumberArray("realModuleStates", loggingState);

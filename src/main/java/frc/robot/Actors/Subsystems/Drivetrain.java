@@ -21,9 +21,6 @@ import frc.robot.Constants.*;
 import frc.robot.Actors.SwerveModule;
 import frc.robot.Actors.SwerveModules;
 
-// Import States
-import frc.robot.States.DrivetrainState;
-
 
 public class Drivetrain extends SubsystemBase {
 
@@ -36,9 +33,6 @@ public class Drivetrain extends SubsystemBase {
     private SwerveDriveOdometry odometry;
     private final SwerveDriveKinematics swerveKinematics;
 
-    // state
-    // TODO: Need to investigate how to use this as it is not currently used
-    public DrivetrainState state = new DrivetrainState();
     public SwerveModuleState[] moduleStates;
 
     public Drivetrain() {
@@ -53,10 +47,10 @@ public class Drivetrain extends SubsystemBase {
         // TODO: Test changing the numbers back to how we did last year. Found out how to display the swerves correctly on AdvantageScope
         this.swerveModules = new SwerveModules(
             new SwerveModule[] {
-                new SwerveModule(1, Swerve.swerveModuleDriveConfigs()[1], Swerve.swerveModuleAzimuthConfigs()[1]),
-                new SwerveModule(0, Swerve.swerveModuleDriveConfigs()[0], Swerve.swerveModuleAzimuthConfigs()[0]),
-                new SwerveModule(2, Swerve.swerveModuleDriveConfigs()[2], Swerve.swerveModuleAzimuthConfigs()[2]),
-                new SwerveModule(3, Swerve.swerveModuleDriveConfigs()[3], Swerve.swerveModuleAzimuthConfigs()[3])
+                new SwerveModule(0),
+                new SwerveModule(1),
+                new SwerveModule(2),
+                new SwerveModule(3)
             }
         );
 
@@ -69,12 +63,12 @@ public class Drivetrain extends SubsystemBase {
         // TODO: Test changing the numbers back to how we did last year. Found out how to display the swerves correctly on AdvantageScope
         this.swerveModuleLocations_m = new Translation2d[4];
         // Module 0 should be +X and -Y (Front Right - FR)
-        this.swerveModuleLocations_m[1] = new Translation2d(
+        this.swerveModuleLocations_m[0] = new Translation2d(
             Units.inchesToMeters(DrivetrainConstants.moduleToModuleLength_X_in / 2.0),
             Units.inchesToMeters(-DrivetrainConstants.moduleToModuleWidth_Y_in / 2.0)
         );
         // Module 1 should be +X and +Y (Front Left - FL)
-        this.swerveModuleLocations_m[0] = new Translation2d(
+        this.swerveModuleLocations_m[1] = new Translation2d(
             Units.inchesToMeters(DrivetrainConstants.moduleToModuleLength_X_in / 2.0),
             Units.inchesToMeters(DrivetrainConstants.moduleToModuleWidth_Y_in / 2.0)
         );
@@ -107,8 +101,6 @@ public class Drivetrain extends SubsystemBase {
             this.pigeon.getRotation2d().unaryMinus(),
             this.swerveModules.getPosition()
         );
-
-        System.out.println(this.pigeon.getRotation2d().unaryMinus().getDegrees());
     }
 
     /**
@@ -131,6 +123,14 @@ public class Drivetrain extends SubsystemBase {
             this.swerveModules.getPosition(),    
             pose
         );
+    }
+
+    public void zeroWheels() {
+        this.swerveModules.zeroAzimuths();
+    }
+
+    public void unlockAzimuths() {
+        this.swerveModules.unlockAzimuths();
     }
 
     /**

@@ -13,6 +13,7 @@ import frc.robot.Actors.Subsystems.Drivetrain;
 
 //Import Commands
 import frc.robot.Commands.Subsystems.Drivetrain.TeleopDrive;
+import frc.robot.Commands.Subsystems.Drivetrain.UnlockAzimuths;
 import frc.robot.Commands.Subsystems.Drivetrain.ResetIMU;
 
 // Import WPILib Command Libraries
@@ -33,7 +34,6 @@ public class RobotContainer {
 
   // Instantiate drive and manipulator Xbox Controllers
   private final CommandXboxController driverController = new CommandXboxController(OperatorConstants.DriverControllerPort);
-  private final CommandXboxController manipulatorController = new CommandXboxController(OperatorConstants.ManipulatorControllerPort);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -61,6 +61,7 @@ public class RobotContainer {
 
     // Schedule the `ResetIMUCommand` when holding the down D-Pad of the driver controller for 1 second
     driverController.pov(180).debounce(1).onTrue(new ResetIMU(drivetrain));
+    driverController.pov(90).debounce(1).onTrue(new UnlockAzimuths(drivetrain));
   }
 
   public Command getAutonomousCommand() {
