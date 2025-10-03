@@ -1,8 +1,5 @@
 package frc.robot.Actors;
 
-// Import CTRE Hardware Libraries
-import com.ctre.phoenix6.configs.TalonFXConfiguration;
-
 // Import WPI Libraries to help Swerve Drive Management
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.util.Units;
@@ -13,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 // Import Utils and Constants
 import frc.robot.Utils.MotorType;
+import frc.robot.Utils.RotationDir;
 import frc.robot.Constants.DrivetrainConstants;
 
 public class SwerveModule extends SubsystemBase {
@@ -29,23 +27,32 @@ public class SwerveModule extends SubsystemBase {
 
     // Define our drive and azimuth motors
     private Motor drive;
-    private Motor azimuth;
+    public Motor azimuth;
 
     // Setup variables for tracking the speed and angle of the module
     private double currentDriveSpeed_mPs = 0;
     private double currentAzimuthAngle_rad = 0;
 
-    public SwerveModule(int moduleNumber, TalonFXConfiguration driveMotorConfig, TalonFXConfiguration azimuthMotorConfig) {
+    /**
+     * A basic swerve module actor
+     * 
+     * @param moduleNumber the module number of the module
+     */
+    public SwerveModule(int moduleNumber) {
         // Set the module number of the swerve
         this.moduleNumber = moduleNumber;
 
         // Setup the drive motor configurations
         this.drive = new Motor(10 + this.moduleNumber, MotorType.TFX);
-        this.drive.applyTalonFxConfig(driveMotorConfig);
+        this.drive.motorConfig.direction = (moduleNumber == 1 || moduleNumber == 2) ? RotationDir.CounterClockwise:RotationDir.Clockwise;
+        this.drive.motorConfig.dutyCycleOpenLoopRampPeriod = 0.1;
+        this.drive.motorConfig.dutyCycleClosedLoopRampPeriod = 0.1;
+        this.drive.applyConfig();
 
         // Setup the azimuth motor configurations
         this.azimuth = new Motor(20 + moduleNumber, MotorType.TFX);
-        this.azimuth.applyTalonFxConfig(azimuthMotorConfig);
+        this.azimuth.motorConfig.direction = RotationDir.Clockwise;
+        this.azimuth.applyConfig();
 
         // Setup the Azimuth PID
         this.azimuth.pid(0.15, 0.0, 0.0);
@@ -94,6 +101,12 @@ public class SwerveModule extends SubsystemBase {
         return new boolean[] { drive.isFault(), azimuth.isFault() };
     }
 
+    /**
+     * send a desired module state to the module
+     * 
+     * @param moduleState the state
+     * @param maxGroundSpeed_mPs the maximum ground speed in meters per second
+     */
     public void pushModuleState(SwerveModuleState moduleState, double maxGroundSpeed_mPs) {
         /*
          * Determine the module states to create
@@ -105,12 +118,10 @@ public class SwerveModule extends SubsystemBase {
         // Optimize the reference state to avoid spinning further than 90 degrees
         moduleState.optimize(encoderRotation);
 
-        // TODO: I think we can uncomment this when we are actually driving the robot. The signal output I thinks goes to 0 when testing
-        // because the angle of the wheel is not being updated
         // Scale speed by cosine of angle error. This scales down movement perpendicular to the desired
         // direction of travel that can occur when modules change directions. This results in smoother
         // driving.
-        //moduleState.cosineScale(encoderRotation);
+        moduleState.cosineScale(encoderRotation);
 
         // Wrapping the angle to allow for "continuous input"
         double minDistance = MathUtil.angleModulus(moduleState.angle.getRadians() - azimuthAngle_rad);
@@ -127,23 +138,9 @@ public class SwerveModule extends SubsystemBase {
         // Output drive
         double driveOutput = moduleState.speedMetersPerSecond / maxGroundSpeed_mPs;
 
-        // TODO: Is this the same as: moduleState.cosineScale(encoderRotation) (LINE 113)
-        driveOutput *= moduleState.angle.minus(new Rotation2d(currentAzimuthAngle_rad)).getCos();
-
         // Send the outputs to the drive and azimuth motors
         azimuth.pos(normalAzimuthOutput_rot);
         drive.dc(driveOutput);
-    }
-
-    /**
-     * TODO: describe the purpose of this function
-     */
-    public void pushLockState(boolean calibrateWheels, boolean unlockWheels) {
-        if (calibrateWheels) {
-            azimuth.resetPos(0.0);
-        }
-
-        azimuth.setBrake(!unlockWheels); // invert bc unlock != lock
     }
 
     /**
