@@ -276,6 +276,7 @@ public class Motor {
 
     public void applyConfig() {
         switch (this.type) {
+            //TODO add SPX config for all values
             case SPX:
                 this.configSPX.inverted(this.motorConfig.direction == RotationDir.Clockwise);
                 this.configSPX.idleMode((this.motorConfig.brake) ? IdleMode.kBrake : IdleMode.kCoast);
@@ -291,6 +292,8 @@ public class Motor {
                         : NeutralModeValue.Coast;
                 this.configTFX.HardwareLimitSwitch.ForwardLimitEnable = this.motorConfig.forwardLimitSwitchEnabled;
                 this.configTFX.HardwareLimitSwitch.ReverseLimitEnable = this.motorConfig.reverseLimitSwitchEnabled;
+                this.configTFX.OpenLoopRamps.DutyCycleOpenLoopRampPeriod = this.motorConfig.dutyCycleOpenLoopRampPeriod;
+                this.configTFX.ClosedLoopRamps.DutyCycleClosedLoopRampPeriod = this.motorConfig.dutyCycleClosedLoopRampPeriod;
                 this.motorTFX.getConfigurator().apply(configTFX);
                 break;
             case None:
