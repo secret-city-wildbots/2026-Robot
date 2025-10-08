@@ -32,9 +32,9 @@ public class TeleopDrive extends Command {
         // Multiply by max speed to map the joystick unitless inputs to actual units.
         // This will map the [-1, 1] to [max speed backwards, max speed forwards],
         // converting them to actual units.
-        JoystickScaler.scale(-driverController.getLeftY())*0.6,
-        JoystickScaler.scale(driverController.getLeftX())*0.6,
-        JoystickScaler.scale(-driverController.getRightX())*0.8
+        JoystickScaler.scale(-driverController.getLeftY())*0.3,
+        JoystickScaler.scale(-driverController.getLeftX())*0.3,
+        JoystickScaler.scale(-driverController.getRightX())*0.5
     );
     }
 
