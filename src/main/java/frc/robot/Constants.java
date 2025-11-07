@@ -44,6 +44,7 @@ public final class Constants {
     public static final double wheelDiameter_m = Units.inchesToMeters(wheelDiameter_in);
     public static final double wheelRadius_in = wheelDiameter_in / 2.0;
     public static final double wheelRadius_m = Units.inchesToMeters(wheelRadius_in);
+    public static final double wheelCircumfrence_m = wheelDiameter_m * Math.PI;
 
     // Drive Gear Ratio Specs
     public static final double driveGearRatio = 6.12;
@@ -54,5 +55,7 @@ public final class Constants {
     // Robot Speed and Rotation Specs
     public static final double maxGroundSpeed_mPs = 5.0;
     public static final double maxRotateSpeed_radPs = maxGroundSpeed_mPs / Math.hypot(moduleToModuleLength_X_m, moduleToModuleWidth_Y_m);
+    public static final double motorMaxSpeed_rPm = 6000.0;
+    public static final double motorMaxSpeed_rPs = motorMaxSpeed_rPm / 60;
   }
 }

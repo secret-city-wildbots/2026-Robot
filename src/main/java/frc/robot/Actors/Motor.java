@@ -3,6 +3,7 @@ package frc.robot.Actors;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.PositionDutyCycle;
+import com.ctre.phoenix6.controls.VelocityDutyCycle;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -14,6 +15,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.SparkMax;
 
+import frc.robot.Constants.DrivetrainConstants.*;
 import frc.robot.Utils.MotorType;
 import frc.robot.Utils.RotationDir;
 
@@ -78,15 +80,17 @@ public class Motor {
     /**
      * Sets the duty cycle of the motor
      * 
-     * @param dutyCycle from -1.0 to 1.0
+     * @param motor_rPs from ? to ?
      */
-    public void dc(double dutyCycle) {
+    public void dc(double motor_rPs) {
         switch (this.type) {
             case SPX:
-                this.motorSPX.set(dutyCycle);
+                this.motorSPX.set(motor_rPs);
                 break;
             case TFX:
-                this.motorTFX.set(dutyCycle);
+                //this.motorTFX.set(motor_rPs);
+                VelocityDutyCycle controlRequest = new VelocityDutyCycle(motor_rPs);
+                motorTFX.setControl(controlRequest);
                 break;
             case None:
                 System.err.println("tried to set dc on None motor with CanID " + this.CanID);

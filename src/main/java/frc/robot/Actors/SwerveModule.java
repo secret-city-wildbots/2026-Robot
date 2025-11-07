@@ -49,6 +49,9 @@ public class SwerveModule extends SubsystemBase {
         this.drive.motorConfig.dutyCycleClosedLoopRampPeriod = 0.1;
         this.drive.applyConfig();
 
+        // Setup the Drive PID
+        this.drive.pid(0.001, 0.0, 0.0);
+
         // Setup the azimuth motor configurations
         this.azimuth = new Motor(20 + moduleNumber, MotorType.TFX);
         this.azimuth.motorConfig.direction = RotationDir.Clockwise;
@@ -129,18 +132,18 @@ public class SwerveModule extends SubsystemBase {
         /*
          * Calculate the azimuth output
          */
-        double normalAzimuthOutput_rot = Units.radiansToRotations(azimuthAngle_rad + minDistance)
-                * DrivetrainConstants.azimuthGearRatio;
+        double normalAzimuthOutput_rot = Units.radiansToRotations(azimuthAngle_rad + minDistance) * DrivetrainConstants.azimuthGearRatio;
 
         /*
          * Calculate the drive output
          */
         // Output drive
-        double driveOutput = moduleState.speedMetersPerSecond / maxGroundSpeed_mPs;
-
+        double driveOutput_rPs = moduleState.speedMetersPerSecond / DrivetrainConstants.wheelCircumfrence_m * DrivetrainConstants.driveGearRatio;
+        driveOutput_rPs *= moduleState.angle.minus(new Rotation2d(currentAzimuthAngle_rad)).getCos();
+        
         // Send the outputs to the drive and azimuth motors
         azimuth.pos(normalAzimuthOutput_rot);
-        drive.dc(driveOutput);
+        drive.dc(driveOutput_rPs);
     }
 
     /**
