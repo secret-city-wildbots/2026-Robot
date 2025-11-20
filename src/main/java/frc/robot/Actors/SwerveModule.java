@@ -50,7 +50,7 @@ public class SwerveModule extends SubsystemBase {
         this.drive.applyConfig();
 
         // Setup the Drive PID
-        this.drive.pid(0.001, 0.0, 0.0);
+        this.drive.pid(5.0, 0.0, 0.0);
 
         // Setup the azimuth motor configurations
         this.azimuth = new Motor(20 + moduleNumber, MotorType.TFX);
@@ -139,8 +139,8 @@ public class SwerveModule extends SubsystemBase {
          */
         // Output drive
         double driveOutput_rPs = moduleState.speedMetersPerSecond / DrivetrainConstants.wheelCircumfrence_m * DrivetrainConstants.driveGearRatio;
-        driveOutput_rPs *= moduleState.angle.minus(new Rotation2d(currentAzimuthAngle_rad)).getCos();
-        
+        //driveOutput_rPs *= moduleState.angle.minus(new Rotation2d(currentAzimuthAngle_rad)).getCos();
+
         // Send the outputs to the drive and azimuth motors
         azimuth.pos(normalAzimuthOutput_rot);
         drive.dc(driveOutput_rPs);

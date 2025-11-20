@@ -8,6 +8,8 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Actors.Subsystems.Drivetrain;
 import frc.robot.Utils.JoystickScaler;
 
+import edu.wpi.first.math.MathUtil;
+
 public class TeleopDrive extends Command {
     // Real Variables
     private final Drivetrain drivetrain;
@@ -32,9 +34,10 @@ public class TeleopDrive extends Command {
         // Multiply by max speed to map the joystick unitless inputs to actual units.
         // This will map the [-1, 1] to [max speed backwards, max speed forwards],
         // converting them to actual units.
-        JoystickScaler.scale(-driverController.getLeftY())*0.6,
-        JoystickScaler.scale(-driverController.getLeftX())*0.6,
-        JoystickScaler.scale(driverController.getRightX())*0.8
+
+        JoystickScaler.scale(MathUtil.applyDeadband(-driverController.getLeftY(), 0.02)),
+        JoystickScaler.scale(MathUtil.applyDeadband(-driverController.getLeftX(), 0.02)),
+        JoystickScaler.scale(MathUtil.applyDeadband(-driverController.getRightX(), 0.02))
     );
     }
 

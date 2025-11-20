@@ -90,6 +90,9 @@ public class Motor {
             case TFX:
                 //this.motorTFX.set(motor_rPs);
                 VelocityDutyCycle controlRequest = new VelocityDutyCycle(motor_rPs);
+                System.out.println("Desired speed: " + motor_rPs);
+                System.out.println("Actual speed: " + motorTFX.getVelocity().getValueAsDouble());
+                System.out.println("Duty cycle: " + this.dc());
                 motorTFX.setControl(controlRequest);
                 break;
             case None:
