@@ -26,7 +26,7 @@ public class SwerveModule extends SubsystemBase {
     private final int moduleNumber;
 
     // Define our drive and azimuth motors
-    private Motor drive;
+    public Motor drive;
     public Motor azimuth;
 
     // Setup variables for tracking the speed and angle of the module
@@ -50,7 +50,7 @@ public class SwerveModule extends SubsystemBase {
         this.drive.applyConfig();
 
         // Setup the Drive PID
-        this.drive.pid(5.0, 0.0, 0.0);
+        this.drive.pid(.001, 0.0, 0.0);
 
         // Setup the azimuth motor configurations
         this.azimuth = new Motor(20 + moduleNumber, MotorType.TFX);

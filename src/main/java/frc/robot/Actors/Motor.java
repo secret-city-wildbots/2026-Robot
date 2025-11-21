@@ -19,6 +19,11 @@ import frc.robot.Constants.DrivetrainConstants.*;
 import frc.robot.Utils.MotorType;
 import frc.robot.Utils.RotationDir;
 
+//Network Tables
+import edu.wpi.first.networktables.DoublePublisher;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
+
 public class Motor {
     public MotorType type;
     public TalonFX motorTFX;
@@ -29,6 +34,9 @@ public class Motor {
     public MotorConfig motorConfig;
     public String actuatorName = "not_set";
     public int CanID;
+    public double desiredSpeed_rPs;
+    public double actualSpeed_rPs;
+
 
     public Motor(int CanID, MotorType type) {
         this.CanID = CanID;
@@ -83,6 +91,7 @@ public class Motor {
      * @param motor_rPs from ? to ?
      */
     public void dc(double motor_rPs) {
+
         switch (this.type) {
             case SPX:
                 this.motorSPX.set(motor_rPs);
@@ -90,9 +99,8 @@ public class Motor {
             case TFX:
                 //this.motorTFX.set(motor_rPs);
                 VelocityDutyCycle controlRequest = new VelocityDutyCycle(motor_rPs);
-                System.out.println("Desired speed: " + motor_rPs);
-                System.out.println("Actual speed: " + motorTFX.getVelocity().getValueAsDouble());
-                System.out.println("Duty cycle: " + this.dc());
+                desiredSpeed_rPs = motor_rPs;
+                actualSpeed_rPs = motorTFX.getVelocity().getValueAsDouble();
                 motorTFX.setControl(controlRequest);
                 break;
             case None:
