@@ -98,10 +98,15 @@ public class Motor {
                 break;
             case TFX:
                 //this.motorTFX.set(motor_rPs);
-                VelocityDutyCycle controlRequest = new VelocityDutyCycle(motor_rPs);
-                desiredSpeed_rPs = motor_rPs;
-                actualSpeed_rPs = motorTFX.getVelocity().getValueAsDouble();
-                motorTFX.setControl(controlRequest);
+                if (Math.abs(motor_rPs) > 0.1) {
+                    VelocityDutyCycle controlRequest = new VelocityDutyCycle(motor_rPs);
+                    desiredSpeed_rPs = motor_rPs;
+                    actualSpeed_rPs = motorTFX.getVelocity().getValueAsDouble();
+                    motorTFX.setControl(controlRequest);   
+                }else{
+                    motorTFX.set(0.0);
+                }
+
                 break;
             case None:
                 System.err.println("tried to set dc on None motor with CanID " + this.CanID);

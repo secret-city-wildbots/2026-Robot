@@ -50,7 +50,7 @@ public class SwerveModule extends SubsystemBase {
         this.drive.applyConfig();
 
         // Setup the Drive PID
-        this.drive.pid(.001, 0.0, 0.0);
+        this.drive.pid(0.2, 0.2, 0.04);
 
         // Setup the azimuth motor configurations
         this.azimuth = new Motor(20 + moduleNumber, MotorType.TFX);

@@ -53,7 +53,7 @@ public final class Constants {
     public static final double azimuthGearRatio = 150.0 / 7.0;
 
     // Robot Speed and Rotation Specs
-    public static final double maxGroundSpeed_mPs = 5.0;
+    public static final double maxGroundSpeed_mPs = 1.0;
     public static final double maxRotateSpeed_radPs = maxGroundSpeed_mPs / Math.hypot(moduleToModuleLength_X_m, moduleToModuleWidth_Y_m);
     public static final double motorMaxSpeed_rPm = 6000.0;
     public static final double motorMaxSpeed_rPs = motorMaxSpeed_rPm / 60;
