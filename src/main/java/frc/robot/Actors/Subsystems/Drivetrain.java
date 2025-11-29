@@ -54,32 +54,31 @@ public class Drivetrain extends SubsystemBase {
             });
 
         /*
-         * Setup the module locations with respect to the center of the robot. To
-         * calculate the center of the modules we
-         * take have the module to module length and width. We also need to take into
-         * consideration the coordinate system
-         * of WPILib. That can be found
-         * here:
-         * https://docs.wpilib.org/en/stable/docs/software/basic-programming/coordinate-
-         * system.html#coordinate-system
+         * Setup the module locations with respect to the center of the robot. To calculate the center of the modules we
+         * take have the module to module length and width. We also need to take into consideration the coordinate system
+         * of WPILib. That can be found here: https://docs.wpilib.org/en/stable/docs/software/basic-programming/coordinate-system.html#coordinate-system
          */
         this.swerveModuleLocations_m = new Translation2d[4];
         // Module 0 should be +X and -Y (Front Right - FR)
         this.swerveModuleLocations_m[0] = new Translation2d(
             Units.inchesToMeters(DrivetrainConstants.moduleToModuleLength_X_in / 2.0),
-            Units.inchesToMeters(-DrivetrainConstants.moduleToModuleWidth_Y_in / 2.0));
+            Units.inchesToMeters(-DrivetrainConstants.moduleToModuleWidth_Y_in / 2.0)
+        );
         // Module 1 should be +X and +Y (Front Left - FL)
         this.swerveModuleLocations_m[1] = new Translation2d(
             Units.inchesToMeters(DrivetrainConstants.moduleToModuleLength_X_in / 2.0),
-            Units.inchesToMeters(DrivetrainConstants.moduleToModuleWidth_Y_in / 2.0));
+            Units.inchesToMeters(DrivetrainConstants.moduleToModuleWidth_Y_in / 2.0)
+        );
         // Module 2 should be -X and +Y (Back Left - BL)
         this.swerveModuleLocations_m[2] = new Translation2d(
             Units.inchesToMeters(-DrivetrainConstants.moduleToModuleLength_X_in / 2.0),
-            Units.inchesToMeters(DrivetrainConstants.moduleToModuleWidth_Y_in / 2.0));
+            Units.inchesToMeters(DrivetrainConstants.moduleToModuleWidth_Y_in / 2.0)
+        );
         // Module 3 should be -X and -Y (Back Right - BR)
         this.swerveModuleLocations_m[3] = new Translation2d(
             Units.inchesToMeters(-DrivetrainConstants.moduleToModuleLength_X_in / 2.0),
-            Units.inchesToMeters(-DrivetrainConstants.moduleToModuleWidth_Y_in / 2.0));
+            Units.inchesToMeters(-DrivetrainConstants.moduleToModuleWidth_Y_in / 2.0)
+        );
 
         // Setup the swerve drive kinematics
         this.swerveKinematics = new SwerveDriveKinematics(this.swerveModuleLocations_m);
@@ -88,7 +87,8 @@ public class Drivetrain extends SubsystemBase {
         this.odometry = new SwerveDriveOdometry(
             this.swerveKinematics,
             this.getPigeonRotation(),
-            swerveModules.getPosition());
+            swerveModules.getPosition()
+        );
     }
 
     @Override
@@ -96,7 +96,8 @@ public class Drivetrain extends SubsystemBase {
         // Update the odometry in the periodic block
         this.odometry.update(
             this.getPigeonRotation(),
-            this.swerveModules.getPosition());
+            this.swerveModules.getPosition()
+        );
 
         ArrayList<Double> desiredSpeeds_rPs = new ArrayList<>();
         ArrayList<Double> actualSpeeds_rPs = new ArrayList<>();
