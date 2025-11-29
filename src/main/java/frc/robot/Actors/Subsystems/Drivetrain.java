@@ -51,12 +51,14 @@ public class Drivetrain extends SubsystemBase {
                 new SwerveModule(1),
                 new SwerveModule(2),
                 new SwerveModule(3)
-            });
+            }
+        );
 
         /*
          * Setup the module locations with respect to the center of the robot. To calculate the center of the modules we
          * take have the module to module length and width. We also need to take into consideration the coordinate system
-         * of WPILib. That can be found here: https://docs.wpilib.org/en/stable/docs/software/basic-programming/coordinate-system.html#coordinate-system
+         * of WPILib. That can be found
+         * here: https://docs.wpilib.org/en/stable/docs/software/basic-programming/coordinate-system.html#coordinate-system
          */
         this.swerveModuleLocations_m = new Translation2d[4];
         // Module 0 should be +X and -Y (Front Right - FR)
@@ -147,7 +149,8 @@ public class Drivetrain extends SubsystemBase {
         this.odometry.resetPosition(
             this.getPigeonRotation(),
             this.swerveModules.getPosition(),
-            pose);
+            pose
+        );
     }
 
     /**
