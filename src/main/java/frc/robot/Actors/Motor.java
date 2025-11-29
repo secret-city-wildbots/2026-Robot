@@ -15,14 +15,8 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.SparkMax;
 
-import frc.robot.Constants.DrivetrainConstants.*;
 import frc.robot.Utils.MotorType;
 import frc.robot.Utils.RotationDir;
-
-//Network Tables
-import edu.wpi.first.networktables.DoublePublisher;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableInstance;
 
 public class Motor {
     public MotorType type;
@@ -90,7 +84,7 @@ public class Motor {
      * 
      * @param motor_rPs from ? to ?
      */
-    public void dc(double motor_rPs) {
+    public void vel_dc(double motor_rPs) {
 
         switch (this.type) {
             case SPX:
@@ -107,6 +101,24 @@ public class Motor {
                     motorTFX.set(0.0);
                 }
 
+                break;
+            case None:
+                System.err.println("tried to set dc on None motor with CanID " + this.CanID);
+        }
+    }
+
+    /**
+     * Sets the duty cycle of the motor
+     * 
+     * @param dutyCycle from -1.0 to 1.0
+     */
+    public void dc(double dutyCycle) {
+        switch (this.type) {
+            case SPX:
+                this.motorSPX.set(dutyCycle);
+                break;
+            case TFX:
+                this.motorTFX.set(dutyCycle);
                 break;
             case None:
                 System.err.println("tried to set dc on None motor with CanID " + this.CanID);

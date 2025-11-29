@@ -30,8 +30,7 @@ public class Drivetrain extends SubsystemBase {
 
     // Swerve Modules
     private SwerveModules swerveModules; // Helper class to help easily manage the individual swerve modules
-    private Translation2d[] swerveModuleLocations_m; // Used to hold the position of the swerve modules with respect to
-                                                     // the center of the robot
+    private Translation2d[] swerveModuleLocations_m; // Used to hold the position of the swerve modules with respect to the center of the robot
     private SwerveDriveOdometry odometry;
     private final SwerveDriveKinematics swerveKinematics;
 
@@ -47,12 +46,12 @@ public class Drivetrain extends SubsystemBase {
 
         // Define the swerve modules
         this.swerveModules = new SwerveModules(
-                new SwerveModule[] {
-                        new SwerveModule(0),
-                        new SwerveModule(1),
-                        new SwerveModule(2),
-                        new SwerveModule(3)
-                });
+            new SwerveModule[] {
+                new SwerveModule(0),
+                new SwerveModule(1),
+                new SwerveModule(2),
+                new SwerveModule(3)
+            });
 
         /*
          * Setup the module locations with respect to the center of the robot. To
@@ -67,37 +66,37 @@ public class Drivetrain extends SubsystemBase {
         this.swerveModuleLocations_m = new Translation2d[4];
         // Module 0 should be +X and -Y (Front Right - FR)
         this.swerveModuleLocations_m[0] = new Translation2d(
-                Units.inchesToMeters(DrivetrainConstants.moduleToModuleLength_X_in / 2.0),
-                Units.inchesToMeters(-DrivetrainConstants.moduleToModuleWidth_Y_in / 2.0));
+            Units.inchesToMeters(DrivetrainConstants.moduleToModuleLength_X_in / 2.0),
+            Units.inchesToMeters(-DrivetrainConstants.moduleToModuleWidth_Y_in / 2.0));
         // Module 1 should be +X and +Y (Front Left - FL)
         this.swerveModuleLocations_m[1] = new Translation2d(
-                Units.inchesToMeters(DrivetrainConstants.moduleToModuleLength_X_in / 2.0),
-                Units.inchesToMeters(DrivetrainConstants.moduleToModuleWidth_Y_in / 2.0));
+            Units.inchesToMeters(DrivetrainConstants.moduleToModuleLength_X_in / 2.0),
+            Units.inchesToMeters(DrivetrainConstants.moduleToModuleWidth_Y_in / 2.0));
         // Module 2 should be -X and +Y (Back Left - BL)
         this.swerveModuleLocations_m[2] = new Translation2d(
-                Units.inchesToMeters(-DrivetrainConstants.moduleToModuleLength_X_in / 2.0),
-                Units.inchesToMeters(DrivetrainConstants.moduleToModuleWidth_Y_in / 2.0));
+            Units.inchesToMeters(-DrivetrainConstants.moduleToModuleLength_X_in / 2.0),
+            Units.inchesToMeters(DrivetrainConstants.moduleToModuleWidth_Y_in / 2.0));
         // Module 3 should be -X and -Y (Back Right - BR)
         this.swerveModuleLocations_m[3] = new Translation2d(
-                Units.inchesToMeters(-DrivetrainConstants.moduleToModuleLength_X_in / 2.0),
-                Units.inchesToMeters(-DrivetrainConstants.moduleToModuleWidth_Y_in / 2.0));
+            Units.inchesToMeters(-DrivetrainConstants.moduleToModuleLength_X_in / 2.0),
+            Units.inchesToMeters(-DrivetrainConstants.moduleToModuleWidth_Y_in / 2.0));
 
         // Setup the swerve drive kinematics
         this.swerveKinematics = new SwerveDriveKinematics(this.swerveModuleLocations_m);
 
         // Setup the odometry tracking
         this.odometry = new SwerveDriveOdometry(
-                this.swerveKinematics,
-                this.getPigeonRotation(),
-                swerveModules.getPosition());
+            this.swerveKinematics,
+            this.getPigeonRotation(),
+            swerveModules.getPosition());
     }
 
     @Override
     public void periodic() {
         // Update the odometry in the periodic block
         this.odometry.update(
-                this.getPigeonRotation(),
-                this.swerveModules.getPosition());
+            this.getPigeonRotation(),
+            this.swerveModules.getPosition());
 
         ArrayList<Double> desiredSpeeds_rPs = new ArrayList<>();
         ArrayList<Double> actualSpeeds_rPs = new ArrayList<>();
@@ -145,9 +144,9 @@ public class Drivetrain extends SubsystemBase {
      */
     public void resetOdometry(Pose2d pose) {
         this.odometry.resetPosition(
-                this.getPigeonRotation(),
-                this.swerveModules.getPosition(),
-                pose);
+            this.getPigeonRotation(),
+            this.swerveModules.getPosition(),
+            pose);
     }
 
     /**
@@ -190,12 +189,12 @@ public class Drivetrain extends SubsystemBase {
         // Calculate the swerve module states (drive and azimuth motor commands) based
         // on the controller inputs and the max ground and rotate speeds
         SwerveModuleState[] moduleStateOutputs = this.swerveKinematics.toSwerveModuleStates(
-                ChassisSpeeds.discretize(ChassisSpeeds.fromFieldRelativeSpeeds(
-                        xpow * DrivetrainConstants.maxGroundSpeed_mPs,
-                        ypow * DrivetrainConstants.maxGroundSpeed_mPs,
-                        hpow * DrivetrainConstants.maxRotateSpeed_radPs,
-                        this.getPigeonRotation()),
-                        0.001 * RobotConstants.loopTime_ms));
+            ChassisSpeeds.discretize(ChassisSpeeds.fromFieldRelativeSpeeds(
+                xpow * DrivetrainConstants.maxGroundSpeed_mPs,
+                ypow * DrivetrainConstants.maxGroundSpeed_mPs,
+                hpow * DrivetrainConstants.maxRotateSpeed_radPs,
+                this.getPigeonRotation()),
+                0.001 * RobotConstants.loopTime_ms));
 
         // Renormalizes the wheel speeds if any individual speed is above the specified
         // maximum.

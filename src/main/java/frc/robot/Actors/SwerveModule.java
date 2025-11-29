@@ -143,7 +143,7 @@ public class SwerveModule extends SubsystemBase {
 
         // Send the outputs to the drive and azimuth motors
         azimuth.pos(normalAzimuthOutput_rot);
-        drive.dc(driveOutput_rPs);
+        drive.vel_dc(driveOutput_rPs);
     }
 
     /**
