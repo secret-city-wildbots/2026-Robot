@@ -46,11 +46,11 @@ public class SwerveModule extends SubsystemBase {
         this.drive = new Motor(10 + this.moduleNumber, MotorType.TFX);
         this.drive.motorConfig.direction = (moduleNumber == 1 || moduleNumber == 2) ? RotationDir.CounterClockwise:RotationDir.Clockwise;
         this.drive.motorConfig.dutyCycleOpenLoopRampPeriod = 0.1;
-        this.drive.motorConfig.dutyCycleClosedLoopRampPeriod = 0.1;
+        this.drive.motorConfig.dutyCycleClosedLoopRampPeriod = 0.3;
         this.drive.applyConfig();
 
         // Setup the Drive PID
-        this.drive.pid(0.2, 0.2, 0.04);
+        this.drive.pid(13, 0.6, 0.025);
 
         // Setup the azimuth motor configurations
         this.azimuth = new Motor(20 + moduleNumber, MotorType.TFX);
