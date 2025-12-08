@@ -6,8 +6,9 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 // Import Subsystems
 import frc.robot.Actors.Subsystems.Drivetrain;
-import frc.robot.Utils.JoystickScaler;
 
+// Import Utils
+import frc.robot.Utils.JoystickScaler;
 import edu.wpi.first.math.MathUtil;
 
 public class TeleopDrive extends Command {

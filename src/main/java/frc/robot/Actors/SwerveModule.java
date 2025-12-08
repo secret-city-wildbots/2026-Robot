@@ -19,9 +19,9 @@ public class SwerveModule extends SubsystemBase {
      * 
      * 4265 Naming/ID Convention:
      * Module 0 - Front Right (Drive Motor CAN ID - 10, Azimuth Motor CAN ID - 20)
-     * Module 1 - Front Right (Drive Motor CAN ID - 11, Azimuth Motor CAN ID - 21)
-     * Module 2 - Front Right (Drive Motor CAN ID - 12, Azimuth Motor CAN ID - 22)
-     * Module 3 - Front Right (Drive Motor CAN ID - 13, Azimuth Motor CAN ID - 23)
+     * Module 1 - Front Left (Drive Motor CAN ID - 11, Azimuth Motor CAN ID - 21)
+     * Module 2 - Back Left (Drive Motor CAN ID - 12, Azimuth Motor CAN ID - 22)
+     * Module 3 - Back Right (Drive Motor CAN ID - 13, Azimuth Motor CAN ID - 23)
      */
     private final int moduleNumber;
 
@@ -42,23 +42,20 @@ public class SwerveModule extends SubsystemBase {
         // Set the module number of the swerve
         this.moduleNumber = moduleNumber;
 
-        // Setup the drive motor configurations
+        // Setup the drive and azimuth motors
         this.drive = new Motor(10 + this.moduleNumber, MotorType.TFX);
+        this.azimuth = new Motor(20 + moduleNumber, MotorType.TFX);
+
+        // Configure the drive motor
         this.drive.motorConfig.direction = (moduleNumber == 1 || moduleNumber == 2) ? RotationDir.CounterClockwise:RotationDir.Clockwise;
-        this.drive.motorConfig.dutyCycleOpenLoopRampPeriod = 0.1;
         this.drive.motorConfig.dutyCycleClosedLoopRampPeriod = 0.3;
         this.drive.applyConfig();
+        this.drive.pid(13, 0.6, 0.025); // Setup the Drive PID
 
-        // Setup the Drive PID
-        this.drive.pid(13, 0.6, 0.025);
-
-        // Setup the azimuth motor configurations
-        this.azimuth = new Motor(20 + moduleNumber, MotorType.TFX);
+        // Configure the azimuth motor
         this.azimuth.motorConfig.direction = RotationDir.Clockwise;
         this.azimuth.applyConfig();
-
-        // Setup the Azimuth PID
-        this.azimuth.pid(0.15, 0.0, 0.0);
+        this.azimuth.pid(0.15, 0.0, 0.0); // Setup the Azimuth PID 
     }
 
     /**
@@ -69,6 +66,7 @@ public class SwerveModule extends SubsystemBase {
     public SwerveModuleState getCurrentState() {
         // Calculate the current module angle in radians
         currentAzimuthAngle_rad = Units.rotationsToRadians(azimuth.pos() / DrivetrainConstants.azimuthGearRatio);
+
         // Calculate the current module wheel speein in meters / second
         currentDriveSpeed_mPs = drive.vel()
             / DrivetrainConstants.driveGearRatio * 2
@@ -111,9 +109,6 @@ public class SwerveModule extends SubsystemBase {
      * @param maxGroundSpeed_mPs the maximum ground speed in meters per second
      */
     public void pushModuleState(SwerveModuleState moduleState, double maxGroundSpeed_mPs) {
-        /*
-         * Determine the module states to create
-         */
         // Get the encoderRotation and azimuth angle in radians
         var encoderRotation = new Rotation2d(Units.rotationsToRadians(azimuth.pos() / DrivetrainConstants.azimuthGearRatio));
         double azimuthAngle_rad = Units.rotationsToRadians(azimuth.pos() / DrivetrainConstants.azimuthGearRatio);
@@ -129,17 +124,11 @@ public class SwerveModule extends SubsystemBase {
         // Wrapping the angle to allow for "continuous input"
         double minDistance = MathUtil.angleModulus(moduleState.angle.getRadians() - azimuthAngle_rad);
 
-        /*
-         * Calculate the azimuth output
-         */
+        // Calculate the azimuth output
         double normalAzimuthOutput_rot = Units.radiansToRotations(azimuthAngle_rad + minDistance) * DrivetrainConstants.azimuthGearRatio;
 
-        /*
-         * Calculate the drive output
-         */
-        // Output drive
+        // Calculate the drive output
         double driveOutput_rPs = moduleState.speedMetersPerSecond / DrivetrainConstants.wheelCircumfrence_m * DrivetrainConstants.driveGearRatio;
-        //driveOutput_rPs *= moduleState.angle.minus(new Rotation2d(currentAzimuthAngle_rad)).getCos();
 
         // Send the outputs to the drive and azimuth motors
         azimuth.pos(normalAzimuthOutput_rot);

@@ -4,16 +4,16 @@ package frc.robot.Commands.Subsystems.Drivetrain;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Actors.Subsystems.Drivetrain;
 
-public class UnlockAzimuths extends Command {
+public class ZeroAzimuths extends Command {
     // Real Variables
     private final Drivetrain drivetrain;
 
     /**
-     * Creates and sets up the UnlockAzimuth command. For use on temporary unlocks on controller
+     * Creates and sets up the ZeroAzimuths command. Zeros all of the swerve azimuths
      * 
      * @param drivetrain The subsystem to be controlled by the command ({@link Drivetrain})
      */
-    public UnlockAzimuths(Drivetrain drivetrain) {
+    public ZeroAzimuths(Drivetrain drivetrain) {
         // Assign the variables and add the subsystem as a requirement to the command
         this.drivetrain = drivetrain;
         addRequirements(drivetrain);
@@ -21,12 +21,12 @@ public class UnlockAzimuths extends Command {
 
     @Override
     public void execute() {
-        drivetrain.unlockAzimuths();
+        drivetrain.zeroAzimuths();
     }
 
     @Override
     public void end(boolean interrupted) {
-        System.out.println("unlocked azimuths...");
+        System.out.println("zeored azimuths...");
     }
 
     @Override

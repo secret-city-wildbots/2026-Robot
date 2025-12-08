@@ -27,6 +27,13 @@ public final class Constants {
   }
 
   public static class DrivetrainConstants {
+    // CAN IDs
+    public static final int pigeonId = 6;
+    public static final int frontRightModuleId = 0;
+    public static final int frontLeftModuleId = 1;
+    public static final int backLeftModuleId = 2;
+    public static final int backRightModuleId = 3;
+
     // Robot Dimensions
     public static final double robotLength_X_in = 29.0;
     public static final double robotWidth_Y_in = 29.0;

@@ -15,6 +15,7 @@ import frc.robot.Actors.Subsystems.Drivetrain;
 import frc.robot.Commands.Subsystems.Drivetrain.TeleopDrive;
 import frc.robot.Commands.Subsystems.Drivetrain.UnlockAzimuths;
 import frc.robot.Commands.Subsystems.Drivetrain.ResetIMU;
+import frc.robot.Commands.Subsystems.Drivetrain.ZeroAzimuths;
 
 // Import WPILib Command Libraries
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -59,9 +60,10 @@ public class RobotContainer {
    */
   private void configureBindings() {
 
-    // Schedule the `ResetIMUCommand` when holding the down D-Pad of the driver controller for 1 second
-    driverController.pov(180).debounce(1).onTrue(new ResetIMU(drivetrain));
-    driverController.pov(90).debounce(1).onTrue(new UnlockAzimuths(drivetrain));
+    driverController.pov(0).debounce(1).onTrue(new ZeroAzimuths(drivetrain)); // Hold UP on the D-Pad of the driver controller for 1 second
+    driverController.pov(90).debounce(1).onTrue(new UnlockAzimuths(drivetrain)); // Hold RIGHT on the D-Pad of the driver controller for 1 second
+    driverController.pov(180).debounce(1).onTrue(new ResetIMU(drivetrain)); // Hold DOWN on the D-Pad of the driver controller for 1 second
+    
   }
 
   /**

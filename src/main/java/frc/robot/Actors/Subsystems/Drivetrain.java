@@ -1,5 +1,6 @@
 package frc.robot.Actors.Subsystems;
 
+// Import Java Libraries
 import java.util.ArrayList;
 
 // Import CTRE Hardware Libraries
@@ -16,14 +17,23 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-// Import Constants and Utils
+// Import Constants
 import frc.robot.Constants.*;
+
+// Import Robot
 import frc.robot.Robot;
-// Import Subsystems
+
+// Import Subsystem Actors
 import frc.robot.Actors.SwerveModule;
 import frc.robot.Actors.SwerveModules;
 
 public class Drivetrain extends SubsystemBase {
+
+    /**
+     * Private Variables
+     * 
+     * Accessible only within the class
+     */
 
     // Inertial Measurement Unit
     private Pigeon2 pigeon;
@@ -31,8 +41,14 @@ public class Drivetrain extends SubsystemBase {
     // Swerve Modules
     private SwerveModules swerveModules; // Helper class to help easily manage the individual swerve modules
     private Translation2d[] swerveModuleLocations_m; // Used to hold the position of the swerve modules with respect to the center of the robot
-    private SwerveDriveOdometry odometry;
-    private final SwerveDriveKinematics swerveKinematics;
+    private SwerveDriveOdometry odometry; // holds the position of the robot
+    private final SwerveDriveKinematics swerveKinematics; // Kinematics engine to control the swerve modules
+
+    /**
+     * Public Variables
+     * 
+     * Accessible anywhere in the code
+     */
 
     public SwerveModuleState[] moduleStates;
 
@@ -42,21 +58,21 @@ public class Drivetrain extends SubsystemBase {
          */
 
         // pigeon
-        this.pigeon = new Pigeon2(6);
+        this.pigeon = new Pigeon2(DrivetrainConstants.pigeonId);
 
         // Define the swerve modules
         this.swerveModules = new SwerveModules(
             new SwerveModule[] {
-                new SwerveModule(0),
-                new SwerveModule(1),
-                new SwerveModule(2),
-                new SwerveModule(3)
+                new SwerveModule(DrivetrainConstants.frontRightModuleId),
+                new SwerveModule(DrivetrainConstants.frontLeftModuleId),
+                new SwerveModule(DrivetrainConstants.backLeftModuleId),
+                new SwerveModule(DrivetrainConstants.backRightModuleId)
             }
         );
 
         /*
          * Setup the module locations with respect to the center of the robot. To calculate the center of the modules we
-         * take have the module to module length and width. We also need to take into consideration the coordinate system
+         * have to take the module to module length and width. We also need to take into consideration the coordinate system
          * of WPILib. That can be found
          * here: https://docs.wpilib.org/en/stable/docs/software/basic-programming/coordinate-system.html#coordinate-system
          */
@@ -101,25 +117,9 @@ public class Drivetrain extends SubsystemBase {
             this.swerveModules.getPosition()
         );
 
-        ArrayList<Double> desiredSpeeds_rPs = new ArrayList<>();
-        ArrayList<Double> actualSpeeds_rPs = new ArrayList<>();
-
-        for (SwerveModule module : this.swerveModules.swerveModules) {
-            desiredSpeeds_rPs.add(module.drive.desiredSpeed_rPs);
-            actualSpeeds_rPs.add(module.drive.actualSpeed_rPs);
-        }
-
-        // Convert to primitive array
-        double[] desiredArray = new double[desiredSpeeds_rPs.size()];
-        double[] actualArray = new double[actualSpeeds_rPs.size()];
-        for (int i = 0; i < desiredArray.length; i++) {
-            actualArray[i] = actualSpeeds_rPs.get(i);
-            desiredArray[i] = desiredSpeeds_rPs.get(i);
-        }
-
-        Robot.dashboard.desiredSpeeds_rPs.set(desiredArray);
-        Robot.dashboard.actualSpeeds_rPs.set(actualArray);
-
+        // Section to update the network tables with relevant drivetrain information
+        this.updateNetworkTableDesiredSpeeds();
+        this.updateNetworkTableActualSpeeds();
     }
 
     /**
@@ -213,5 +213,57 @@ public class Drivetrain extends SubsystemBase {
      */
     public void resetIMU() {
         this.pigeon.reset();
+    }
+
+    /**
+     * Gets the desired speeds of the swerve modules and pushes the data to the network table.
+     * 
+     * Useful for tuning PIDs
+     */
+    private void updateNetworkTableDesiredSpeeds () {
+        // Create a Double array list
+        ArrayList<Double> desiredSpeeds_rPs = new ArrayList<>();
+
+        // Loop through each swerve module and add it to the Array List
+        for (SwerveModule module : this.swerveModules.swerveModules) {
+            desiredSpeeds_rPs.add(module.drive.desiredSpeed_rPs);
+        }
+
+        // Instantiate the primitive double array
+        double[] desiredArray = new double[desiredSpeeds_rPs.size()];
+
+        // Conver the array list into the primitive array
+        for (int i = 0; i < desiredArray.length; i++) {
+            desiredArray[i] = desiredSpeeds_rPs.get(i);
+        }
+
+        // Send the data to the network table
+        Robot.dashboard.desiredSpeeds_rPs.set(desiredArray);
+    }
+
+    /**
+     * Gets the actual speeds of the swerve modules and pushes the data to the network table.
+     * 
+     * Useful for tuning PIDs
+     */
+    private void updateNetworkTableActualSpeeds () {
+        // Create a Double array list
+        ArrayList<Double> actualSpeeds_rPs = new ArrayList<>();
+
+        // Loop through each swerve module and add it to the Array List
+        for (SwerveModule module : this.swerveModules.swerveModules) {
+            actualSpeeds_rPs.add(module.drive.actualSpeed_rPs);
+        }
+
+        // Instantiate the primitive double array
+        double[] actualArray = new double[actualSpeeds_rPs.size()];
+
+        // Conver the array list into the primitive array
+        for (int i = 0; i < actualArray.length; i++) {
+            actualArray[i] = actualSpeeds_rPs.get(i);
+        }
+
+        // Send the data to the network table
+        Robot.dashboard.actualSpeeds_rPs.set(actualArray);
     }
 }

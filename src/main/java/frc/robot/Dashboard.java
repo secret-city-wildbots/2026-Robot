@@ -1,8 +1,11 @@
 package frc.robot;
 
-import edu.wpi.first.networktables.DoubleArrayPublisher;
+// Import Network Tables
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+
+// Import Network Tables Publisher Types
+import edu.wpi.first.networktables.DoubleArrayPublisher;
 
 public class Dashboard {
     public NetworkTableInstance inst;
