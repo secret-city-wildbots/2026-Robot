@@ -1,11 +1,15 @@
 package frc.robot.Actors;
 
+import com.ctre.phoenix6.configs.CANcoderConfiguration;
+import com.ctre.phoenix6.configs.MagnetSensorConfigs;
 // Import CTRE Hardware Libraries
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.PositionDutyCycle;
 import com.ctre.phoenix6.controls.VelocityDutyCycle;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.hardware.CANcoder;
+import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
@@ -21,10 +25,13 @@ import com.revrobotics.spark.SparkMax;
 // Import Utils
 import frc.robot.Utils.MotorType;
 import frc.robot.Utils.RotationDir;
+import frc.robot.Constants.DrivetrainConstants;
+import edu.wpi.first.units.Units;
 
 public class Motor {
     public MotorType type;
     public TalonFX motorTFX;
+    public CANcoder encoder;
     public TalonFXConfiguration configTFX;
     public Slot0Configs slot0TFX;
     public SparkMax motorSPX;
@@ -32,8 +39,11 @@ public class Motor {
     public MotorConfig motorConfig;
     public String actuatorName = "not_set";
     public int CanID;
+    public int EncoderID = -1;
+    public double EncoderOffset;
     public double desiredSpeed_rPs;
     public double actualSpeed_rPs;
+    
 
 
     public Motor(int CanID, MotorType type) {
@@ -47,6 +57,32 @@ public class Motor {
                 break;
             case TFX:
                 this.motorTFX = new TalonFX(CanID);
+                this.configTFX = new TalonFXConfiguration();
+                this.slot0TFX = new Slot0Configs();
+                this.motorTFX.getConfigurator().setPosition(0);
+                break;
+            case None:
+                System.err.println("Motor initialized with None type with CanID " + this.CanID);
+        }
+
+        this.motorConfig = new MotorConfig();
+        this.applyConfig();
+    }
+
+    public Motor(int CanID, MotorType type, int EncoderID, double EncoderOffset) {
+        this.CanID = CanID;
+        this.EncoderID = EncoderID;
+        this.type = type;
+        this.EncoderOffset = EncoderOffset;
+
+        switch (type) {
+            case SPX:
+                this.motorSPX = new SparkMax(CanID, com.revrobotics.spark.SparkLowLevel.MotorType.kBrushless);
+                this.configSPX = new SparkMaxConfig();
+                break;
+            case TFX:
+                this.motorTFX = new TalonFX(CanID);
+                this.encoder = new CANcoder(this.EncoderID);
                 this.configTFX = new TalonFXConfiguration();
                 this.slot0TFX = new Slot0Configs();
                 this.motorTFX.getConfigurator().setPosition(0);
@@ -198,6 +234,9 @@ public class Motor {
             case SPX:
                 return this.motorSPX.getEncoder().getPosition();
             case TFX:
+                if (this.EncoderID != -1) {
+                    return this.encoder.getAbsolutePosition().getValueAsDouble();
+                }
                 return this.motorTFX.getRotorPosition().getValueAsDouble();
             default:
                 return 0.0;
@@ -330,6 +369,20 @@ public class Motor {
                 this.configTFX.HardwareLimitSwitch.ReverseLimitEnable = this.motorConfig.reverseLimitSwitchEnabled;
                 this.configTFX.OpenLoopRamps.DutyCycleOpenLoopRampPeriod = this.motorConfig.dutyCycleOpenLoopRampPeriod;
                 this.configTFX.ClosedLoopRamps.DutyCycleClosedLoopRampPeriod = this.motorConfig.dutyCycleClosedLoopRampPeriod;
+                if (this.EncoderID != -1) {
+                    this.configTFX.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RemoteCANcoder;
+                    this.configTFX.Feedback.FeedbackRemoteSensorID = this.encoder.getDeviceID();
+                    this.configTFX.Feedback.SensorToMechanismRatio = DrivetrainConstants.azimuthGearRatio;
+                    // Encoder Configuration
+                    MagnetSensorConfigs magnetCfg = new MagnetSensorConfigs()
+                        .withAbsoluteSensorDiscontinuityPoint(Units.Rotations.of(1.0)) // 0–1 range
+                        .withMagnetOffset(this.EncoderOffset); // optional zero offset
+
+                    CANcoderConfiguration encoderConfig = new CANcoderConfiguration()
+                        .withMagnetSensor(magnetCfg);
+
+                    this.encoder.getConfigurator().apply(encoderConfig);
+                } 
                 this.motorTFX.getConfigurator().apply(configTFX);
                 break;
             case None:

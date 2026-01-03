@@ -44,7 +44,8 @@ public class SwerveModule extends SubsystemBase {
 
         // Setup the drive and azimuth motors
         this.drive = new Motor(10 + this.moduleNumber, MotorType.TFX);
-        this.azimuth = new Motor(20 + moduleNumber, MotorType.TFX);
+        this.azimuth = new Motor(20 + moduleNumber, MotorType.TFX, 30 + moduleNumber, DrivetrainConstants.azimuthEncoderOffsets[moduleNumber]);
+        
 
         // Configure the drive motor
         this.drive.motorConfig.direction = (moduleNumber == 1 || moduleNumber == 2) ? RotationDir.CounterClockwise:RotationDir.Clockwise;
@@ -65,8 +66,8 @@ public class SwerveModule extends SubsystemBase {
      */
     public SwerveModuleState getCurrentState() {
         // Calculate the current module angle in radians
-        currentAzimuthAngle_rad = Units.rotationsToRadians(azimuth.pos() / DrivetrainConstants.azimuthGearRatio);
-
+      //  currentAzimuthAngle_rad = Units.rotationsToRadians(azimuth.pos() / DrivetrainConstants.azimuthGearRatio);
+          currentAzimuthAngle_rad = Units.rotationsToRadians(azimuth.pos());
         // Calculate the current module wheel speein in meters / second
         currentDriveSpeed_mPs = drive.vel()
             / DrivetrainConstants.driveGearRatio * 2
@@ -84,9 +85,13 @@ public class SwerveModule extends SubsystemBase {
      */
     public SwerveModulePosition getPosition() {
         // Calculate the swerve module position
+        // return new SwerveModulePosition(
+        //     (drive.pos() / DrivetrainConstants.driveGearRatio) * (2 * Math.PI * DrivetrainConstants.wheelRadius_m),
+        //     new Rotation2d((azimuth.pos() / DrivetrainConstants.azimuthGearRatio) * 2 * Math.PI)
+        // );
         return new SwerveModulePosition(
             (drive.pos() / DrivetrainConstants.driveGearRatio) * (2 * Math.PI * DrivetrainConstants.wheelRadius_m),
-            new Rotation2d((azimuth.pos() / DrivetrainConstants.azimuthGearRatio) * 2 * Math.PI)
+            new Rotation2d(azimuth.pos() * 2 * Math.PI)
         );
     }
 
@@ -110,9 +115,10 @@ public class SwerveModule extends SubsystemBase {
      */
     public void pushModuleState(SwerveModuleState moduleState, double maxGroundSpeed_mPs) {
         // Get the encoderRotation and azimuth angle in radians
-        var encoderRotation = new Rotation2d(Units.rotationsToRadians(azimuth.pos() / DrivetrainConstants.azimuthGearRatio));
-        double azimuthAngle_rad = Units.rotationsToRadians(azimuth.pos() / DrivetrainConstants.azimuthGearRatio);
-
+        // var encoderRotation = new Rotation2d(Units.rotationsToRadians(azimuth.pos() / DrivetrainConstants.azimuthGearRatio));
+        // double azimuthAngle_rad = Units.rotationsToRadians(azimuth.pos() / DrivetrainConstants.azimuthGearRatio);
+        var encoderRotation = new Rotation2d(Units.rotationsToRadians(azimuth.pos() ));
+        double azimuthAngle_rad = Units.rotationsToRadians(azimuth.pos());
         // Optimize the reference state to avoid spinning further than 90 degrees
         moduleState.optimize(encoderRotation);
 

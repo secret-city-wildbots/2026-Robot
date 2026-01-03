@@ -59,6 +59,9 @@ public final class Constants {
     // Azimuth Gear Ratio Specs
     public static final double azimuthGearRatio = 150.0 / 7.0;
 
+    // Azimuth Encoder Offsets
+    public static final double[] azimuthEncoderOffsets = {0.0, 0.0, 0.0, 0.0};
+
     // Robot Speed and Rotation Specs
     public static final double maxGroundSpeed_mPs = 1.0;
     public static final double maxRotateSpeed_radPs = maxGroundSpeed_mPs / Math.hypot(moduleToModuleLength_X_m, moduleToModuleWidth_Y_m);
