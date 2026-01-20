@@ -26,6 +26,12 @@ public final class Constants {
     public static final int loopTime_ms = 20;
   }
 
+  public static class VisionConstants {
+    // Limelight Names
+    public static final String[] limelightNames = {"Front", "Back", "Left", "Right"};
+  }
+
+
   public static class DrivetrainConstants {
     // Robot Dimensions
     public static final double robotLength_X_in = 29.0;
