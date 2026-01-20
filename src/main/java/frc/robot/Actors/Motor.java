@@ -8,8 +8,8 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkBase.ControlType;
-import com.revrobotics.spark.SparkBase.PersistMode;
-import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.PersistMode;
+import com.revrobotics.ResetMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.SparkMax;
@@ -118,7 +118,7 @@ public class Motor {
     public void pos(double pos) {
         switch (this.type) {
             case SPX:
-                motorSPX.getClosedLoopController().setReference(pos, ControlType.kPosition, ClosedLoopSlot.kSlot0, 0);
+                motorSPX.getClosedLoopController().setSetpoint(pos, ControlType.kPosition, ClosedLoopSlot.kSlot0, 0);
                 break;
             case TFX:
                 PositionDutyCycle controlRequest = new PositionDutyCycle(pos);
@@ -140,7 +140,7 @@ public class Motor {
     public void pos(double pos, double ff) {
         switch (this.type) {
             case SPX:
-                motorSPX.getClosedLoopController().setReference(pos, ControlType.kPosition, ClosedLoopSlot.kSlot0, ff);
+                motorSPX.getClosedLoopController().setSetpoint(pos, ControlType.kPosition, ClosedLoopSlot.kSlot0, ff);
                 break;
             case TFX:
                 PositionDutyCycle controlRequest = new PositionDutyCycle(pos);
