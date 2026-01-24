@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 import frc.robot.generated.TunerConstants;
 import frc.robot.Actors.Subsystems.CommandSwerveDrivetrain;
+import frc.robot.Actors.Subsystems.Vision;
 
 public class RobotContainer {
    // private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
@@ -42,6 +43,8 @@ public class RobotContainer {
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
+    public final Vision vision = new Vision();
+    
     public RobotContainer() {
         drivetrain.resetPose(new Pose2d( new Translation2d(2,2), new Rotation2d()));
         configureBindings();
