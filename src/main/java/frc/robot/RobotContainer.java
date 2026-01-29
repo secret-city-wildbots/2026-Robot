@@ -21,6 +21,8 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 import frc.robot.generated.TunerConstants;
 import frc.robot.Actors.Subsystems.CommandSwerveDrivetrain;
+import frc.robot.Actors.Subsystems.Indexer;
+import frc.robot.Actors.Subsystems.Shooter;
 import frc.robot.Actors.Subsystems.Vision;
 
 public class RobotContainer {
@@ -44,6 +46,10 @@ public class RobotContainer {
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
     public final Vision vision = new Vision();
+
+    public final Shooter shooter = new Shooter();
+
+    public final Indexer indexer = new Indexer();
     
     public RobotContainer() {
         drivetrain.resetPose(new Pose2d( new Translation2d(2,2), new Rotation2d()));
