@@ -12,13 +12,16 @@ import com.ctre.phoenix6.swerve.SwerveRequest;
 // Import Pathplanner Libraries
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.FollowPathCommand;
+import com.pathplanner.lib.auto.NamedCommands;
 
 // Import WPI Libraries
 import static edu.wpi.first.units.Units.*;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
@@ -27,8 +30,12 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.generated.TunerConstants;
 import frc.robot.Actors.Subsystems.CommandSwerveDrivetrain;
 import frc.robot.Actors.Subsystems.FlashLightTurret;
+import frc.robot.Actors.Subsystems.Intake.Intake;
+import frc.robot.Actors.Subsystems.Intake.IntakeExtension;
 
-// Import Commands
+// Import Custom Commands
+import frc.robot.Commands.Intake.IntakeCommand;
+import frc.robot.Commands.Intake.ExtensionCommand;
 import frc.robot.Commands.FlashLightTurret.TrackHubCommand;
 
 public class RobotContainer {
@@ -53,6 +60,8 @@ public class RobotContainer {
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
     private final FlashLightTurret flturret = new FlashLightTurret(44, 0);
+    public final Intake intake = new Intake();
+    public final IntakeExtension intakeExtension = new IntakeExtension();
 
       /* Path follower */
     private final SendableChooser<Command> autoChooser;
@@ -63,7 +72,14 @@ public class RobotContainer {
         SmartDashboard.putData("Auto Mode", autoChooser);
 
         // drivetrain.resetPose(new Pose2d( new Translation2d(2,2), new Rotation2d()));
+
         configureBindings();
+
+         // Register Named Commands within Pathplanner
+        NamedCommands.registerCommand("IntakeFuel", new IntakeCommand(intake, 0.2));
+        NamedCommands.registerCommand("OuttakeFuel", new IntakeCommand(intake, -0.2));
+        NamedCommands.registerCommand("IntakeExtend", new ExtensionCommand(intakeExtension, 0.2));
+        NamedCommands.registerCommand("IntakeRetract", new ExtensionCommand(intakeExtension, -0.2));
 
         // Warmup PathPlanner to avoid Java pauses
         FollowPathCommand.warmupCommand().schedule();
@@ -111,12 +127,14 @@ public class RobotContainer {
 
         // TODO: Enable logger
         // drivetrain.registerTelemetry(logger::telemeterize);
+        joystick.a().whileTrue(new IntakeCommand(intake, 0.2));
+        joystick.b().whileTrue(new IntakeCommand(intake, -0.2));
+        joystick.x().whileTrue(new ExtensionCommand(intakeExtension, 0.2));
+        joystick.y().whileTrue(new ExtensionCommand(intakeExtension, -0.2));
     }
 
     public Command getAutonomousCommand() {
         /* Run the path selected from the auto chooser */
-        return autoChooser.getSelected();
-
-        //return Commands.print("No autonomous command configured");
+        return Commands.print("No autonomous command configured");
     }
 }
