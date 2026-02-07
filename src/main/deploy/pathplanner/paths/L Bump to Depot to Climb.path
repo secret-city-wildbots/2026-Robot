@@ -24,7 +24,7 @@
         "y": 6.066023788497123
       },
       "nextControl": {
-        "x": 0.41264972781002973,
+        "x": 0.4126497278100296,
         "y": 5.884974433236988
       },
       "isLocked": false,
@@ -67,7 +67,7 @@
     {
       "name": "Constraints Zone",
       "minWaypointRelativePos": 1.15,
-      "maxWaypointRelativePos": 1.5,
+      "maxWaypointRelativePos": 1.9295285359801584,
       "constraints": {
         "maxVelocity": 1.75,
         "maxAcceleration": 3.0,
@@ -93,7 +93,7 @@
     "rotation": 90.0
   },
   "reversed": false,
-  "folder": "Simple Left",
+  "folder": "Bumpy Ride L + R",
   "idealStartingState": {
     "velocity": 3.0,
     "rotation": 180.0
