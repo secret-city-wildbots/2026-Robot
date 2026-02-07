@@ -4,12 +4,28 @@
     {
       "anchor": {
         "x": 7.786266666666666,
-        "y": 4.569122222222222
+        "y": 4.559044444444444
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.756033333333535,
-        "y": 7.844400000000741
+        "x": 7.594788888888889,
+        "y": 3.4303333333333326
+      },
+      "isLocked": false,
+      "linkedName": "L Bump Plow End"
+    },
+    {
+      "anchor": {
+        "x": 6.1838999999999995,
+        "y": 2.110144444444444
+      },
+      "prevControl": {
+        "x": 8.434191158566673,
+        "y": 1.3038903929793784
+      },
+      "nextControl": {
+        "x": 4.299355555555556,
+        "y": 2.785355555555556
       },
       "isLocked": false,
       "linkedName": null
@@ -17,23 +33,18 @@
     {
       "anchor": {
         "x": 3.5536000000000003,
-        "y": 7.411055555555556
+        "y": 2.845822222222222
       },
       "prevControl": {
-        "x": 5.429887951807432,
-        "y": 7.4994485943782525
+        "x": 4.621844444444444,
+        "y": 2.7248888888888887
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "L Trench Start"
+      "linkedName": "R Bump Start"
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.5245614035087693,
-      "rotationDegrees": 180.0
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
@@ -47,10 +58,10 @@
   },
   "goalEndState": {
     "velocity": 3.0,
-    "rotation": 180.0
+    "rotation": -90.0
   },
   "reversed": false,
-  "folder": "Simple Left",
+  "folder": "Bumpy Ride L + R",
   "idealStartingState": {
     "velocity": 3.0,
     "rotation": -90.0

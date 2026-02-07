@@ -4,24 +4,24 @@
     {
       "anchor": {
         "x": 3.5536000000000003,
-        "y": 7.411055555555556
+        "y": 2.845822222222222
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.4896588999963614,
-        "y": 6.270808431853275
+        "x": 2.5653816703647774,
+        "y": 2.1357344871247843
       },
       "isLocked": false,
-      "linkedName": "L Trench Start"
+      "linkedName": "R Bump Start"
     },
     {
       "anchor": {
-        "x": 1.0686385542168677,
-        "y": 4.717981927710843
+        "x": 0.4698,
+        "y": 0.6186333333333334
       },
       "prevControl": {
-        "x": 2.115121390950785,
-        "y": 5.860376493299025
+        "x": 1.4407834127966985,
+        "y": 1.3229430854721103
       },
       "nextControl": null,
       "isLocked": false,
@@ -29,21 +29,7 @@
     }
   ],
   "rotationTargets": [],
-  "constraintZones": [
-    {
-      "name": "Constraints Zone",
-      "minWaypointRelativePos": 0.24615384615384345,
-      "maxWaypointRelativePos": 0.8446650124069456,
-      "constraints": {
-        "maxVelocity": 1.0,
-        "maxAcceleration": 3.0,
-        "maxAngularVelocity": 540.0,
-        "maxAngularAcceleration": 720.0,
-        "nominalVoltage": 12.0,
-        "unlimited": false
-      }
-    }
-  ],
+  "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
@@ -55,14 +41,14 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0,
-    "rotation": 90.0
+    "velocity": 0.0,
+    "rotation": -90.0
   },
   "reversed": false,
-  "folder": "Simple Left",
+  "folder": "Bumpy Ride L + R",
   "idealStartingState": {
     "velocity": 3.0,
-    "rotation": 180.0
+    "rotation": -90.0
   },
   "useDefaultConstraints": true
 }

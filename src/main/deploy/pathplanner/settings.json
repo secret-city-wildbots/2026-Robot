@@ -3,10 +3,14 @@
   "robotLength": 0.889,
   "holonomicMode": true,
   "pathFolders": [
-    "Simple Right",
-    "Simple Left"
+    "Bumpy Ride L + R",
+    "L + R Spread",
+    "Reverse 9",
+    "Simple Left",
+    "Simple Right + Outpost"
   ],
   "autoFolders": [
+    "New Folder",
     "Top 5 Autos"
   ],
   "defaultMaxVel": 3.0,
@@ -38,6 +42,7 @@
     "{\"name\":\"Front\",\"type\":\"line\",\"data\":{\"start\":{\"x\":0.3683,\"y\":0.3683},\"end\":{\"x\":0.368,\"y\":-0.3683},\"strokeWidth\":0.005}}",
     "{\"name\":\"Left\",\"type\":\"line\",\"data\":{\"start\":{\"x\":0.3683,\"y\":0.3683},\"end\":{\"x\":-0.368,\"y\":0.368},\"strokeWidth\":0.005}}",
     "{\"name\":\"Back\",\"type\":\"line\",\"data\":{\"start\":{\"x\":-0.368,\"y\":-0.3683},\"end\":{\"x\":-0.368,\"y\":0.3683},\"strokeWidth\":0.005}}",
-    "{\"name\":\"Right\",\"type\":\"line\",\"data\":{\"start\":{\"x\":-0.368,\"y\":-0.3683},\"end\":{\"x\":0.3683,\"y\":-0.368},\"strokeWidth\":0.005}}"
+    "{\"name\":\"Right\",\"type\":\"line\",\"data\":{\"start\":{\"x\":-0.368,\"y\":-0.3683},\"end\":{\"x\":0.3683,\"y\":-0.368},\"strokeWidth\":0.005}}",
+    "{\"name\":\"Line\",\"type\":\"line\",\"data\":{\"start\":{\"x\":0.445,\"y\":0.0},\"end\":{\"x\":0.6228,\"y\":0.0},\"strokeWidth\":0.02}}"
   ]
 }
