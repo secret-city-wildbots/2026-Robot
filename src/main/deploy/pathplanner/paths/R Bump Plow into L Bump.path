@@ -44,7 +44,16 @@
       "linkedName": "L Bump Start"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.6489626556016559,
+      "rotationDegrees": 90.0
+    },
+    {
+      "waypointRelativePos": 1.1551867219916985,
+      "rotationDegrees": 180.0
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
