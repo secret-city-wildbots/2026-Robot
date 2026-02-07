@@ -7,19 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "L Trench"
+            "pathName": "R Bump + Plow"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "L Trench Reverse"
+            "pathName": "R Bump Plow into L Bump"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "L Trench to Depot to Climb"
+            "pathName": "L Bump to Depot to Climb"
           }
         }
       ]

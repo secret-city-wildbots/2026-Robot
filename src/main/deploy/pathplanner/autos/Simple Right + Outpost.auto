@@ -7,19 +7,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "L Trench"
+            "pathName": "R Trench"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "L Trench Reverse"
+            "pathName": "R Trench Reverse"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "L Trench to Depot to Climb"
+            "pathName": "Outpost + Shoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "R Bump Outpost to Climber"
           }
         }
       ]

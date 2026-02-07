@@ -3,37 +3,48 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.786266666666666,
-        "y": 4.569122222222222
+        "x": 7.806422222222222,
+        "y": 3.571422222222222
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.756033333333535,
-        "y": 7.844400000000741
+        "x": 7.715722222222222,
+        "y": 4.357488888888889
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.5536000000000003,
-        "y": 7.411055555555556
+        "x": 6.294755555555555,
+        "y": 6.080788888888889
       },
       "prevControl": {
-        "x": 5.429887951807432,
-        "y": 7.4994485943782525
+        "x": 8.240232646672883,
+        "y": 6.907298764200172
+      },
+      "nextControl": {
+        "x": 4.7528555555555565,
+        "y": 5.4257333333333335
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.5636777777777784,
+        "y": 5.214099999999999
+      },
+      "prevControl": {
+        "x": 5.337366666666667,
+        "y": 5.17378888888889
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "L Trench Start"
+      "linkedName": "L Bump Start"
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.5245614035087693,
-      "rotationDegrees": 180.0
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
@@ -50,10 +61,10 @@
     "rotation": 180.0
   },
   "reversed": false,
-  "folder": "Simple Left",
+  "folder": "Bumpy Ride L + R",
   "idealStartingState": {
     "velocity": 3.0,
-    "rotation": -90.0
+    "rotation": 90.0
   },
   "useDefaultConstraints": true
 }

@@ -8,59 +8,34 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.9080148501216514,
-        "y": 0.6988472061857062
+        "x": 3.9289397203765857,
+        "y": 0.6277891136104008
       },
       "isLocked": false,
       "linkedName": "R Trench Start"
     },
     {
       "anchor": {
-        "x": 7.786266666666666,
-        "y": 1.213222222222223
+        "x": 0.4698,
+        "y": 0.6186333333333334
       },
       "prevControl": {
-        "x": 7.756033333333333,
-        "y": 0.5884000000000003
-      },
-      "nextControl": {
-        "x": 7.817499622051815,
-        "y": 1.858703300181971
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 7.786266666666666,
-        "y": 3.6016555555555554
-      },
-      "prevControl": {
-        "x": 7.718418056159781,
-        "y": 3.318327120183251
+        "x": 1.8428476922853079,
+        "y": 0.6162527663495578
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Outpost"
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.34385964912280526,
-      "rotationDegrees": 0.0
-    },
-    {
-      "waypointRelativePos": 1.0,
-      "rotationDegrees": 90.0
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 1.2565756823821361,
-      "maxWaypointRelativePos": 2.0,
+      "minWaypointRelativePos": 0,
+      "maxWaypointRelativePos": 0,
       "constraints": {
-        "maxVelocity": 1.75,
+        "maxVelocity": 3.0,
         "maxAcceleration": 3.0,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0,
@@ -80,8 +55,8 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 3.0,
-    "rotation": 90.0
+    "velocity": 0,
+    "rotation": 0.0
   },
   "reversed": false,
   "folder": "Simple Right + Outpost",
