@@ -55,6 +55,12 @@ public final class Constants {
     public static final double angleTolerance = 2.0; 
   }
 
+  public static class SpindexerConstants {
+    // CANBus IDs
+    public static final int spinMotorID = 42;
+    public static final int transferMotorID = 43;
+  }
+  
   public static class DrivetrainConstants {
     // Robot Dimensions
     public static final double robotLength_X_in = 29.0;
