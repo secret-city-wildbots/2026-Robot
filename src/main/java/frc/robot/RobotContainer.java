@@ -25,6 +25,9 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 import frc.robot.generated.TunerConstants;
 import frc.robot.Actors.Subsystems.CommandSwerveDrivetrain;
+import frc.robot.Actors.Subsystems.FlashLightTurret;
+
+import frc.robot.Commands.FlashLightTurret.TrackHubCommand;
 
 public class RobotContainer {
     // TODO: Set max speed back to normal
@@ -48,12 +51,14 @@ public class RobotContainer {
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
+    private final FlashLightTurret flturret = new FlashLightTurret(44, 0);
+
       /* Path follower */
     private final SendableChooser<Command> autoChooser;
     
     public RobotContainer() {
         // TODO: Set default auto
-        autoChooser = AutoBuilder.buildAutoChooser("Simple Left + Depot");
+        autoChooser = AutoBuilder.buildAutoChooser("Reverse 9");
         SmartDashboard.putData("Auto Mode", autoChooser);
 
         drivetrain.resetPose(new Pose2d( new Translation2d(2,2), new Rotation2d()));
@@ -74,6 +79,8 @@ public class RobotContainer {
                     .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
             )
         );
+
+        flturret.setDefaultCommand(new TrackHubCommand(flturret, drivetrain::getPose));
 
         // Idle while the robot is disabled. This ensures the configured
         // neutral mode is applied to the drive motors while disabled.
@@ -97,7 +104,8 @@ public class RobotContainer {
         // reset the field-centric heading on left bumper press
         joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
-        drivetrain.registerTelemetry(logger::telemeterize);
+        // TODO: Enable logger
+        // drivetrain.registerTelemetry(logger::telemeterize);
     }
 
     public Command getAutonomousCommand() {

@@ -60,7 +60,7 @@ public class Robot extends TimedRobot {
       //m_robotContainer.drivetrain.resetPose(bestPose.pose);
     }
     // TODO: Printing pose
-    System.out.println(m_robotContainer.drivetrain.getState().Pose);
+    // System.out.println(m_robotContainer.drivetrain.getState().Pose);
   }
 
   @Override
