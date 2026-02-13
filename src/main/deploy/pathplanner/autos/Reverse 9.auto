@@ -17,34 +17,27 @@
           }
         },
         {
-          "type": "sequential",
+          "type": "path",
           "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Square Left"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Square Front"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Square Right"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Square Back"
-                }
-              }
-            ]
+            "pathName": "Square Left"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Square Front"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Square Right"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Square Back"
           }
         }
       ]

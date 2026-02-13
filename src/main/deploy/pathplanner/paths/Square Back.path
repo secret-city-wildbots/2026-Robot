@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.1,
+        "x": 1.46,
         "y": 2.554
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.1,
-        "y": 3.554
+        "x": 1.45453637660485,
+        "y": 3.0710699001426542
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.1,
-        "y": 5.554
+        "x": 1.46,
+        "y": 4.03
       },
       "prevControl": {
-        "x": 3.1,
-        "y": 4.554
+        "x": 1.4415977175463621,
+        "y": 3.6144935805991443
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Test Starting Pos"
     }
   ],
   "rotationTargets": [],
@@ -41,13 +41,13 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 2.0,
+    "velocity": 0.0,
     "rotation": 0.0
   },
   "reversed": false,
   "folder": "Reverse 9",
   "idealStartingState": {
-    "velocity": 2.0,
+    "velocity": 0.0,
     "rotation": 0.0
   },
   "useDefaultConstraints": true
