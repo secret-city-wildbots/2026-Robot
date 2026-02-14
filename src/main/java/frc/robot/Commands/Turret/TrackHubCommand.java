@@ -1,4 +1,4 @@
-package frc.robot.Commands.FlashLightTurret;
+package frc.robot.Commands.Turret;
 
 import java.util.function.Supplier;
 
@@ -9,21 +9,21 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 
 // Import Subsystems
-import frc.robot.Actors.Subsystems.FlashLightTurret;
+import frc.robot.Actors.Subsystems.Turret;
 
 public class TrackHubCommand extends Command {
 
     // Real Variables
-    private final FlashLightTurret turret;
+    private final Turret turret;
     private final Supplier<Pose2d> robotPoseSupplier;
     private final Translation2d hubPosition;
 
     /**
      * Creates and sets up the TrackHubCommand
      * 
-     * @param intake The subsystem to be controlled by the command ({@link FlashLightTurret})
+     * @param intake The subsystem to be controlled by the command ({@link Turret})
      */
-    public TrackHubCommand(FlashLightTurret turret, Supplier<Pose2d> robotPoseSupplier) {
+    public TrackHubCommand(Turret turret, Supplier<Pose2d> robotPoseSupplier) {
         // Assign the variables and add the subsystem as a requirement to the command
         this.turret = turret;
         this.robotPoseSupplier = robotPoseSupplier;

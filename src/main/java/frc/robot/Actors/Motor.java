@@ -28,6 +28,29 @@ public class Motor {
     public String actuatorName = "not_set";
     public int CanID;
 
+    public Motor(int CanID, MotorType type) {
+        this.CanID = CanID;
+        this.type = type;
+
+        switch (type) {
+            case SPX:
+                this.motorSPX = new SparkMax(CanID, com.revrobotics.spark.SparkLowLevel.MotorType.kBrushless);
+                this.configSPX = new SparkMaxConfig();
+                break;
+            case TFX:
+                this.motorTFX = new TalonFX(CanID);
+                this.configTFX = new TalonFXConfiguration();
+                this.slot0TFX = new Slot0Configs();
+                this.motorTFX.getConfigurator().setPosition(0);
+                break;
+            case None:
+                System.err.println("Motor initialized with None type with CanID " + this.CanID);
+        }
+
+        this.motorConfig = new MotorConfig();
+        this.applyConfig();
+    }
+
     public Motor(int CanID, MotorType type, String canbus) {
         this.CanID = CanID;
         this.type = type;

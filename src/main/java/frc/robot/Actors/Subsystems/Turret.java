@@ -4,15 +4,13 @@ import frc.robot.Actors.Motor;
 import frc.robot.Utils.MotorType;
 import frc.robot.Utils.RotationDir;
 
-import com.ctre.phoenix6.controls.DutyCycleOut;
-
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class FlashLightTurret extends SubsystemBase {
+public class Turret extends SubsystemBase {
 
     // Real Motor Variables
     private Motor motor;
@@ -28,10 +26,10 @@ public class FlashLightTurret extends SubsystemBase {
     // State
     private Rotation2d targetAngle = Rotation2d.fromDegrees(20.0);
 
-    public FlashLightTurret(int moduleNumber, int encoderChannel) {
+    public Turret(int moduleNumber, int encoderChannel) {
         //Intialize module number+motor
         this.moduleNumber = moduleNumber;
-        this.motor = new Motor(this.moduleNumber, MotorType.TFX, "drivetrain");
+        this.motor = new Motor(this.moduleNumber, MotorType.TFX);
         this.motor.motorConfig.direction = RotationDir.CounterClockwise;
         this.motor.applyConfig();
 

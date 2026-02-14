@@ -25,12 +25,11 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 import frc.robot.generated.TunerConstants;
 import frc.robot.Actors.Subsystems.CommandSwerveDrivetrain;
-import frc.robot.Actors.Subsystems.FlashLightTurret;
-
-import frc.robot.Commands.FlashLightTurret.TrackHubCommand;
+import frc.robot.Actors.Subsystems.Turret;
 import frc.robot.Actors.Subsystems.Indexer;
 import frc.robot.Actors.Subsystems.Shooter;
 import frc.robot.Actors.Subsystems.Vision;
+import frc.robot.Commands.Turret.TrackHubCommand;
 
 public class RobotContainer {
     // TODO: Set max speed back to normal
@@ -53,7 +52,7 @@ public class RobotContainer {
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
-    private final FlashLightTurret flturret = new FlashLightTurret(44, 0);
+    private final Turret flturret = new Turret(44, 0);
 
       /* Path follower */
     private final SendableChooser<Command> autoChooser;
