@@ -28,6 +28,9 @@ import frc.robot.Actors.Subsystems.CommandSwerveDrivetrain;
 import frc.robot.Actors.Subsystems.FlashLightTurret;
 
 import frc.robot.Commands.FlashLightTurret.TrackHubCommand;
+import frc.robot.Actors.Subsystems.Indexer;
+import frc.robot.Actors.Subsystems.Shooter;
+import frc.robot.Actors.Subsystems.Vision;
 
 public class RobotContainer {
     // TODO: Set max speed back to normal
@@ -37,7 +40,6 @@ public class RobotContainer {
     // TODO: Set max rotation back to normal
     // private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
     private double MaxAngularRate = RotationsPerSecond.of(0.5).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
-
     /* Setting up bindings for necessary control of the swerve drive platform */
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
             .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
@@ -57,6 +59,12 @@ public class RobotContainer {
     private final SendableChooser<Command> autoChooser;
     
     public RobotContainer() {
+        public final Vision vision = new Vision();
+
+        public final Shooter shooter = new Shooter();
+
+        public final Indexer indexer = new Indexer();
+      
         // TODO: Set default auto
         autoChooser = AutoBuilder.buildAutoChooser("Reverse 9");
         SmartDashboard.putData("Auto Mode", autoChooser);
