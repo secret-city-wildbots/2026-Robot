@@ -5,14 +5,16 @@
 
 package frc.robot;
 
-import static edu.wpi.first.units.Units.*;
-
+// Import Phoenix6 Libraries
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
+// Import Path Planner Libraries
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.FollowPathCommand;
 
+// Import WPILib Librarires
+import static edu.wpi.first.units.Units.*;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -23,8 +25,17 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
+// Import Custom TunerConstants
 import frc.robot.generated.TunerConstants;
+
+// Import subystems
 import frc.robot.Actors.Subsystems.CommandSwerveDrivetrain;
+import frc.robot.Actors.Subsystems.Spindexer.Spindexer;
+import frc.robot.Actors.Subsystems.Spindexer.Transfer;
+// Import Commands
+import frc.robot.Commands.Spindexer.SpinAndFeedCommand;
+import frc.robot.Commands.Spindexer.SpinFuelCommand;
+import frc.robot.Commands.Spindexer.TransferFuelCommand;
 
 public class RobotContainer {
     // TODO: Set max speed back to normal
@@ -37,8 +48,8 @@ public class RobotContainer {
 
     /* Setting up bindings for necessary control of the swerve drive platform */
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
-            .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
-            .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
+        .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
+        .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
     private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
     private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
 
@@ -47,6 +58,8 @@ public class RobotContainer {
     private final CommandXboxController joystick = new CommandXboxController(0);
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
+    public final Spindexer spindexer = new Spindexer();
+    public final Transfer transfer = new Transfer();
 
       /* Path follower */
     private final SendableChooser<Command> autoChooser;
@@ -64,6 +77,10 @@ public class RobotContainer {
     }
 
     private void configureBindings() {
+        /*************************************************
+         * Commands for Drivetrain
+         *************************************************/
+
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention.
         drivetrain.setDefaultCommand(
@@ -98,12 +115,18 @@ public class RobotContainer {
         joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
         drivetrain.registerTelemetry(logger::telemeterize);
+
+        /*************************************************
+         * Commands for Spindexer
+         *************************************************/
+
+        joystick.x().whileTrue(new SpinAndFeedCommand(
+            transfer, spindexer, 0.8, 0.8, 0.5
+        ));
     }
 
     public Command getAutonomousCommand() {
         /* Run the path selected from the auto chooser */
         return autoChooser.getSelected();
-
-        //return Commands.print("No autonomous command configured");
     }
 }
