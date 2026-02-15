@@ -3,6 +3,7 @@ package frc.robot.Actors;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.PositionDutyCycle;
+import com.ctre.phoenix6.controls.VelocityDutyCycle;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -27,6 +28,8 @@ public class Motor {
     public MotorConfig motorConfig;
     public String actuatorName = "not_set";
     public int CanID;
+    public double desiredSpeed_rPs;
+    public double actualSpeed_rPs;
 
     public Motor(int CanID, MotorType type) {
         this.CanID = CanID;
@@ -129,6 +132,34 @@ public class Motor {
                 return this.motorTFX.get();
             default:
                 return 0.0;
+        }
+    }
+
+    /**
+     * Sets the duty cycle of the motor
+     * 
+     * @param motor_rPs from ? to ?
+     */
+    public void vel_dc(double motor_rPs) {
+
+        switch (this.type) {
+            case SPX:
+                this.motorSPX.set(motor_rPs);
+                break;
+            case TFX:
+                //this.motorTFX.set(motor_rPs);
+                if (Math.abs(motor_rPs) > 0.1) {
+                    VelocityDutyCycle controlRequest = new VelocityDutyCycle(motor_rPs);
+                    desiredSpeed_rPs = motor_rPs;
+                    actualSpeed_rPs = motorTFX.getVelocity().getValueAsDouble();
+                    motorTFX.setControl(controlRequest);   
+                }else{
+                    motorTFX.set(0.0);
+                }
+
+                break;
+            case None:
+                System.err.println("tried to set dc on None motor with CanID " + this.CanID);
         }
     }
 
