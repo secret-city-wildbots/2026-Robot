@@ -5,17 +5,17 @@
 
 package frc.robot;
 
-import static edu.wpi.first.units.Units.*;
-
+// Import Phoenix6 Libraries
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
+// Import Pathplanner Libraries
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.FollowPathCommand;
 
-import edu.wpi.first.math.geometry.Pose2d;
+// Import WPI Libraries
+import static edu.wpi.first.units.Units.*;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -23,14 +23,13 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
+// Import Subsystems and Constants
 import frc.robot.generated.TunerConstants;
 import frc.robot.Actors.Subsystems.CommandSwerveDrivetrain;
 import frc.robot.Actors.Subsystems.FlashLightTurret;
 
+// Import Commands
 import frc.robot.Commands.FlashLightTurret.TrackHubCommand;
-import frc.robot.Actors.Subsystems.Indexer;
-import frc.robot.Actors.Subsystems.Shooter;
-import frc.robot.Actors.Subsystems.Vision;
 
 public class RobotContainer {
     // TODO: Set max speed back to normal
@@ -42,8 +41,8 @@ public class RobotContainer {
     private double MaxAngularRate = RotationsPerSecond.of(0.5).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
     /* Setting up bindings for necessary control of the swerve drive platform */
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
-            .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
-            .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
+        .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
+        .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
     private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
     private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
 
@@ -59,17 +58,11 @@ public class RobotContainer {
     private final SendableChooser<Command> autoChooser;
     
     public RobotContainer() {
-        public final Vision vision = new Vision();
-
-        public final Shooter shooter = new Shooter();
-
-        public final Indexer indexer = new Indexer();
-      
         // TODO: Set default auto
         autoChooser = AutoBuilder.buildAutoChooser("Reverse 9");
         SmartDashboard.putData("Auto Mode", autoChooser);
 
-        drivetrain.resetPose(new Pose2d( new Translation2d(2,2), new Rotation2d()));
+        // drivetrain.resetPose(new Pose2d( new Translation2d(2,2), new Rotation2d()));
         configureBindings();
 
         // Warmup PathPlanner to avoid Java pauses
@@ -88,6 +81,7 @@ public class RobotContainer {
             )
         );
 
+        // Set the default command for the turret
         flturret.setDefaultCommand(new TrackHubCommand(flturret, drivetrain::getPose));
 
         // Idle while the robot is disabled. This ensures the configured
@@ -97,7 +91,10 @@ public class RobotContainer {
             drivetrain.applyRequest(() -> idle).ignoringDisable(true)
         );
 
+        // Break when pressing A
         joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
+
+        // Orientate wheels when pressing B and and moving left and right joysticks
         joystick.b().whileTrue(drivetrain.applyRequest(() ->
             point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))
         ));
