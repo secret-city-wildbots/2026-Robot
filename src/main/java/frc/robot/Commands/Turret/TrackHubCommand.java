@@ -11,24 +11,30 @@ import edu.wpi.first.wpilibj2.command.Command;
 
 // Import Subsystems
 import frc.robot.Actors.Subsystems.Turret;
+import frc.robot.Constants.TurretConstants;
 
 public class TrackHubCommand extends Command {
 
     // Real Variables
     private final Turret turret;
     private final Supplier<Pose2d> robotPoseSupplier;
-    private final Translation2d hubPosition = new Translation2d(4.625594,4.02336);
+    private final Supplier<Translation2d> robotVelSupplier;
+    private final Translation2d hubPosition = new Translation2d(4.625594, 4.02336);
 
     /**
      * Creates and sets up the TrackHubCommand
      * 
-     * @param turret The subsystem to be controlled by the command ({@link Turret})
+     * @param turret            The subsystem to be controlled by the command
+     *                          ({@link Turret})
      * @param robotPoseSupplier The pose of the robot (continuous supplier)
+     * @param robotVelSupplier  The velocity of the robot (continuous supplier)
      */
-    public TrackHubCommand(Turret turret, Supplier<Pose2d> robotPoseSupplier) {
+    public TrackHubCommand(Turret turret, Supplier<Pose2d> robotPoseSupplier,
+            Supplier<Translation2d> robotVelSupplier) {
         // Assign the variables and add the subsystem as a requirement to the command
         this.turret = turret;
         this.robotPoseSupplier = robotPoseSupplier;
+        this.robotVelSupplier = robotVelSupplier;
         addRequirements(turret);
     }
 
@@ -40,11 +46,15 @@ public class TrackHubCommand extends Command {
     @Override
     public void execute() {
         // calculate the angle needed for the turret
+        Translation2d adjustedHubPosition = hubPosition.minus(
+                robotVelSupplier.get().times(TurretConstants.turretBaseAirtime_s + TurretConstants.turretDistAirtime_sPm
+                        * hubPosition.getDistance(robotPoseSupplier.get().getTranslation())));
         Translation2d robotPos = robotPoseSupplier.get().getTranslation();
-        Translation2d delta = hubPosition.minus(robotPos);
+        Translation2d delta = adjustedHubPosition.minus(robotPos);
         Rotation2d fieldAngleToTarget = delta.getAngle();
         Rotation2d turretTarget = fieldAngleToTarget.minus(robotPoseSupplier.get().getRotation());
-        //System.out.println(turretTarget);
+
+        // System.out.println(turretTarget);
         turret.setTargetAngle(turretTarget);
     }
 
@@ -58,5 +68,5 @@ public class TrackHubCommand extends Command {
         // Do not end the command
         return false;
     }
-    
+
 }
