@@ -7,6 +7,8 @@ package frc.robot;
 
 import static edu.wpi.first.units.Units.*;
 
+import java.util.function.Supplier;
+
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
@@ -16,6 +18,7 @@ import com.pathplanner.lib.commands.FollowPathCommand;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -59,7 +62,7 @@ public class RobotContainer {
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
-    private final Turret turret = new Turret(44);
+    private final Turret turret = new Turret();
 
     /* Path follower */
     private final SendableChooser<Command> autoChooser;
@@ -94,7 +97,8 @@ public class RobotContainer {
                                                                                     // negative X (left)
                 ));
 
-        turret.setDefaultCommand(new TrackHubCommand(turret, drivetrain::getPose));
+        turret.setDefaultCommand(new TrackHubCommand(turret, drivetrain::getPose, () -> ChassisSpeeds
+                .fromRobotRelativeSpeeds(drivetrain.getState().Speeds, drivetrain.getPose().getRotation())));
 
         // Idle while the robot is disabled. This ensures the configured
         // neutral mode is applied to the drive motors while disabled.

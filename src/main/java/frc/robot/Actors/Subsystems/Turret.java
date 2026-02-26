@@ -23,6 +23,7 @@ public class Turret extends SubsystemBase {
 
         this.motor.configTFX.Feedback.FeedbackRemoteSensorID = TurretConstants.encoderID;
         this.motor.configTFX.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RemoteCANcoder;
+        this.motor.configTFX.Feedback.RotorToSensorRatio = TurretConstants.turretGearRatio;
 
         this.motor.applyConfig();
         this.motor.pid(0.0005, 0.0, 0.0);

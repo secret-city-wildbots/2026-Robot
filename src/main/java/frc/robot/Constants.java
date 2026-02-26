@@ -48,6 +48,7 @@ public final class Constants {
     public static final int encoderID = 44;
     public static final double turretBaseAirtime_s = 1.0;
     public static final double turretDistAirtime_sPm = 0.2; // Additional airtime per meter of distance to target
+    public static final double turretGearRatio = 102.0/10.0;
   }
 
   public static class DrivetrainConstants {
