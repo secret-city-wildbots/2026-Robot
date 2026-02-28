@@ -131,8 +131,11 @@ public class RobotContainer {
         joystick.leftBumper().toggleOnTrue(new IntakeSequence(intake, intakeExtension));
     }
 
+
     public Command getAutonomousCommand() {
-        /* Run the path selected from the auto chooser */
-        return Commands.print("No autonomous command configured");
+         /* Run the path selected from the auto chooser */
+        return autoChooser.getSelected();
+        // /* Run the path selected from the auto chooser */
+        // return Commands.print("No autonomous command configured");
     }
 }
