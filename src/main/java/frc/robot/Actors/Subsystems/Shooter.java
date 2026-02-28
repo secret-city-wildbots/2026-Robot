@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 // Import Actors and Utils
 import frc.robot.Actors.Motor;
+//import frc.robot.Utils.HubShooterTrajectoryCalc;
 import frc.robot.Utils.MotorType;
 import frc.robot.Utils.RotationDir;
 
@@ -20,6 +21,8 @@ public class Shooter extends SubsystemBase {
     // intatiate motors
     private Motor leadMotor;
     private Motor followMotor;
+
+    private Motor hood;
 
 
     public Shooter() {
@@ -35,20 +38,29 @@ public class Shooter extends SubsystemBase {
 
         // Set the followMotor to follow the lead motor, and make it opposed
         this.followMotor.motorTFX.setControl(new Follower(ShooterConstants.leadMotorID, MotorAlignmentValue.Opposed));
+    
+        this.hood.motorTFX.setPosition(0.02604);
+        this.hood.motorConfig.direction = RotationDir.Clockwise;
+        this.hood.applyConfig();
+        this.hood.pid(0.0, 0.0, 0.0);
     }
 
     /**
      * Set target RPS
      */
     public void setRPS(double rps) {
-        leadMotor.vel_dc(rps);
+        leadMotor.vel(rps);
+    }
+
+    public void setHoodPos(double pos) {
+        this.hood.pos(pos);
     }
 
     /**
      * Stop motor
      */
     public void stop() {
-        leadMotor.vel_dc(0.0);
+        leadMotor.vel(0.0);
     }
 
     /**
