@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.46,
-        "y": 4.03
+        "x": 0.4698,
+        "y": 0.6186333333333334
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.46,
-        "y": 5.03
+        "x": 1.4698,
+        "y": 0.6186333333333334
       },
       "isLocked": false,
-      "linkedName": "Test Starting Pos"
+      "linkedName": "Outpost"
     },
     {
       "anchor": {
-        "x": 1.46,
-        "y": 5.554
+        "x": 3.5536000000000003,
+        "y": 0.6186333333333334
       },
       "prevControl": {
-        "x": 1.46,
-        "y": 4.554
+        "x": 2.5536000000000003,
+        "y": 0.6186333333333334
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "R Trench Start"
     }
   ],
   "rotationTargets": [],
@@ -33,7 +33,7 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 3.0,
+    "maxVelocity": 1.75,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
@@ -41,14 +41,14 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0,
+    "velocity": 3.0,
     "rotation": 0.0
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Simple Right + Outpost",
   "idealStartingState": {
-    "velocity": 0,
+    "velocity": 2.0,
     "rotation": 0.0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

@@ -3,32 +3,37 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.46,
-        "y": 4.03
+        "x": 7.786266666666666,
+        "y": 2.2008444444444435
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.46,
-        "y": 5.03
+        "x": 7.887530120481928,
+        "y": 0.6066128514056222
       },
       "isLocked": false,
-      "linkedName": "Test Starting Pos"
+      "linkedName": "L Trench Plow End"
     },
     {
       "anchor": {
-        "x": 1.46,
-        "y": 5.554
+        "x": 3.5536000000000003,
+        "y": 0.6186333333333334
       },
       "prevControl": {
-        "x": 1.46,
-        "y": 4.554
+        "x": 6.556777777777777,
+        "y": 0.7093333333333327
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "R Trench Start"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.7736842105263185,
+      "rotationDegrees": 0.0
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
@@ -41,14 +46,14 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0,
+    "velocity": 3.0,
     "rotation": 0.0
   },
   "reversed": false,
-  "folder": null,
+  "folder": "L + R Spread",
   "idealStartingState": {
-    "velocity": 0,
-    "rotation": 0.0
+    "velocity": 3.0,
+    "rotation": -90.0
   },
   "useDefaultConstraints": true
 }
