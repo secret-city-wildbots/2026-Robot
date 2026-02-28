@@ -31,6 +31,11 @@ public final class Constants {
     public static final String[] limelightNames = {"limelight-front", "limelight-back", "limelight-left", "limelight-right"};
   }
 
+  public static class IntakeConstants {
+    // Intake motor CANBus IDs
+    public static final int intakeMotorID = 40;
+    public static final int extensionMotorID = 41;
+  }
 
   public static class DrivetrainConstants {
     // Robot Dimensions
