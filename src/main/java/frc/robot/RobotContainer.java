@@ -37,7 +37,7 @@ import frc.robot.Actors.Subsystems.Intake.IntakeExtension;
 import frc.robot.Commands.Intake.IntakeCommand;
 import frc.robot.Commands.Intake.ExtensionCommand;
 import frc.robot.Commands.FlashLightTurret.TrackHubCommand;
-
+import frc.robot.Commands.Intake.IntakeSequence;
 public class RobotContainer {
     // TODO: Set max speed back to normal
     // private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
@@ -127,10 +127,8 @@ public class RobotContainer {
 
         // TODO: Enable logger
         // drivetrain.registerTelemetry(logger::telemeterize);
-        joystick.a().whileTrue(new IntakeCommand(intake, 0.2));
-        joystick.b().whileTrue(new IntakeCommand(intake, -0.2));
-        joystick.x().whileTrue(new ExtensionCommand(intakeExtension, 0.2));
-        joystick.y().whileTrue(new ExtensionCommand(intakeExtension, -0.2));
+        
+        joystick.leftBumper().toggleOnTrue(new IntakeSequence(intake, intakeExtension));
     }
 
     public Command getAutonomousCommand() {
