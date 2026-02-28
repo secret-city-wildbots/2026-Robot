@@ -4,14 +4,21 @@
 
 package frc.robot;
 
-// Import External Libraries
+// Import WPI Libraries
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.Actors.Subsystems.Vision;
-import frc.robot.Utils.LimelightHelpers;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.util.Units;
+
+// Import Limelight Utils
+import frc.robot.Utils.LimelightHelpers;
+
+// Import Subsystems
+// Vision was put here for now so we can utilize the periodic loops
+// We can look to refactor in the future if people want :)
+import frc.robot.Actors.Subsystems.Vision;  
+
 
 /**
  * The methods in this class are called automatically corresponding to each
@@ -22,20 +29,26 @@ import edu.wpi.first.math.util.Units;
  */
 public class Robot extends TimedRobot {
 
+  // Set Variables
   private Command autonomousCommand;
-
   private final RobotContainer m_robotContainer;
   private final Vision vision;
+
   /**
    * This function is run when the robot is first started up and should be used
    * for any initialization code.
    */
   public Robot() {
-    // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
+    // Instantiate our RobotContainer. This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+
+    // Reset the Pigeon2 on the drivetrain.
+    // TODO: is this needed?
     m_robotContainer.drivetrain.getPigeon2().reset();
 
+    // Setup vision with the suppliers from the drivetrain (heading and rotation (rps))
+    // This allows each limelight to be as accurate as possible when being setup
     vision = new Vision(
       () -> m_robotContainer.drivetrain.getState().Pose.getRotation().getDegrees(),
       () -> Units.radiansToRotations(m_robotContainer.drivetrain.getState().Speeds.omegaRadiansPerSecond)
@@ -56,11 +69,12 @@ public class Robot extends TimedRobot {
     // If bestPose is not null, add vision measurement to the drivetrain
     // TODO: need to tune 0.7,0.7 values
     if (bestPose != null) {
+      // TODO: Do we want to just only add or reset the whole pose?
       m_robotContainer.drivetrain.addVisionMeasurement(bestPose.pose, bestPose.timestampSeconds, VecBuilder.fill(0.7,0.7,9999999));
       //m_robotContainer.drivetrain.resetPose(bestPose.pose);
     }
     // TODO: Printing pose
-    System.out.println(m_robotContainer.drivetrain.getState().Pose);
+    // System.out.println(m_robotContainer.drivetrain.getState().Pose);
   }
 
   @Override
@@ -100,8 +114,15 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic() {
+    // The below code is used to set the real pos of the robot from the front limelight. In the competition we need to make sure
+    // the limelight can see a tag when disabled
+
+    // Get front limelight pose
     LimelightHelpers.PoseEstimate LLFrontPose = vision.getLimelightFrontPosemt1();
+
+    // If the pose is not null and it sees an april tag
     if (LLFrontPose != null && LLFrontPose.tagCount > 0) {
+      // Reset the robots rotation and pose directly
       m_robotContainer.drivetrain.resetRotation(LLFrontPose.pose.getRotation());
       m_robotContainer.drivetrain.resetPose(LLFrontPose.pose);
     }

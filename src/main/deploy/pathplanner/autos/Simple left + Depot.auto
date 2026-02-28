@@ -7,19 +7,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "five ft path"
+            "pathName": "L Trench"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Straightaway"
+            "pathName": "L Trench Reverse"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "L Trench to Depot to Climb"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "Top 5 Autos",
   "choreoAuto": false
 }

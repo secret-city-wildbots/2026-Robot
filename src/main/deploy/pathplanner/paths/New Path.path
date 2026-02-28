@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.46,
-        "y": 4.03
+        "x": 2.0,
+        "y": 7.0
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.46,
-        "y": 5.03
+        "x": 3.0,
+        "y": 7.0
       },
       "isLocked": false,
-      "linkedName": "Test Starting Pos"
+      "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.46,
-        "y": 5.554
+        "x": 4.621298145506419,
+        "y": 4.041469329529244
       },
       "prevControl": {
-        "x": 1.46,
-        "y": 4.554
+        "x": 3.621298145506419,
+        "y": 4.041469329529244
       },
       "nextControl": null,
       "isLocked": false,

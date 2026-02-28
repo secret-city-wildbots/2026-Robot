@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.46,
-        "y": 4.03
+        "x": 3.5536000000000003,
+        "y": 2.845822222222222
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.46,
-        "y": 5.03
+        "x": 2.5653816703647774,
+        "y": 2.1357344871247843
       },
       "isLocked": false,
-      "linkedName": "Test Starting Pos"
+      "linkedName": "R Bump Start"
     },
     {
       "anchor": {
-        "x": 1.46,
-        "y": 5.554
+        "x": 0.4698,
+        "y": 0.6186333333333334
       },
       "prevControl": {
-        "x": 1.46,
-        "y": 4.554
+        "x": 1.4407834127966985,
+        "y": 1.3229430854721103
       },
       "nextControl": null,
       "isLocked": false,
@@ -41,14 +41,14 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0,
-    "rotation": 0.0
+    "velocity": 0.0,
+    "rotation": -90.0
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Bumpy Ride L + R",
   "idealStartingState": {
-    "velocity": 0,
-    "rotation": 0.0
+    "velocity": 3.0,
+    "rotation": -90.0
   },
   "useDefaultConstraints": true
 }
