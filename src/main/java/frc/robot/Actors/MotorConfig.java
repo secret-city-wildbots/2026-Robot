@@ -9,4 +9,6 @@ public class MotorConfig {
     public RotationDir direction = RotationDir.Clockwise;
     public boolean forwardLimitSwitchEnabled = false;
     public boolean reverseLimitSwitchEnabled = false;
+    public double dutyCycleOpenLoopRampPeriod = 0.0;
+    public double dutyCycleClosedLoopRampPeriod = 0.0;
 }

@@ -7,11 +7,15 @@ package frc.robot;
 import edu.wpi.first.math.util.Units;
 
 /**
- * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
- * constants. This class should not be used for any other purpose. All constants should be declared
+ * The Constants class provides a convenient place for teams to hold robot-wide
+ * numerical or boolean
+ * constants. This class should not be used for any other purpose. All constants
+ * should be declared
  * globally (i.e. public static). Do not put anything functional in this class.
  *
- * <p>It is advised to statically import this class (or one of its inner classes) wherever the
+ * <p>
+ * It is advised to statically import this class (or one of its inner classes)
+ * wherever the
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
@@ -28,9 +32,24 @@ public final class Constants {
 
   public static class VisionConstants {
     // Limelight Names
-    public static final String[] limelightNames = {"limelight-front", "limelight-back", "limelight-left", "limelight-right"};
+    public static final String[] limelightNames = { "limelight-front", "limelight-back", "limelight-left",
+        "limelight-right" };
   }
 
+  public static class ShooterConstants {
+    // CANBus IDs
+    public static final int leadMotorID = 46;
+    public static final int followMotorID = 47;
+  }
+
+  public static class TurretConstants {
+    // CANBus IDs
+    public static final int turretMotorID = 44;
+    public static final int encoderID = 44;
+    public static final double turretBaseAirtime_s = 1.0;
+    public static final double turretDistAirtime_sPm = 0.2; // Additional airtime per meter of distance to target
+    public static final double turretGearRatio = 102.0/10.0;
+  }
 
   public static class DrivetrainConstants {
     // Robot Dimensions
@@ -59,6 +78,7 @@ public final class Constants {
 
     // Robot Speed and Rotation Specs
     public static final double maxGroundSpeed_mPs = 5.0;
-    public static final double maxRotateSpeed_radPs = maxGroundSpeed_mPs / Math.hypot(moduleToModuleLength_X_m, moduleToModuleWidth_Y_m);
+    public static final double maxRotateSpeed_radPs = maxGroundSpeed_mPs
+        / Math.hypot(moduleToModuleLength_X_m, moduleToModuleWidth_Y_m);
   }
 }

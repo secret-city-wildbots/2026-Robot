@@ -3,6 +3,7 @@ package frc.robot.Actors;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.PositionDutyCycle;
+import com.ctre.phoenix6.controls.VelocityDutyCycle;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -27,6 +28,8 @@ public class Motor {
     public MotorConfig motorConfig;
     public String actuatorName = "not_set";
     public int CanID;
+    public double desiredSpeed_rPs;
+    public double actualSpeed_rPs;
 
     public Motor(int CanID, MotorType type) {
         this.CanID = CanID;
@@ -51,10 +54,9 @@ public class Motor {
         this.applyConfig();
     }
 
-    public Motor(int CanID, MotorType type, String actuatorName) {
+    public Motor(int CanID, MotorType type, String canbus) {
         this.CanID = CanID;
         this.type = type;
-        this.actuatorName = actuatorName;
 
         switch (type) {
             case SPX:
@@ -62,7 +64,7 @@ public class Motor {
                 this.configSPX = new SparkMaxConfig();
                 break;
             case TFX:
-                this.motorTFX = new TalonFX(CanID);
+                this.motorTFX = new TalonFX(CanID, canbus);
                 this.configTFX = new TalonFXConfiguration();
                 this.slot0TFX = new Slot0Configs();
                 this.motorTFX.getConfigurator().setPosition(0);
@@ -74,6 +76,30 @@ public class Motor {
         this.motorConfig = new MotorConfig();
         this.applyConfig();
     }
+
+    // public Motor(int CanID, MotorType type, String actuatorName) {
+    //     this.CanID = CanID;
+    //     this.type = type;
+    //     this.actuatorName = actuatorName;
+
+    //     switch (type) {
+    //         case SPX:
+    //             this.motorSPX = new SparkMax(CanID, com.revrobotics.spark.SparkLowLevel.MotorType.kBrushless);
+    //             this.configSPX = new SparkMaxConfig();
+    //             break;
+    //         case TFX:
+    //             this.motorTFX = new TalonFX(CanID);
+    //             this.configTFX = new TalonFXConfiguration();
+    //             this.slot0TFX = new Slot0Configs();
+    //             this.motorTFX.getConfigurator().setPosition(0);
+    //             break;
+    //         case None:
+    //             System.err.println("Motor initialized with None type with CanID " + this.CanID);
+    //     }
+
+    //     this.motorConfig = new MotorConfig();
+    //     this.applyConfig();
+    // }
 
     /**
      * Sets the duty cycle of the motor
@@ -106,6 +132,34 @@ public class Motor {
                 return this.motorTFX.get();
             default:
                 return 0.0;
+        }
+    }
+
+    /**
+     * Sets the duty cycle of the motor
+     * 
+     * @param motor_rPs from ? to ?
+     */
+    public void vel_dc(double motor_rPs) {
+
+        switch (this.type) {
+            case SPX:
+                this.motorSPX.set(motor_rPs);
+                break;
+            case TFX:
+                //this.motorTFX.set(motor_rPs);
+                if (Math.abs(motor_rPs) > 0.1) {
+                    VelocityDutyCycle controlRequest = new VelocityDutyCycle(motor_rPs);
+                    desiredSpeed_rPs = motor_rPs;
+                    actualSpeed_rPs = motorTFX.getVelocity().getValueAsDouble();
+                    motorTFX.setControl(controlRequest);   
+                }else{
+                    motorTFX.set(0.0);
+                }
+
+                break;
+            case None:
+                System.err.println("tried to set dc on None motor with CanID " + this.CanID);
         }
     }
 
@@ -276,6 +330,7 @@ public class Motor {
 
     public void applyConfig() {
         switch (this.type) {
+            //TODO add SPX config for all values
             case SPX:
                 this.configSPX.inverted(this.motorConfig.direction == RotationDir.Clockwise);
                 this.configSPX.idleMode((this.motorConfig.brake) ? IdleMode.kBrake : IdleMode.kCoast);
@@ -291,6 +346,8 @@ public class Motor {
                         : NeutralModeValue.Coast;
                 this.configTFX.HardwareLimitSwitch.ForwardLimitEnable = this.motorConfig.forwardLimitSwitchEnabled;
                 this.configTFX.HardwareLimitSwitch.ReverseLimitEnable = this.motorConfig.reverseLimitSwitchEnabled;
+                this.configTFX.OpenLoopRamps.DutyCycleOpenLoopRampPeriod = this.motorConfig.dutyCycleOpenLoopRampPeriod;
+                this.configTFX.ClosedLoopRamps.DutyCycleClosedLoopRampPeriod = this.motorConfig.dutyCycleClosedLoopRampPeriod;
                 this.motorTFX.getConfigurator().apply(configTFX);
                 break;
             case None:

@@ -9,6 +9,10 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.Actors.Subsystems.Vision;
+import frc.robot.Utils.LimelightHelpers;
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.util.Units;
 
 /**
  * The methods in this class are called automatically corresponding to each
@@ -22,26 +26,47 @@ public class Robot extends TimedRobot {
   private Command autonomousCommand;
 
   private final RobotContainer m_robotContainer;
+  private final Vision vision;
 
   /**
    * This function is run when the robot is first started up and should be used
    * for any initialization code.
    */
   public Robot() {
-    // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
+    // Instantiate our RobotContainer. This will perform all our button bindings,
+    // and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-    m_robotContainer.toString();
+    m_robotContainer.drivetrain.getPigeon2().reset();
+
+    vision = new Vision(
+        () -> m_robotContainer.drivetrain.getState().Pose.getRotation().getDegrees(),
+        () -> Units.radiansToRotations(m_robotContainer.drivetrain.getState().Speeds.omegaRadiansPerSecond));
   }
 
   @Override
   public void robotPeriodic() {
-    // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
-    // commands, running already-scheduled commands, removing finished or interrupted commands,
-    // and running subsystem periodic() methods.  This must be called from the robot's periodic
+    // Runs the Scheduler. This is responsible for polling buttons, adding
+    // newly-scheduled
+    // commands, running already-scheduled commands, removing finished or
+    // interrupted commands,
+    // and running subsystem periodic() methods. This must be called from the
+    // robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
 
+    // Get the best pose estimate from all of the cameras
+    LimelightHelpers.PoseEstimate bestPose = vision.getBestPose();
+
+    // If bestPose is not null, add vision measurement to the drivetrain
+    // TODO: need to tune 0.7,0.7 values
+    if (bestPose != null) {
+      m_robotContainer.drivetrain.addVisionMeasurement(bestPose.pose, bestPose.timestampSeconds,
+          VecBuilder.fill(0.7, 0.7, 9999999));
+      // m_robotContainer.drivetrain.resetPose(bestPose.pose);
+    }
+    // TODO: Printing pose
+    // System.out.println(m_robotContainer.drivetrain.getState().Pose);
   }
 
   @Override
@@ -77,21 +102,31 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void disabledInit() {}
-
-  @Override
-  public void disabledPeriodic() {
+  public void disabledInit() {
   }
 
   @Override
-  public void testInit() {}
+  public void disabledPeriodic() {
+    LimelightHelpers.PoseEstimate LLFrontPose = vision.getLimelightFrontPosemt1();
+    if (LLFrontPose != null && LLFrontPose.tagCount > 0) {
+      m_robotContainer.drivetrain.resetRotation(LLFrontPose.pose.getRotation());
+      m_robotContainer.drivetrain.resetPose(LLFrontPose.pose);
+    }
+  }
 
   @Override
-  public void testPeriodic() {}
+  public void testInit() {
+  }
 
   @Override
-  public void simulationInit() {}
+  public void testPeriodic() {
+  }
 
   @Override
-  public void simulationPeriodic() {}
+  public void simulationInit() {
+  }
+
+  @Override
+  public void simulationPeriodic() {
+  }
 }
