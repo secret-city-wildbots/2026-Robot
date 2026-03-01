@@ -42,6 +42,7 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer. This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+
     // Reset the Pigeon2 on the drivetrain.
     // TODO: is this needed?
     m_robotContainer.drivetrain.getPigeon2().reset();
