@@ -38,7 +38,7 @@ public class TrackHubCommand extends Command {
         Translation2d delta = hubPosition.minus(robotPos);
         Rotation2d fieldAngleToTarget = delta.getAngle();
         Rotation2d turretTarget = fieldAngleToTarget.minus(robotPoseSupplier.get().getRotation());
-        System.out.println(turretTarget);
+        //System.out.println(turretTarget);
         turret.setTargetAngle(turretTarget);
     }
 
