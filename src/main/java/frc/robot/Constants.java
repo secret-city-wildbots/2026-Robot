@@ -36,6 +36,24 @@ public final class Constants {
     public static final int intakeMotorID = 40;
     public static final int extensionMotorID = 41;
   }
+  public static class ElevatorConstants {
+    // Elevator motor CANBus IDs
+    public static final int liftMotorID = 48;
+    public static final int hookMotorID = 49;
+
+    // Sensor ID / Ports
+    public static final int lowerLimitMagneticSensorPort = 0;
+    public static final int handoffMagneticSensorPort = 1;
+    public static final int topLimitMagneticSensorPort = 2;
+
+    // Hook Cancoder CANBus IDs
+    public static final int hookMotorCancoderID = 34;
+
+    // Hook motor positions
+    public static final double hookSafePosition = 0.0;
+    public static final double hookDeployedPosition = 90.0;
+    public static final double angleTolerance = 2.0; 
+  }
 
   public static class DrivetrainConstants {
     // Robot Dimensions

@@ -11,8 +11,8 @@ import com.ctre.phoenix6.swerve.SwerveRequest;
 
 // Import Pathplanner Libraries
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.commands.FollowPathCommand;
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.FollowPathCommand;
 
 // Import WPI Libraries
 import static edu.wpi.first.units.Units.*;
@@ -32,6 +32,11 @@ import frc.robot.Actors.Subsystems.CommandSwerveDrivetrain;
 import frc.robot.Actors.Subsystems.FlashLightTurret;
 import frc.robot.Actors.Subsystems.Intake.Intake;
 import frc.robot.Actors.Subsystems.Intake.IntakeExtension;
+import frc.robot.Actors.Subsystems.Elevator.ElevatorLift;
+import frc.robot.Actors.Subsystems.Elevator.ElevatorHook;
+import frc.robot.Commands.Elevator.RetractLiftCommand;
+import frc.robot.Commands.Elevator.ClimbSequenceL1;
+import frc.robot.Commands.Elevator.ExtendLiftCommand;
 
 // Import Custom Commands
 import frc.robot.Commands.Intake.IntakeCommand;
@@ -62,6 +67,8 @@ public class RobotContainer {
     private final FlashLightTurret flturret = new FlashLightTurret(44, 0);
     public final Intake intake = new Intake();
     public final IntakeExtension intakeExtension = new IntakeExtension();
+    private final ElevatorLift elevatorLift = new ElevatorLift();
+    private final ElevatorHook elevatorHook = new ElevatorHook();
 
       /* Path follower */
     private final SendableChooser<Command> autoChooser;
@@ -81,8 +88,13 @@ public class RobotContainer {
         NamedCommands.registerCommand("IntakeExtend", new ExtensionCommand(intakeExtension, 0.2));
         NamedCommands.registerCommand("IntakeRetract", new ExtensionCommand(intakeExtension, -0.2));
 
+        // Register Named Commands within Pathplanner
+        NamedCommands.registerCommand("L1Climb", new ClimbSequenceL1(elevatorLift));
+
         // Warmup PathPlanner to avoid Java pauses
         FollowPathCommand.warmupCommand().schedule();
+
+
     }
 
     private void configureBindings() {
@@ -129,6 +141,12 @@ public class RobotContainer {
         // drivetrain.registerTelemetry(logger::telemeterize);
         
         joystick.leftBumper().toggleOnTrue(new IntakeSequence(intake, intakeExtension));
+        drivetrain.registerTelemetry(logger::telemeterize);
+
+        // Descend from Auto L1 + Retract Lift down
+        joystick.y().whileTrue(new ExtendLiftCommand(elevatorLift));
+        joystick.a().whileTrue(new RetractLiftCommand(elevatorLift, false));
+       
     }
 
 
