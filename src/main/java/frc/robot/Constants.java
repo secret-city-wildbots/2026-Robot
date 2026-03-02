@@ -38,14 +38,23 @@ public final class Constants {
 
   public static class ShooterConstants {
     // CANBus IDs
+    public static final int hoodMotorID = 44;
     public static final int leadMotorID = 46;
     public static final int followMotorID = 47;
+
+    // Gear Ratios
+    public static final double hoodGearRatio = 16.875 / 1.0;
+
+    // Hood Ranges
+    public static final double minDegree = 5.0;
+    public static final double maxDegree = 75.0;
+
   }
 
   public static class TurretConstants {
     // CANBus IDs
-    public static final int turretMotorID = 44;
-    public static final int encoderID = 44;
+    public static final int turretMotorID = 45;
+    public static final int encoderID = 35;
     public static final double turretBaseAirtime_s = 1.0;
     public static final double turretDistAirtime_sPm = 0.2; // Additional airtime per meter of distance to target
     public static final double turretGearRatio = 102.0/10.0;

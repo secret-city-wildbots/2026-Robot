@@ -33,7 +33,7 @@ import frc.robot.Actors.Subsystems.Indexer;
 import frc.robot.Actors.Subsystems.Shooter;
 import frc.robot.Actors.Subsystems.Vision;
 import frc.robot.Commands.Turret.TrackHubCommand;
-
+import frc.robot.Commands.Shooter.HoodCommand;
 import frc.robot.Commands.Shooter.ShootCommand;
 
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -122,6 +122,7 @@ public class RobotContainer {
 
         // Test Shooter Code
         joystick.x().whileTrue(new ShootCommand(shooter, 50.0));
+        joystick.y().whileTrue(new HoodCommand(shooter, 10.0));
 
         // TODO: Enable logger
         // drivetrain.registerTelemetry(logger::telemeterize);
