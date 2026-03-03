@@ -167,10 +167,10 @@ public class RobotContainer {
          *************************************************/
 
         joystick.x().whileTrue(new SpinAndFeedCommand(
-            transfer, spindexer, 0.8, 0.8, 0.5
+            transfer, spindexer, 30, 10, 0.5
         ));
 
-        joystick.y().whileTrue(new SpinFuelCommand(spindexer, 0.2));
+        joystick.y().whileTrue(new SpinFuelCommand(spindexer, 10));
     }
 
 

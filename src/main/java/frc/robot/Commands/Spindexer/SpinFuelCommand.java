@@ -7,24 +7,24 @@ import frc.robot.Actors.Subsystems.Spindexer.Spindexer;
 public class SpinFuelCommand extends Command {
     // Real Variables
     private final Spindexer spindexer;
-    private final double motorSpeedPercentage;
+    private final double motorRPS;
 
     /**
      * Creates and sets up the SpinFuelCommand
      * 
      * @param spindexer The subsystem to be controlled by the command ({@link Spindexer})
      */
-    public SpinFuelCommand(Spindexer spindexer, double motorSpeedPercentage) {
+    public SpinFuelCommand(Spindexer spindexer, double motorRPS) {
         // Assign the variables and add the subsystem as a requirement to the command
         this.spindexer = spindexer;
-        this.motorSpeedPercentage = motorSpeedPercentage;
+        this.motorRPS = motorRPS;
         addRequirements(spindexer);
     }
 
     @Override
     public void initialize() {
         // Call the spindexer subsystem start function
-        spindexer.set(this.motorSpeedPercentage);
+        spindexer.setRPS(this.motorRPS);
     }
 
     @Override
@@ -36,7 +36,7 @@ public class SpinFuelCommand extends Command {
     @Override
     public void end(boolean interrupted) {
         // When the command is interrupted or cancelled, we will stop the spindexer subsystem
-        spindexer.set(0.0);
+        spindexer.setRPS(0.0);
     }
 
     @Override
