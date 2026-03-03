@@ -7,24 +7,24 @@ import frc.robot.Actors.Subsystems.Spindexer.Transfer;
 public class TransferFuelCommand extends Command {
     // Real Variables
     private final Transfer spindexerTransfer;
-    private final double motorSpeedPercentage;
+    private final double motorRPS;
 
     /**
      * Creates and sets up the TransferFuelCommand
      * 
      * @param spindexerTransfer The subsystem to be controlled by the command ({@link Transfer})
      */
-    public TransferFuelCommand(Transfer spindexerTransfer, double motorSpeedPercentage) {
+    public TransferFuelCommand(Transfer spindexerTransfer, double motorRPS) {
         // Assign the variables and add the subsystem as a requirement to the command
         this.spindexerTransfer = spindexerTransfer;
-        this.motorSpeedPercentage = motorSpeedPercentage;
+        this.motorRPS = motorRPS;
         addRequirements(spindexerTransfer);
     }
 
     @Override
     public void initialize() {
         // Call the spindexerTransfer subsystem start function
-        spindexerTransfer.set(this.motorSpeedPercentage);
+        spindexerTransfer.setRPS(this.motorRPS);
     }
 
     @Override
@@ -36,7 +36,7 @@ public class TransferFuelCommand extends Command {
     @Override
     public void end(boolean interrupted) {
         // When the command is interrupted or cancelled, we will stop the spindexerTransfer subsystem
-        spindexerTransfer.set(0.0);
+        spindexerTransfer.setRPS(0.0);
     }
 
     @Override

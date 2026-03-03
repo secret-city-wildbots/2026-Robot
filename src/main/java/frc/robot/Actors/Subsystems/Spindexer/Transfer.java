@@ -29,4 +29,25 @@ public class Transfer extends SubsystemBase {
     public void set(double percent) {
         motor.dc(percent);
     }
+
+     /**
+     * Set target RPS
+     */
+    public void setRPS(double rps) {
+        motor.vel_dc(rps);
+    }
+
+    /**
+     * Stop motor
+     */
+    public void stop() {
+        motor.vel_dc(0.0);
+    }
+
+    /**
+     * Get current RPS from internal encoder
+     */
+    public double getRPS() {
+        return motor.vel();
+    }
 }

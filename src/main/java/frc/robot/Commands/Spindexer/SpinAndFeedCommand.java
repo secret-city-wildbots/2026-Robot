@@ -15,8 +15,8 @@ public class SpinAndFeedCommand extends Command {
     private final Spindexer spindexer;
 
     // Initialize the speeds
-    private final double transferSpeed;
-    private final double spindexerSpeed;
+    private final double transferRPS;
+    private final double spindexerRPS;
 
     // Initialize the spinup time and timer
     private final double spinupTime;
@@ -25,8 +25,8 @@ public class SpinAndFeedCommand extends Command {
     public SpinAndFeedCommand(
         Transfer transfer,
         Spindexer spindexer,
-        double transferSpeed,
-        double spindexerSpeed,
+        double transferRPS,
+        double spindexerRPS,
         double spinupTime
     ) {
         // Set the subystems
@@ -34,8 +34,8 @@ public class SpinAndFeedCommand extends Command {
         this.spindexer = spindexer;
 
         // Set the speeds
-        this.transferSpeed = transferSpeed;
-        this.spindexerSpeed = spindexerSpeed;
+        this.transferRPS = transferRPS;
+        this.spindexerRPS = spindexerRPS;
 
         // Set the spinup time
         this.spinupTime = spinupTime;
@@ -47,7 +47,7 @@ public class SpinAndFeedCommand extends Command {
     @Override
     public void initialize() {
         // Start the transfer motor and reset the timer
-        transfer.set(transferSpeed);
+        transfer.setRPS(transferRPS);
         timer.restart();
     }
 
@@ -56,15 +56,15 @@ public class SpinAndFeedCommand extends Command {
         // Check to see if the startup time has elapsed
         if (timer.hasElapsed(spinupTime)) {
             // Once the time has passed, start the spindexer
-            spindexer.set(spindexerSpeed);
+            spindexer.setRPS(spindexerRPS);
         }
     }
 
     @Override
     public void end(boolean interrupted) {
         // Turn off all motors
-        transfer.set(0.0);
-        spindexer.set(0.0);
+        transfer.setRPS(0.0);
+        spindexer.setRPS(0.0);
     }
 
     @Override
