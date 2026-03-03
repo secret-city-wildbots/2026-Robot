@@ -2,12 +2,9 @@
 package frc.robot.Commands.Intake;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 
 import frc.robot.Actors.Subsystems.Intake.Intake;
 import frc.robot.Actors.Subsystems.Intake.IntakeExtension;
-import frc.robot.Constants.IntakeConstants;
-import frc.robot.Commands.Intake.IntakeCommand;
 
 public class IntakeSequence extends SequentialCommandGroup {
 
