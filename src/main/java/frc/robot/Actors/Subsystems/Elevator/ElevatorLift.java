@@ -85,8 +85,9 @@ public class ElevatorLift extends SubsystemBase {
     @Override
     public void periodic() {
         // TODO: put logic to send position states to dashboard
-        System.out.println("--------------------------------------------------");
-        System.out.println("Swith 0: " + lowerLimitMagneticSwitch.get());
-        System.out.println("Swith 1: " + handoffLimitMagneticSwitch.get());
-        System.out.println("Swith 2: " + topLimitMagneticSwitch.get());    }
+        // System.out.println("--------------------------------------------------");
+        // System.out.println("Swith 0: " + lowerLimitMagneticSwitch.get());
+        // System.out.println("Swith 1: " + handoffLimitMagneticSwitch.get());
+        // System.out.println("Swith 2: " + topLimitMagneticSwitch.get()); 
+    }
 }
