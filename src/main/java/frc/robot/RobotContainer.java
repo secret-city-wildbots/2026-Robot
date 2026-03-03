@@ -9,13 +9,14 @@ package frc.robot;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
-// Import Pathplanner Libraries
+// Import Path Planner Libraries
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.FollowPathCommand;
 
-// Import WPI Libraries
+// Import WPILib Librarires
 import static edu.wpi.first.units.Units.*;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -26,8 +27,10 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
-// Import Subsystems and Constants
+// Import Custom TunerConstants
 import frc.robot.generated.TunerConstants;
+
+// Import subystems
 import frc.robot.Actors.Subsystems.CommandSwerveDrivetrain;
 import frc.robot.Actors.Subsystems.FlashLightTurret;
 import frc.robot.Actors.Subsystems.Intake.Intake;
@@ -37,6 +40,12 @@ import frc.robot.Actors.Subsystems.Elevator.ElevatorHook;
 import frc.robot.Commands.Elevator.RetractLiftCommand;
 import frc.robot.Commands.Elevator.ClimbSequenceL1;
 import frc.robot.Commands.Elevator.ExtendLiftCommand;
+import frc.robot.Actors.Subsystems.Spindexer.Spindexer;
+import frc.robot.Actors.Subsystems.Spindexer.Transfer;
+// Import Commands
+import frc.robot.Commands.Spindexer.SpinAndFeedCommand;
+import frc.robot.Commands.Spindexer.SpinFuelCommand;
+import frc.robot.Commands.Spindexer.TransferFuelCommand;
 
 // Import Custom Commands
 import frc.robot.Commands.Intake.IntakeCommand;
@@ -63,6 +72,8 @@ public class RobotContainer {
     private final CommandXboxController joystick = new CommandXboxController(0);
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
+    public final Spindexer spindexer = new Spindexer();
+    public final Transfer transfer = new Transfer();
 
     private final FlashLightTurret flturret = new FlashLightTurret(44, 0);
     public final Intake intake = new Intake();
@@ -98,6 +109,10 @@ public class RobotContainer {
     }
 
     private void configureBindings() {
+        /*************************************************
+         * Commands for Drivetrain
+         *************************************************/
+
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention.
         drivetrain.setDefaultCommand(
@@ -147,6 +162,15 @@ public class RobotContainer {
         joystick.y().whileTrue(new ExtendLiftCommand(elevatorLift));
         joystick.a().whileTrue(new RetractLiftCommand(elevatorLift, false));
        
+        /*************************************************
+         * Commands for Spindexer
+         *************************************************/
+
+        joystick.x().whileTrue(new SpinAndFeedCommand(
+            transfer, spindexer, 0.8, 0.8, 0.5
+        ));
+
+        joystick.y().whileTrue(new SpinFuelCommand(spindexer, 0.2));
     }
 
 
