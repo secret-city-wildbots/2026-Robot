@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 // Import Actors and Utils
 import frc.robot.Actors.Motor;
 import frc.robot.Utils.MotorType;
-
+import frc.robot.Utils.RotationDir;
 // Import Spindexer Contants
 import frc.robot.Constants.SpindexerConstants;
 
@@ -19,6 +19,10 @@ public class Transfer extends SubsystemBase {
      */
     public Transfer() {
         this.motor = new Motor(SpindexerConstants.transferMotorID, MotorType.TFX, "rio");
+        this.motor.motorConfig.direction = RotationDir.CounterClockwise;
+        this.motor.motorConfig.dutyCycleClosedLoopRampPeriod = 0.3;
+        this.motor.applyConfig();
+        this.motor.pid(13, 0.6, 0.025); // Setup the transfer PID
     }
 
     // Motor Controls
