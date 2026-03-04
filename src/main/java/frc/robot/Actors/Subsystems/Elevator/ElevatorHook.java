@@ -7,18 +7,26 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Actors.Motor;
 import frc.robot.Utils.MotorType;
-
+import frc.robot.Utils.RotationDir;
 import frc.robot.Constants.ElevatorConstants;
+import com.ctre.phoenix6.configs.MagnetSensorConfigs;
 
 public class ElevatorHook extends SubsystemBase {
     
     private Motor motor;
     private CANcoder encoder;
     private double targetAngle;
+    private double encoderOffset;
 
     public ElevatorHook() {
         this.motor = new Motor(ElevatorConstants.hookMotorID, MotorType.TFX, "rio");
+        this.motor.motorConfig.direction = RotationDir.CounterClockwise;
+        this.motor.applyConfig();
         this.encoder = new CANcoder(ElevatorConstants.hookMotorCancoderID);
+        this.encoderOffset = 0.02051;
+        MagnetSensorConfigs config = new MagnetSensorConfigs();
+        config.withMagnetOffset(-this.encoderOffset);
+        this.encoder.getConfigurator().apply(config);
 
         this.targetAngle = 0.0;
     }
@@ -34,14 +42,14 @@ public class ElevatorHook extends SubsystemBase {
         percent = MathUtil.clamp(percent, -1.0, 1.0);
 
         // Check to make sure the hooks are safe to extend out
-        if (percent > 0.0 && getCurrentAngle() >= 90.0) {
+        if (percent > 0.0 && getCurrentAngle() >= ElevatorConstants.hookDeployedPosition) {
             // if it is not safe, dont allow the motor to move
             motor.dc(0.0);
             return;
         }
 
         // check to make sure the hooks are safe to retract in
-        if (percent < 0.0 && getCurrentAngle() <= 0.0) {
+        if (percent < 0.0 && getCurrentAngle() <= ElevatorConstants.hookSafePosition) {
             // if it is not safe, dont allow the motor to move
             motor.dc(0.0);
             return;
@@ -65,5 +73,12 @@ public class ElevatorHook extends SubsystemBase {
      */
     public double getCurrentAngle() {
         return this.encoder.getAbsolutePosition().getValueAsDouble() * 360.0;
+    }
+
+    @Override
+    public void periodic() {
+        // TODO: put logic to send position states to dashboard
+        // System.out.println("--------------------------------------------------");
+        // System.out.println("Encoder: " + this.getCurrentAngle()); 
     }
 }
