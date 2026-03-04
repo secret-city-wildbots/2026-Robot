@@ -51,7 +51,7 @@ public final class Constants {
 
     // Hook motor positions
     public static final double hookSafePosition = 0.0;
-    public static final double hookDeployedPosition = 90.0;
+    public static final double hookDeployedPosition = 75.0;
     public static final double angleTolerance = 2.0; 
   }
 
