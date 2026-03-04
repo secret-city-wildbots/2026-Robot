@@ -50,7 +50,9 @@ import frc.robot.Commands.Intake.IntakeCommand;
 import frc.robot.Commands.Intake.ExtensionCommand;
 import frc.robot.Commands.FlashLightTurret.TrackHubCommand;
 import frc.robot.Commands.Intake.IntakeSequence;
+import frc.robot.Commands.Spindexer.SpinAndFeedCommand;
 import frc.robot.Commands.ShootSequence;
+import frc.robot.Commands.Spindexer.SpinFuelCommand;
 
 
 
@@ -160,10 +162,11 @@ public class RobotContainer {
         
         joystick.leftBumper().toggleOnTrue(new IntakeSequence(intake, intakeExtension));
         drivetrain.registerTelemetry(logger::telemeterize);
-        joystick.rightTrigger(0.4).whileTrue(new ShootSequence(transfer, spindexer, 30, 10, 3));  
+        joystick.rightTrigger(0.4).whileTrue(new ShootSequence(transfer, spindexer, 30, 10, 0.5));  
         // Descend from Auto L1 + Retract Lift down
         joystick.y().whileTrue(new ExtendLiftCommand(elevatorLift));
         joystick.a().whileTrue(new RetractLiftCommand(elevatorLift, false));
+        joystick.x().whileTrue(new SpinFuelCommand(spindexer, 30));
         
        
         /*************************************************
