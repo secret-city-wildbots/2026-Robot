@@ -5,12 +5,12 @@
   "pathFolders": [
     "Bumpy Ride L + R",
     "L + R Spread",
+    "Dip, Dip, and Shoot!",
     "Reverse 9",
     "Simple Left",
     "Simple Right + Outpost"
   ],
   "autoFolders": [
-    "New Folder",
     "Top 5 Autos"
   ],
   "defaultMaxVel": 3.0,
