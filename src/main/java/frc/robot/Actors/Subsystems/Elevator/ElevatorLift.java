@@ -45,7 +45,7 @@ public class ElevatorLift extends SubsystemBase {
         }
 
         // check to make sure the elevator is safe to move down
-        if (percent > 0.0 && lowerLimitActive()) {
+        if (percent > 0.0 && lowerLimitActive() && handoffLimitActive()) {
             // if it is not safe, dont allow the motor to move
             motor.dc(0.0);
             return;
