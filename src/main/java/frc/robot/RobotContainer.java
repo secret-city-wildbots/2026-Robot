@@ -33,6 +33,7 @@ import frc.robot.Actors.Subsystems.Indexer;
 import frc.robot.Actors.Subsystems.Shooter;
 import frc.robot.Actors.Subsystems.Vision;
 import frc.robot.Commands.Turret.TrackHubCommand;
+import frc.robot.Commands.Shooter.HoodAndShootSequence;
 import frc.robot.Commands.Shooter.HoodCommand;
 import frc.robot.Commands.Shooter.ShootCommand;
 
@@ -121,8 +122,8 @@ public class RobotContainer {
         joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
         // Test Shooter Code
-        joystick.x().whileTrue(new ShootCommand(shooter, 50.0));
-        joystick.y().whileTrue(new HoodCommand(shooter, 10.0));
+        joystick.x().whileTrue(new HoodAndShootSequence(shooter, 50.0, 50));
+        //joystick.y().whileTrue(new HoodCommand(shooter, 30.0));
 
         // TODO: Enable logger
         // drivetrain.registerTelemetry(logger::telemeterize);

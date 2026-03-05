@@ -70,7 +70,7 @@ public class Shooter extends SubsystemBase {
     }
 
     private double degreesToMotorRotations(double degrees) {
-        return (degrees - ShooterConstants.minDegree) * ShooterConstants.hoodGearRatio / 360.0 +0.27;
+        return (degrees - ShooterConstants.minDegree) * ShooterConstants.hoodGearRatio / 360.0;
     }
 
     public void setHoodAngle(double degrees) {

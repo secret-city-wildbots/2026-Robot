@@ -43,7 +43,7 @@ public final class Constants {
     public static final int followMotorID = 47;
 
     // Gear Ratios
-    public static final double hoodGearRatio = 16.875 / 1.0;
+    public static final double hoodGearRatio = 90.0 / 16.0;
 
     // Hood Ranges
     public static final double minDegree = 5.0;

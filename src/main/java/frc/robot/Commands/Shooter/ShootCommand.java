@@ -10,6 +10,7 @@ public class ShootCommand extends Command {
     // Real Variables
     private final Shooter shooter;
     private final double motorRpS;
+    private final double hoodAngleDeg;
 
     /**
      * Creates and sets up the ShootCommand
@@ -17,10 +18,11 @@ public class ShootCommand extends Command {
      * @param shooter The subsystem to be controlled by the command ({@link Shooter})
      * @param motorRpS The rotations per second required for the motor
      */
-    public ShootCommand(Shooter shooter, double motorRpS) {
+    public ShootCommand(Shooter shooter, double motorRpS, double hoodAngleDeg) {
         // Assign the variables and add the subsystem as a requirement to the command
         this.shooter = shooter;
         this.motorRpS = motorRpS;
+        this.hoodAngleDeg = hoodAngleDeg;
         addRequirements(shooter);
     }
 
@@ -28,6 +30,7 @@ public class ShootCommand extends Command {
     public void initialize() {
         // Call the shooter subsystem setRPS function
         shooter.setRPS(this.motorRpS);
+        shooter.setHoodAngle(this.hoodAngleDeg);
     }
 
     @Override
@@ -40,6 +43,7 @@ public class ShootCommand extends Command {
     public void end(boolean interrupted) {
         // When the command is interrupted or cancelled, we will stop the spindexer subsystem
         shooter.setRPS(0.0);
+        shooter.setHoodAngle(5.0);
     }
 
     @Override
