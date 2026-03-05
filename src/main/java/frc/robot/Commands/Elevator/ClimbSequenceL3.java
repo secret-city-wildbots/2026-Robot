@@ -38,7 +38,9 @@ public class ClimbSequenceL3 extends SequentialCommandGroup {
             new ExtendLiftCommand(lift),
 
             // 8. Pull down to handoff
-            new RetractLiftCommand(lift, true)
+            new ParallelCommandGroup(
+                new RetractLiftCommand(lift, true),
+                new RotateHookToPositionCommand(hook, ElevatorConstants.hookSafePosition))
         );
     }
     
