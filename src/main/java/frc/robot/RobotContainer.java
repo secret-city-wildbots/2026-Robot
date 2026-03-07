@@ -59,7 +59,7 @@ public class RobotContainer {
     
     public RobotContainer() {
         // TODO: Set default auto
-        autoChooser = AutoBuilder.buildAutoChooser("Awesome");
+        autoChooser = AutoBuilder.buildAutoChooser("Climb");
         SmartDashboard.putData("Auto Mode", autoChooser);
 
         // drivetrain.resetPose(new Pose2d( new Translation2d(2,2), new Rotation2d()));
