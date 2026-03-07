@@ -3,21 +3,22 @@ package frc.robot.Actors.Subsystems.Spindexer;
 // Import WPILib Libraries
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-// Import Actors and Utils
+// Import Actors, Utils & Constants
 import frc.robot.Actors.Motor;
 import frc.robot.Utils.MotorType;
 import frc.robot.Utils.RotationDir;
-// Import Spindexer Contants
 import frc.robot.Constants.SpindexerConstants;
 
 public class Spindexer extends SubsystemBase {
-    // intatiate motors
-    private Motor motor;
+    
+    // Define variables
+    private Motor motor; // Motor to control the spindexer
 
     /**
      * Spindexer Constructor
      */
     public Spindexer() {
+        // Configure the spindexer motor
         this.motor = new Motor(SpindexerConstants.spinMotorID, MotorType.TFX, "rio");
         this.motor.motorConfig.direction = RotationDir.CounterClockwise;
         this.motor.motorConfig.dutyCycleClosedLoopRampPeriod = 0.3;
@@ -29,15 +30,19 @@ public class Spindexer extends SubsystemBase {
 
     /**
      * Sets spindexer motor output (-1.0 to 1.0)
+     * @param percent
      */
     public void set(double percent) {
+        // Send the output to the motor
         motor.dc(percent);
     }
 
     /**
      * Set target RPS
+     * @param rps
      */
     public void setRPS(double rps) {
+        // Send the output to the motor
         motor.vel_dc(rps);
     }
 
@@ -45,6 +50,7 @@ public class Spindexer extends SubsystemBase {
      * Stop motor
      */
     public void stop() {
+        // Send the output to the motor
         motor.vel_dc(0.0);
     }
 
@@ -52,6 +58,7 @@ public class Spindexer extends SubsystemBase {
      * Get current RPS from internal encoder
      */
     public double getRPS() {
+        // Return the motor velocity in RPS
         return motor.vel();
     }
 }

@@ -1,13 +1,11 @@
 package frc.robot.Actors.Subsystems;
 
-// Import WPI Libraries
+// Import WPILib Libraries
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-// Import Utils
+// Import Actors, Utils & Constants
 import frc.robot.Utils.LimelightHelpers;
 import java.util.function.DoubleSupplier;
-
-// Import Constants
 import frc.robot.Constants.VisionConstants;
 
 public class Vision extends SubsystemBase {

@@ -1,26 +1,32 @@
 package frc.robot.Actors.Subsystems.Elevator;
 
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
-import frc.robot.Actors.Motor;
-import frc.robot.Utils.MotorType;
-
-import frc.robot.Constants.ElevatorConstants;
+// Import WPILib Libraries
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+// Import Phoenix 5 Libraries
 import com.ctre.phoenix.CANifier;
+
+// Import Actors, Utils & Constants
+import frc.robot.Actors.Motor;
+import frc.robot.Utils.MotorType;
+import frc.robot.Constants.ElevatorConstants;
 
 public class ElevatorLift extends SubsystemBase {
     
-    private Motor motor;
-    private DigitalInput lowerLimitMagneticSwitch;
-    // private DigitalInput handoffLimitMagneticSwitch;
-    private CANifier handoffLimitSwitch;
-    private DigitalInput topLimitMagneticSwitch;
+    // Define variables
+    private Motor motor;                                // Motor to control the elevator lift position
+    private DigitalInput lowerLimitMagneticSwitch;      // Lower limit magnetic switch for the elevator lift
+    // private DigitalInput handoffLimitMagneticSwitch; // Handoff limit magnetic switch for the elevator lift
+    private CANifier handoffLimitSwitch;                // Handoff limit magnetic switch for the elevator lift
+    private DigitalInput topLimitMagneticSwitch;        // Top limit magnetic switch for the elevator lift
 
     public ElevatorLift() {
+        // Configure the elevator lift motor
         this.motor = new Motor(ElevatorConstants.liftMotorID, MotorType.TFX, "rio");
+
+        // Configure the elevator magnetic switches
         this.lowerLimitMagneticSwitch = new DigitalInput(ElevatorConstants.lowerLimitMagneticSensorPort);
         // this.handoffLimitMagneticSwitch = new DigitalInput(ElevatorConstants.handoffMagneticSensorPort);
         this.handoffLimitSwitch = new CANifier(0);
@@ -31,6 +37,7 @@ public class ElevatorLift extends SubsystemBase {
 
     /**
      * Sets ElevatorLift motor output (-1.0 to 1.0)
+     * @param percent
      */
 
     public void set(double percent) {
@@ -51,6 +58,7 @@ public class ElevatorLift extends SubsystemBase {
             return;
         }
 
+        // Send the output to the motor
         motor.dc(percent);
     }
 
@@ -90,9 +98,9 @@ public class ElevatorLift extends SubsystemBase {
     @Override
     public void periodic() {
         // TODO: put logic to send position states to dashboard
-        System.out.println("--------------------------------------------------");
-        System.out.println("Swith 0: " + lowerLimitActive());
-        System.out.println("Swith 1: " + handoffLimitActive());
-        System.out.println("Swith 2: " + topLimitActive()); 
+        // System.out.println("--------------------------------------------------");
+        // System.out.println("Swith 0: " + lowerLimitActive());
+        // System.out.println("Swith 1: " + handoffLimitActive());
+        // System.out.println("Swith 2: " + topLimitActive()); 
     }
 }
