@@ -1,33 +1,39 @@
 package frc.robot.Actors.Subsystems.Elevator;
 
-import com.ctre.phoenix6.hardware.CANcoder;
-
+// Import WPILib Libraries
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+// Import Phoenix 6 Libraries
+import com.ctre.phoenix6.hardware.CANcoder;
+import com.ctre.phoenix6.configs.MagnetSensorConfigs;
+
+// Import Actors, Utils & Constants
 import frc.robot.Actors.Motor;
 import frc.robot.Utils.MotorType;
 import frc.robot.Utils.RotationDir;
 import frc.robot.Constants.ElevatorConstants;
-import com.ctre.phoenix6.configs.MagnetSensorConfigs;
 
 public class ElevatorHook extends SubsystemBase {
     
-    private Motor motor;
-    private CANcoder encoder;
-    private double targetAngle;
-    private double encoderOffset;
+    // Define variables
+    private Motor motor;           // Motor to control the elevator hook position
+    private CANcoder encoder;      // Encoder to control the position of the hook
+    private double targetAngle;    // Target angle to set the hook position to
 
     public ElevatorHook() {
+        // Configure the elevator hook motor
         this.motor = new Motor(ElevatorConstants.hookMotorID, MotorType.TFX, "rio");
         this.motor.motorConfig.direction = RotationDir.CounterClockwise;
         this.motor.applyConfig();
+
+        // Configure the elevator hook encoder
         this.encoder = new CANcoder(ElevatorConstants.hookMotorCancoderID);
-        this.encoderOffset = 0.02051;
         MagnetSensorConfigs config = new MagnetSensorConfigs();
-        config.withMagnetOffset(-this.encoderOffset);
+        config.withMagnetOffset(-ElevatorConstants.hookEncoderOffset);
         this.encoder.getConfigurator().apply(config);
 
+        // Initialize the target angle to be 0.0 degrees
         this.targetAngle = 0.0;
     }
 
@@ -35,8 +41,8 @@ public class ElevatorHook extends SubsystemBase {
 
     /**
      * Sets ElevatorHook motor output (-1.0 to 1.0)
+     * @param percent
      */
-
     public void set(double percent) {
         // Clamp input percentage to proper range
         percent = MathUtil.clamp(percent, -1.0, 1.0);
@@ -55,6 +61,7 @@ public class ElevatorHook extends SubsystemBase {
             return;
         }
         
+        // Send the output to the motor
         motor.dc(percent);
     }
 
@@ -72,6 +79,7 @@ public class ElevatorHook extends SubsystemBase {
      * Get the encoder position in degrees
      */
     public double getCurrentAngle() {
+        // We get the absolute position of the encoder (-1 - 1 rotations) and multiply by 360 to get degrees
         return this.encoder.getAbsolutePosition().getValueAsDouble() * 360.0;
     }
 

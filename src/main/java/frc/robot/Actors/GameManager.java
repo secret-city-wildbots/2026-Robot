@@ -1,12 +1,16 @@
 package frc.robot.Actors;
 
+// Import WPILib Libraries
 import java.util.Optional;
-
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
 public class GameManager {
-                
+           
+    /**
+     * This function helps determine when the hub is active.
+     * @return boolean if our Hub is active or not
+     */
     public static boolean isHubActive() {
 
         Optional<Alliance> alliance = DriverStation.getAlliance();

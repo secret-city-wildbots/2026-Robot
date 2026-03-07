@@ -1,27 +1,31 @@
 package frc.robot.Actors.Subsystems.Intake;
 
-import frc.robot.Actors.Motor;
-import frc.robot.Utils.MotorType;
-
+// Import WPILib Libraries
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import frc.robot.Constants.*;
+// Import Actors, Utils & Constants
+import frc.robot.Actors.Motor;
+import frc.robot.Utils.MotorType;
+import frc.robot.Constants.IntakeConstants;
 
 public class Intake extends SubsystemBase {
 
-     private Motor motor;
+    // Define variables
+    private Motor motor; // Motor to control the intake position
 
     public Intake() {
+        // Configure the intake motor
         this.motor = new Motor(IntakeConstants.intakeMotorID, MotorType.TFX, "rio");
     }
 
     // Motor Controls
 
     /**
-     * Sets IntakeMotor motor output (-1.0 to 1.0)
+     * Sets Intake motor output (-1.0 to 1.0)
+     * @param percent
      */
-
     public void set(double percent) {
+        // Send the output to the motor
         motor.dc(percent);
     }
 }
