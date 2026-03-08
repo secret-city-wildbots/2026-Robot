@@ -109,6 +109,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("IntakeExtend", new ExtensionCommand(intakeExtension, 0.2));
         NamedCommands.registerCommand("IntakeRetract", new ExtensionCommand(intakeExtension, -0.2));
         NamedCommands.registerCommand("Shoot", new ShootSequence(transfer, spindexer, 30, 10, 3));
+        NamedCommands.registerCommand("Intake", new IntakeSequence(intake, intakeExtension));
         NamedCommands.registerCommand("L1Climb", new ClimbSequenceL1(elevatorLift));
 
         // Warmup PathPlanner to avoid Java pauses
