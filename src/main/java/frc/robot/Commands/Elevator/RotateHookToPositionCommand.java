@@ -36,9 +36,9 @@ public class RotateHookToPositionCommand extends Command {
         double current = elevatorHook.getCurrentAngle();
 
         if (current < targetAngle) {
-            elevatorHook.set(0.2);  // rotate outward
+            elevatorHook.set(1.0);  // rotate outward
         } else {
-            elevatorHook.set(-0.2); // rotate inward
+            elevatorHook.set(-1.0); // rotate inward
         }
     }
 

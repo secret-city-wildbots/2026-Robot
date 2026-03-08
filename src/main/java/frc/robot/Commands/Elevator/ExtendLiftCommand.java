@@ -22,7 +22,7 @@ public class ExtendLiftCommand extends Command {
     @Override
     public void initialize() {
         // Call the ElevatorLift subsystem start function
-        elevatorLift.set(0.2);
+        elevatorLift.set(-1.0);
     }
 
     @Override

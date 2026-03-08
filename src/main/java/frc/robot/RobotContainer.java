@@ -110,8 +110,6 @@ public class RobotContainer {
         NamedCommands.registerCommand("IntakeRetract", new ExtensionCommand(intakeExtension, -0.2));
         NamedCommands.registerCommand("Shoot", new ShootSequence(transfer, spindexer, 30, 10, 3));
         NamedCommands.registerCommand("Intake", new IntakeSequence(intake, intakeExtension));
-
-        // Register Named Commands within Pathplanner
         NamedCommands.registerCommand("L1Climb", new ClimbSequenceL1(elevatorLift));
 
         // Warmup PathPlanner to avoid Java pauses
@@ -174,6 +172,7 @@ public class RobotContainer {
         joystick.x().whileTrue(new ClimbSequenceL3(elevatorLift, elevatorHook));
         joystick.y().whileTrue(new LiftCommand(elevatorLift, joystick));
         joystick.a().whileTrue(new HookCommand(elevatorHook, joystick));
+        joystick.b().whileTrue(new ClimbSequenceL1(elevatorLift));
         
        
         /*************************************************
