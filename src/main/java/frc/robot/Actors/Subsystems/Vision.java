@@ -1,25 +1,28 @@
 package frc.robot.Actors.Subsystems;
 
-// Import WPI Libraries
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
-// Import Utils
-import frc.robot.Utils.LimelightHelpers;
 import java.util.function.DoubleSupplier;
 
-// Import Constants
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.VisionConstants;
+import frc.robot.Utils.LimelightHelpers;
+import frc.robot.Utils.LimelightHelpers.RawFiducial;
 
 public class Vision extends SubsystemBase {
 
-    // This is a scored pose record to help compare the camera readings to determine the best position
+    // This is a scored pose record to help compare the camera readings to determine
+    // the best position
     private record ScoredPose(
-        LimelightHelpers.PoseEstimate pose,
-        double avgAmbiguity,
-        double avgDistance
-    ) {}
+            LimelightHelpers.PoseEstimate pose,
+            double avgAmbiguity,
+            double avgDistance) {
 
-    // These are suppliers needing to be fed when instantiated. These will help to align the cameras indiviually with each
+    }
+
+    // These are suppliers needing to be fed when instantiated. These will help to
+    // align the cameras indiviually with each
     // heading and rotation speeds in more real time
     private final DoubleSupplier headingSupplier;
     private final DoubleSupplier omegaRpsSupplier;
@@ -32,10 +35,7 @@ public class Vision extends SubsystemBase {
         this.omegaRpsSupplier = omegaRpsSupplier;
     }
 
-    /*
-     * Get the most accurate pose from all of the limelights
-     */
-    public LimelightHelpers.PoseEstimate getBestPose() {
+    public LimelightHelpers.PoseEstimate[] getPoses() {
         // Create an array of poses for our cameras
         LimelightHelpers.PoseEstimate[] poses = new LimelightHelpers.PoseEstimate[VisionConstants.limelightNames.length];
 
@@ -49,24 +49,90 @@ public class Vision extends SubsystemBase {
             poses[index] = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(limelightID);
         }
 
+        return poses;
+    }
+
+    public LimelightHelpers.PoseEstimate getMeanPose() {
+        LimelightHelpers.PoseEstimate[] poses = this.getPoses();
+
+        Translation2d meant2d = new Translation2d();
+        double totalt2d = 0.0;
+        Rotation2d meanr2d = new Rotation2d();
+        double totalr2d = 0.0;
+
+        double timestamp = 0.0;
+        double highestWeight = 0.0;
+
+        for (LimelightHelpers.PoseEstimate pose : poses) {
+            if (!pose.isMegaTag2) {
+                continue;
+            }
+            if (pose.tagCount == 0) {
+                continue;
+            }
+
+            // change this to however we want to pick whats best
+            double weight = 0.0;
+
+            for (RawFiducial rawF : pose.rawFiducials) {
+                weight += 1 / rawF.distToCamera;
+            }
+
+            meant2d.plus(pose.pose.getTranslation().times(weight));
+            meanr2d.plus(pose.pose.getRotation().times(weight));
+
+            totalt2d += weight;
+            totalr2d += weight;
+
+            if (weight > highestWeight) {
+                timestamp = pose.timestampSeconds;
+            }
+        }
+
+        meant2d.div(totalt2d);
+        meanr2d.div(totalr2d);
+
+        Pose2d mean = new Pose2d(meant2d, meanr2d);
+
+        LimelightHelpers.PoseEstimate poseEst = new LimelightHelpers.PoseEstimate();
+        poseEst.pose = mean;
+        poseEst.timestampSeconds = timestamp;
+        return poseEst;
+    }
+
+    /*
+     * Get the most accurate pose from all of the limelights
+     */
+    public LimelightHelpers.PoseEstimate getBestPose() {
+        LimelightHelpers.PoseEstimate[] poses = this.getPoses();
+
         // initialize a variable to hold the best pose
         ScoredPose best = null;
 
         // Loop through all of the poses to determine the best one
         for (var pose : poses) {
             // If the pose is null skip this instance
-            if (pose == null) continue;
+            if (pose == null) {
+                continue;
+            }
             // If the pose is not a MegaTag2 skip this instance
-            if (!pose.isMegaTag2) continue;
+            if (!pose.isMegaTag2) {
+                continue;
+            }
             // If the pose has 0 tag counts skip this instance
-            if (pose.tagCount == 0) continue;
+            if (pose.tagCount == 0) {
+                continue;
+            }
             // If we are spinning faster than 720 deg / sec skip this instance
-            if (Math.abs(omegaRpsSupplier.getAsDouble()) > 720) continue;
+            if (Math.abs(omegaRpsSupplier.getAsDouble()) > 720) {
+                continue;
+            }
 
             // Score the pose estimate
             var scored = score(pose);
 
-            // Check if our best estimate is null, if null set it to the scored pose move on to the next instance
+            // Check if our best estimate is null, if null set it to the scored pose move on
+            // to the next instance
             if (best == null) {
                 best = scored;
                 continue;
@@ -76,13 +142,11 @@ public class Vision extends SubsystemBase {
             // 1) more tags
             // 2) lower ambiguity
             // 3) closer tags
-            if (
-                pose.tagCount > best.pose.tagCount ||
-                (pose.tagCount == best.pose.tagCount && scored.avgAmbiguity < best.avgAmbiguity) ||
-                (pose.tagCount == best.pose.tagCount &&
-                scored.avgAmbiguity == best.avgAmbiguity &&
-                scored.avgDistance < best.avgDistance)
-            ) {
+            if (pose.tagCount > best.pose.tagCount
+                    || (pose.tagCount == best.pose.tagCount && scored.avgAmbiguity < best.avgAmbiguity)
+                    || (pose.tagCount == best.pose.tagCount
+                    && scored.avgAmbiguity == best.avgAmbiguity
+                    && scored.avgDistance < best.avgDistance)) {
                 // Set the best to the currently better scored camera
                 best = scored;
             }
@@ -175,8 +239,10 @@ public class Vision extends SubsystemBase {
     }
 
     /*
-     * Takes in a LimelightHelpers.PoseEstimate and returns a scored value based on the information. We average the ambiguity and distance
-     * values and return the scored pose with mt2, average ambiguity and average distance.
+     * Takes in a LimelightHelpers.PoseEstimate and returns a scored value based on
+     * the information. We average the ambiguity and distance
+     * values and return the scored pose with mt2, average ambiguity and average
+     * distance.
      */
     private ScoredPose score(LimelightHelpers.PoseEstimate mt2) {
         // Initialize the ambiguity and distance
@@ -198,5 +264,6 @@ public class Vision extends SubsystemBase {
     }
 
     @Override
-    public void periodic() {}
+    public void periodic() {
+    }
 }
