@@ -29,6 +29,7 @@ public class Shooter extends SubsystemBase {
         // Initialize the motors
         this.leadMotor = new Motor(ShooterConstants.leadMotorID, MotorType.TFX);
         this.followMotor = new Motor(ShooterConstants.followMotorID, MotorType.TFX);
+        this.hood = new Motor(ShooterConstants.hoodMotorID, MotorType.TFX);
 
         // Configure the lead motor
         this.leadMotor.motorConfig.direction = RotationDir.CounterClockwise;

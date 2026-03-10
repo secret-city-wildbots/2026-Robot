@@ -71,11 +71,11 @@ public class Turret extends SubsystemBase {
     }
 
     public void setTargetAngle(Rotation2d angle) {
-        System.out.println((Math.round(angle.getRotations() * 100) / 100.0) + " : "
-                + (Math.round(motor.motorTFX.getPosition().getValueAsDouble() / TurretConstants.turretGearRatio * 100)
-                        / 100.0)
-                + " : " +
-                (Math.round(motor.motorTFX.getClosedLoopOutput().getValueAsDouble() * 100) / 100.0));
+        // System.out.println((Math.round(angle.getRotations() * 100) / 100.0) + " : "
+        //         + (Math.round(motor.motorTFX.getPosition().getValueAsDouble() / TurretConstants.turretGearRatio * 100)
+        //                 / 100.0)
+        //         + " : " +
+        //         (Math.round(motor.motorTFX.getClosedLoopOutput().getValueAsDouble() * 100) / 100.0));
         this.motor.posMM(angle.getRotations() * TurretConstants.turretGearRatio);
         SmartDashboard.putNumber("diff", Math.abs((angle.minus(new Rotation2d(
                 motor.motorTFX.getPosition().getValueAsDouble() * 2 * Math.PI / TurretConstants.turretGearRatio)))
