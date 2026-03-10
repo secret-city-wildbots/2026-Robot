@@ -31,7 +31,7 @@ public class LiftCommand extends Command {
     public void execute() {
         // Only use execute if we have dynamically changing speeds. This is called each loop (~20ms).
         // So if we have just a constant speed, use initialize to avoid spamming the canbus network.
-        elevatorLift.set(this.joystick.getRightY() * 0.8);
+        elevatorLift.set(this.joystick.getLeftY() * 0.8);
     }
 
     @Override
