@@ -16,20 +16,19 @@ import com.pathplanner.lib.commands.FollowPathCommand;
 
 // Import WPILib Librarires
 import static edu.wpi.first.units.Units.*;
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 // Import Custom TunerConstants
 import frc.robot.generated.TunerConstants;
+import frc.robot.Constants.SpindexerConstants;
 
 // Import subystems
 import frc.robot.Actors.Subsystems.CommandSwerveDrivetrain;
@@ -43,21 +42,12 @@ import frc.robot.Actors.Subsystems.Shooter.Shooter;
 import frc.robot.Actors.Subsystems.Shooter.Turret;
 
 // Import Custom Commands
-import frc.robot.Commands.Intake.IntakeCommand;
-import frc.robot.Commands.Intake.ExtensionCommand;
 import frc.robot.Commands.Intake.IntakeSequence;
 import frc.robot.Commands.Spindexer.SpinAndFeedCommand;
-import frc.robot.Commands.ShootSequence;
-import frc.robot.Commands.Spindexer.SpinFuelCommand;
-import frc.robot.Commands.Elevator.RetractLiftCommand;
 import frc.robot.Commands.Elevator.ClimbSequenceL1;
 import frc.robot.Commands.Elevator.ClimbSequenceL3;
-import frc.robot.Commands.Elevator.ExtendLiftCommand;
 import frc.robot.Commands.Elevator.HookCommand;
 import frc.robot.Commands.Elevator.LiftCommand;
-import frc.robot.Commands.Elevator.RetractLiftCommand;
-import frc.robot.Commands.Elevator.ClimbSequenceL1;
-import frc.robot.Commands.Elevator.ExtendLiftCommand;
 import frc.robot.Commands.Shooter.AimAtHubCommand;
 
 
@@ -100,16 +90,10 @@ public class RobotContainer {
         autoChooser = AutoBuilder.buildAutoChooser("Reverse 9");
         SmartDashboard.putData("Auto Mode", autoChooser);
 
-        // drivetrain.resetPose(new Pose2d( new Translation2d(2,2), new Rotation2d()));
-
         configureBindings();
          //TODO: Make sure values for Commands are correct
          // Register Named Commands within Pathplanner
-        NamedCommands.registerCommand("IntakeFuel", new IntakeCommand(intake, 0.2));
-        NamedCommands.registerCommand("OuttakeFuel", new IntakeCommand(intake, -0.2));
-        NamedCommands.registerCommand("IntakeExtend", new ExtensionCommand(intakeExtension, 0.2));
-        NamedCommands.registerCommand("IntakeRetract", new ExtensionCommand(intakeExtension, -0.2));
-        NamedCommands.registerCommand("Shoot", new ShootSequence(transfer, spindexer, 30, 10, 3));
+        NamedCommands.registerCommand("Shoot", new SpinAndFeedCommand(transfer, spindexer, SpindexerConstants.transferRPS, SpindexerConstants.spindexerRPS , SpindexerConstants.spinupTime));
         NamedCommands.registerCommand("Intake", new IntakeSequence(intake, intakeExtension));
         NamedCommands.registerCommand("L1Climb", new ClimbSequenceL1(elevatorLift));
 
@@ -173,7 +157,7 @@ public class RobotContainer {
         
         joystick.leftBumper().toggleOnTrue(new IntakeSequence(intake, intakeExtension));
         drivetrain.registerTelemetry(logger::telemeterize);
-        joystick.rightTrigger(0.4).whileTrue(new ShootSequence(transfer, spindexer, 30, 10, 0.5));  
+        joystick.rightTrigger(0.4).whileTrue(new SpinAndFeedCommand(transfer, spindexer, SpindexerConstants.transferRPS, SpindexerConstants.spindexerRPS , SpindexerConstants.spinupTime));  
         // Descend from Auto L1 + Retract Lift down
         joystick.x().whileTrue(new ClimbSequenceL3(elevatorLift, elevatorHook));
         joystick.y().whileTrue(new LiftCommand(elevatorLift, joystick));
