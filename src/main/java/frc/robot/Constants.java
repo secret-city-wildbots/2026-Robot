@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 
 /**
@@ -60,6 +61,26 @@ public final class Constants {
     // CANBus IDs
     public static final int spinMotorID = 42;
     public static final int transferMotorID = 43;
+  }
+
+  public static class ShooterConstants {
+    // CANBus IDs
+    public static final int leadMotorID = 46;
+    public static final int followMotorID = 47;
+
+    public static final int hoodMotorID = 44;
+
+    public static final double wheelRadius_m = 0.05; //abt 2 in
+  }
+
+  public static class TurretConstants {
+    // CANBus IDs
+    public static final int turretMotorID = 45;
+    public static final int encoderID = 44;
+    public static final double turretBaseAirtime_s = 0.0;
+    public static final double turretDistAirtime_sPm = 0.0; // Additional airtime per meter of distance to target
+    public static final double turretGearRatio = 102.0/10.0;
+    public static final Translation2d turretPos = new Translation2d(0.5,0.5);
   }
   
   public static class DrivetrainConstants {

@@ -43,7 +43,7 @@ public class Transfer extends SubsystemBase {
      */
     public void setRPS(double rps) {
         // Send the output to the motor
-        motor.vel_dc(rps);
+        motor.vel(rps);
     }
 
     /**
@@ -51,7 +51,7 @@ public class Transfer extends SubsystemBase {
      */
     public void stop() {
         // Send the output to the motor
-        motor.vel_dc(0.0);
+        motor.vel(0.0);
     }
 
     /**
