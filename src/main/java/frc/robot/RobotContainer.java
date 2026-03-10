@@ -18,11 +18,10 @@ import com.pathplanner.lib.commands.FollowPathCommand;
 import static edu.wpi.first.units.Units.*;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-
-
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -34,21 +33,18 @@ import frc.robot.generated.TunerConstants;
 
 // Import subystems
 import frc.robot.Actors.Subsystems.CommandSwerveDrivetrain;
-import frc.robot.Actors.Subsystems.FlashLightTurret;
 import frc.robot.Actors.Subsystems.Intake.Intake;
 import frc.robot.Actors.Subsystems.Intake.IntakeExtension;
 import frc.robot.Actors.Subsystems.Elevator.ElevatorLift;
 import frc.robot.Actors.Subsystems.Elevator.ElevatorHook;
-import frc.robot.Commands.Elevator.RetractLiftCommand;
-import frc.robot.Commands.Elevator.ClimbSequenceL1;
-import frc.robot.Commands.Elevator.ExtendLiftCommand;
 import frc.robot.Actors.Subsystems.Spindexer.Spindexer;
 import frc.robot.Actors.Subsystems.Spindexer.Transfer;
+import frc.robot.Actors.Subsystems.Shooter.Shooter;
+import frc.robot.Actors.Subsystems.Shooter.Turret;
 
 // Import Custom Commands
 import frc.robot.Commands.Intake.IntakeCommand;
 import frc.robot.Commands.Intake.ExtensionCommand;
-import frc.robot.Commands.FlashLightTurret.TrackHubCommand;
 import frc.robot.Commands.Intake.IntakeSequence;
 import frc.robot.Commands.Spindexer.SpinAndFeedCommand;
 import frc.robot.Commands.ShootSequence;
@@ -59,6 +55,10 @@ import frc.robot.Commands.Elevator.ClimbSequenceL3;
 import frc.robot.Commands.Elevator.ExtendLiftCommand;
 import frc.robot.Commands.Elevator.HookCommand;
 import frc.robot.Commands.Elevator.LiftCommand;
+import frc.robot.Commands.Elevator.RetractLiftCommand;
+import frc.robot.Commands.Elevator.ClimbSequenceL1;
+import frc.robot.Commands.Elevator.ExtendLiftCommand;
+import frc.robot.Commands.Shooter.AimAtHubCommand;
 
 
 
@@ -85,11 +85,12 @@ public class RobotContainer {
     public final Spindexer spindexer = new Spindexer();
     public final Transfer transfer = new Transfer();
 
-    private final FlashLightTurret flturret = new FlashLightTurret(44, 3);
     public final Intake intake = new Intake();
     public final IntakeExtension intakeExtension = new IntakeExtension();
     private final ElevatorLift elevatorLift = new ElevatorLift();
     private final ElevatorHook elevatorHook = new ElevatorHook();
+    private final Shooter shooter = new Shooter();
+    private final Turret turret = new Turret();
 
       /* Path follower */
     private final SendableChooser<Command> autoChooser;
@@ -134,8 +135,13 @@ public class RobotContainer {
             )
         );
 
-        // Set the default command for the turret
-        flturret.setDefaultCommand(new TrackHubCommand(flturret, drivetrain::getPose));
+        shooter.setDefaultCommand(new AimAtHubCommand(shooter, turret, drivetrain::getPose, () -> {
+            var state = drivetrain.getState();
+            return ChassisSpeeds.fromRobotRelativeSpeeds(
+                state.Speeds,
+                state.Pose.getRotation()
+            );
+        }));
 
         // Idle while the robot is disabled. This ensures the configured
         // neutral mode is applied to the drive motors while disabled.
