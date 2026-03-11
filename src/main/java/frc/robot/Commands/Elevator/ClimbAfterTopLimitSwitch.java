@@ -1,12 +1,10 @@
 package frc.robot.Commands.Elevator;
 
-// Import WPILib Libraries
 import edu.wpi.first.wpilibj2.command.Command;
-
 import frc.robot.Actors.Subsystems.Elevator.ElevatorLift;
 import frc.robot.Constants.ElevatorConstants;
 
-public class ExtendLiftCommand extends Command {
+public class ClimbAfterTopLimitSwitch extends Command {
     // Real Variables
     private final ElevatorLift elevatorLift;
 
@@ -15,7 +13,7 @@ public class ExtendLiftCommand extends Command {
      * 
      * @param elevatorLift The subsystem to be controlled by the command ({@link ElevatorLift})
      */
-    public ExtendLiftCommand(ElevatorLift elevatorLift) {
+    public ClimbAfterTopLimitSwitch(ElevatorLift elevatorLift) {
         // Assign the variables and add the subsystem as a requirement to the command
         this.elevatorLift = elevatorLift;
         addRequirements(this.elevatorLift);
@@ -42,6 +40,6 @@ public class ExtendLiftCommand extends Command {
     @Override
     public boolean isFinished() {
         // End the command when we reach the top limit
-        return elevatorLift.topLimitActive();
+        return elevatorLift.climbAfterTopLimitSwitch();
     }
 }

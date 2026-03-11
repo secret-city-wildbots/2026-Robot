@@ -41,6 +41,7 @@ public final class Constants {
     // Elevator motor CANBus IDs
     public static final int liftMotorID = 48;
     public static final int hookMotorID = 49;
+    public static final double maxSpeedPercentage = 0.2;
 
     // Sensor ID / Ports
     public static final int lowerLimitMagneticSensorPort = 0;
@@ -53,7 +54,8 @@ public final class Constants {
 
     // Hook motor positions
     public static final double hookSafePosition = 0.0;
-    public static final double hookDeployedPosition = 75.0;
+    public static final double hookDeployedPosition = 66.24;
+    public static final double hookPosForTopRungClearance = 43.56;
     public static final double angleTolerance = 2.0; 
   }
 
