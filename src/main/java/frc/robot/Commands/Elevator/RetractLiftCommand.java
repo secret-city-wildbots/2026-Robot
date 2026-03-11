@@ -2,6 +2,8 @@ package frc.robot.Commands.Elevator;
 
 // Import WPILib Libraries
 import edu.wpi.first.wpilibj2.command.Command;
+
+import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Actors.Subsystems.Elevator.ElevatorLift;
 
 public class RetractLiftCommand extends Command {
@@ -24,7 +26,7 @@ public class RetractLiftCommand extends Command {
     @Override
     public void initialize() {
         // Call the ElevatorLift subsystem start function
-        elevatorLift.set(1.0);
+        elevatorLift.set(ElevatorConstants.maxSpeedPercentage);
     }
 
     @Override

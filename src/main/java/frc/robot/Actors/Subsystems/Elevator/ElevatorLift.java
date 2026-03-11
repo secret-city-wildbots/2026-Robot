@@ -11,6 +11,7 @@ import com.ctre.phoenix.CANifier;
 // Import Actors, Utils & Constants
 import frc.robot.Actors.Motor;
 import frc.robot.Utils.MotorType;
+import frc.robot.Utils.RotationDir;
 import frc.robot.Constants.ElevatorConstants;
 
 public class ElevatorLift extends SubsystemBase {
@@ -29,6 +30,8 @@ public class ElevatorLift extends SubsystemBase {
     public ElevatorLift() {
         // Configure the elevator lift motor
         this.motor = new Motor(ElevatorConstants.liftMotorID, MotorType.TFX, "rio");
+        this.motor.motorConfig.direction = RotationDir.CounterClockwise;
+        this.motor.applyConfig();
 
         // Configure the elevator magnetic switches
         this.lowerLimitMagneticSwitch = new DigitalInput(ElevatorConstants.lowerLimitMagneticSensorPort);
@@ -110,6 +113,18 @@ public class ElevatorLift extends SubsystemBase {
 
      public boolean topLimitActive() {
         return !this.topLimitMagneticSwitch.get();
+     }
+
+     /**
+     * Returns if we can continue to climb after the top limit switch is active
+     * 
+     * @return true to continue to lift false to false to stop lifting
+     */
+     public boolean climbAfterTopLimitSwitch() {
+        if (topLimitActive()) {
+            return Math.abs(Math.abs(this.motorRotationsSinceTopLimitSwitch) - Math.abs(this.initMotorRotations)) > 40.0;
+        } 
+        return false;
      }
 
     @Override
