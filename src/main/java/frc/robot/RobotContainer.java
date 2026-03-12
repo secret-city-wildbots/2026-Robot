@@ -86,16 +86,17 @@ public class RobotContainer {
     private final SendableChooser<Command> autoChooser;
     
     public RobotContainer() {
-        // TODO: Set default auto
-        autoChooser = AutoBuilder.buildAutoChooser("Reverse 9");
-        SmartDashboard.putData("Auto Mode", autoChooser);
-
-        configureBindings();
-         //TODO: Make sure values for Commands are correct
+        //TODO: Make sure values for Commands are correct
          // Register Named Commands within Pathplanner
         NamedCommands.registerCommand("Shoot", new SpinAndFeedCommand(transfer, spindexer, SpindexerConstants.transferRPS, SpindexerConstants.spindexerRPS , SpindexerConstants.spinupTime));
         NamedCommands.registerCommand("Intake", new IntakeSequence(intake, intakeExtension));
         NamedCommands.registerCommand("L1Climb", new ClimbSequenceL1(elevatorLift));
+        
+        // TODO: Set default auto
+        autoChooser = AutoBuilder.buildAutoChooser("Awesome");
+        SmartDashboard.putData("Auto Mode", autoChooser);
+
+        configureBindings();
 
         // Warmup PathPlanner to avoid Java pauses
         FollowPathCommand.warmupCommand().schedule();
@@ -150,7 +151,7 @@ public class RobotContainer {
         joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
         // reset the field-centric heading on left bumper press
-        joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+        joystick.povLeft().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
         // TODO: Enable logger
         // drivetrain.registerTelemetry(logger::telemeterize);

@@ -118,7 +118,7 @@ public class Robot extends TimedRobot {
     // the limelight can see a tag when disabled
 
     // Get front limelight pose
-    LimelightHelpers.PoseEstimate LLFrontPose = vision.getLimelightFrontPose();
+    LimelightHelpers.PoseEstimate LLFrontPose = vision.getLimelightFrontPosemt1();
 
     // If the pose is not null and it sees an april tag
     if (LLFrontPose != null && LLFrontPose.tagCount > 0) {
