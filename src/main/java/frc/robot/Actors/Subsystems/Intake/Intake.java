@@ -15,7 +15,7 @@ public class Intake extends SubsystemBase {
 
     public Intake() {
         // Configure the intake motor
-        this.motor = new Motor(IntakeConstants.intakeMotorID, MotorType.TFX, "rio");
+        this.motor = new Motor(IntakeConstants.intakeMotorID, MotorType.TFX, "drivetrain");
     }
 
     // Motor Controls

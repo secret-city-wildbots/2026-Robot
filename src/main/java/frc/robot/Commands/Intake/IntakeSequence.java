@@ -16,7 +16,7 @@ public class IntakeSequence extends SequentialCommandGroup {
             // new ExtensionCommand(extender, 0.2),
 
             // 2. turn on intake
-            new IntakeCommand(intake, -0.8)
+            new IntakeCommand(intake, 0.4)
 
         );
     }
