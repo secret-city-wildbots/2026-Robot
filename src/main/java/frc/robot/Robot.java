@@ -51,7 +51,8 @@ public class Robot extends TimedRobot {
     // This allows each limelight to be as accurate as possible when being setup
     vision = new Vision(
       () -> m_robotContainer.drivetrain.getState().Pose.getRotation().getDegrees(),
-      () -> Units.radiansToRotations(m_robotContainer.drivetrain.getState().Speeds.omegaRadiansPerSecond)
+      () -> Units.radiansToRotations(m_robotContainer.drivetrain.getState().Speeds.omegaRadiansPerSecond),
+      () -> m_robotContainer.drivetrain.getPose()
     );
   }
 
