@@ -80,7 +80,7 @@ public class ShotPredictor {
     }
 
     public static Rotation2d getTilt(double dist) {
-        return new Rotation2d();
+        return new Rotation2d(5/180*Math.PI);
     }
 
     public static double getAirtime(double dist) {
