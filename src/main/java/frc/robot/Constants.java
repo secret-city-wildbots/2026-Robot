@@ -36,6 +36,13 @@ public final class Constants {
     // Intake motor CANBus IDs
     public static final int intakeMotorID = 40;
     public static final int extensionMotorID = 41;
+
+    // Gear Ratios
+    public static final double extensionGearRatio = 81.0;
+
+    // Intake Ranges
+    public static final double minDegree = 0.0;
+    public static final double maxDegree = 25.0;
   }
   public static class ElevatorConstants {
     // Elevator motor CANBus IDs
