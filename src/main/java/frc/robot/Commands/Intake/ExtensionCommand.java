@@ -2,9 +2,12 @@ package frc.robot.Commands.Intake;
 
 // Import WPILib Libraries
 import edu.wpi.first.wpilibj2.command.Command;
+
+// Import Actors, Utils & Constants
 import frc.robot.Actors.Subsystems.Intake.IntakeExtension;
+
 public class ExtensionCommand extends Command {
-    // Real Variables
+    // Define Variables
     private final IntakeExtension intakeExtension;
     private final double motorSpeedPercentage;
 
@@ -12,6 +15,7 @@ public class ExtensionCommand extends Command {
      * Creates and sets up the ExtensionCommand
      * 
      * @param intakeExtension The subsystem to be controlled by the command ({@link IntakeExtension})
+     * @param motorSpeedPercentage The the input to control intake extension speed
      */
     public ExtensionCommand(IntakeExtension intakeExtension, double motorSpeedPercentage) {
         // Assign the variables and add the subsystem as a requirement to the command

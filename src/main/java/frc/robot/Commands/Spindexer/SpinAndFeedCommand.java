@@ -4,7 +4,7 @@ package frc.robot.Commands.Spindexer;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 
-// Import Spindexer Subsystems (Spindexer and Transfer)
+// Import Actors, Utils & Constants
 import frc.robot.Actors.Subsystems.Spindexer.Spindexer;
 import frc.robot.Actors.Subsystems.Spindexer.Transfer;
 
@@ -22,6 +22,15 @@ public class SpinAndFeedCommand extends Command {
     private final double spinupTime;
     private final Timer timer = new Timer();
 
+    /**
+     * Creates and sets up the SpinFuelCommand
+     * 
+     * @param transfer The subsystem to be controlled by the command ({@link Transfer})
+     * @param spindexer The subsystem to be controlled by the command ({@link Spindexer})
+     * @param transferRPS The rps for the transfer
+     * @param spindexerRPS The rps for the spindexer
+     * @param spinupTime The time between the transfer starts upbefore the spindexer
+     */
     public SpinAndFeedCommand(
         Transfer transfer,
         Spindexer spindexer,

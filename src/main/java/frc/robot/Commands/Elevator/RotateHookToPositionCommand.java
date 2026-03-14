@@ -3,6 +3,7 @@ package frc.robot.Commands.Elevator;
 // Import WPILib Libraries
 import edu.wpi.first.wpilibj2.command.Command;
 
+// Import Actors, Utils & Constants
 import frc.robot.Actors.Subsystems.Elevator.ElevatorHook;
 import frc.robot.Constants.ElevatorConstants;
 
@@ -52,7 +53,6 @@ public class RotateHookToPositionCommand extends Command {
     @Override
     public boolean isFinished() {
         // check to see where to end the command
-
         return Math.abs(elevatorHook.getCurrentAngle() - targetAngle) <= ANGLE_TOLERANCE;
     }
 }

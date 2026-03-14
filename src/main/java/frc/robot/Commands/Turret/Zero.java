@@ -3,7 +3,8 @@ package frc.robot.Commands.Turret;
 // Import WPILib Libraries
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
-// Import Subsystems
+
+// Import Actors, Utils & Constants
 import frc.robot.Actors.Subsystems.Shooter.Turret;
 
 public class Zero extends Command {
@@ -12,12 +13,9 @@ public class Zero extends Command {
     private final Turret turret;
 
     /**
-     * Creates and sets up the TrackHubCommand
+     * Creates and sets up the ZeroCommand
      * 
-     * @param turret            The subsystem to be controlled by the command
-     *                          ({@link Turret})
-     * @param robotPoseSupplier The pose of the robot (continuous supplier)
-     * @param robotVelSupplier  The velocity of the robot (continuous supplier) (robot relative)
+     * @param turret The subsystem to be controlled by the command ({@link Turret})
      */
     public Zero(Turret turret) {
         // Assign the variables and add the subsystem as a requirement to the command

@@ -4,6 +4,7 @@ package frc.robot.Commands.Elevator;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
+// Import Actors, Utils & Constants
 import frc.robot.Actors.Subsystems.Elevator.ElevatorLift;
 
 public class LiftCommand extends Command {
@@ -15,6 +16,7 @@ public class LiftCommand extends Command {
      * Creates and sets up the LiftCommand
      * 
      * @param elevatorLift The subsystem to be controlled by the command ({@link ElevatorLift})
+     * @param joystick input to control the elevator ({@link CommandXboxController})
      */
     public LiftCommand(ElevatorLift elevatorLift, CommandXboxController joystick) {
         // Assign the variables and add the subsystem as a requirement to the command

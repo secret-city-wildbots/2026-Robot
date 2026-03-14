@@ -1,20 +1,31 @@
 package frc.robot.Commands.Elevator;
 
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+// Import WPILib Libraries
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
-import frc.robot.Actors.Subsystems.Elevator.ElevatorLift;
+// Import Actors, Utils & Constants
 import frc.robot.Constants.ElevatorConstants;
+import frc.robot.Actors.Subsystems.Elevator.ElevatorLift;
 import frc.robot.Actors.Subsystems.Elevator.ElevatorHook;
 
 public class ClimbSequenceL3 extends SequentialCommandGroup {
 
+    /**
+     * Creates and sets up the ClimbSequenceL3
+     * 
+     * @param elevatorLift The subsystem to be controlled by the command ({@link ElevatorLift})
+     * @param hook The subsystem to be controlled by the command ({@link ElevatorHook})
+     */
     public ClimbSequenceL3(ElevatorLift lift, ElevatorHook hook) {
 
         addCommands(
 
-            // 1. Full extend
-            new ExtendLiftCommand(lift),
+            // 1. Full extend & drop guide
+            new ParallelCommandGroup(
+                new ExtendLiftCommand(lift),
+                new RotateHookToPositionCommand(hook, ElevatorConstants.hookGuideDeployedPosition)
+            ),
 
             // 2. Allow hooks to extend out fully
             new ClimbAfterTopLimitSwitch(lift),

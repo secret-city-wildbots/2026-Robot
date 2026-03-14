@@ -54,6 +54,7 @@ public final class Constants {
 
     // Hook motor positions
     public static final double hookSafePosition = 0.0;
+    public static final double hookGuideDeployedPosition = 10.00;
     public static final double hookDeployedPosition = 66.24;
     public static final double hookPosForTopRungClearance = 43.56;
     public static final double angleTolerance = 2.0; 
@@ -74,8 +75,14 @@ public final class Constants {
     // CANBus IDs
     public static final int leadMotorID = 46;
     public static final int followMotorID = 47;
-
     public static final int hoodMotorID = 44;
+
+    // Gear Ratios
+    public static final double hoodGearRatio = 90.0 / 16.0;
+
+    // Hood Ranges
+    public static final double minDegree = 5.0;
+    public static final double maxDegree = 75.0;
 
     public static final double wheelRadius_m = 0.05; //abt 2 in
   }
