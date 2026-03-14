@@ -1,8 +1,10 @@
 
 package frc.robot.Commands.Intake;
 
+// Import WPILib Libraries
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
+// Import Actors, Utils & Constants
 import frc.robot.Actors.Subsystems.Intake.Intake;
 import frc.robot.Actors.Subsystems.Intake.IntakeExtension;
 

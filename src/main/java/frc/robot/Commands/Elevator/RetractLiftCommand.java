@@ -3,8 +3,9 @@ package frc.robot.Commands.Elevator;
 // Import WPILib Libraries
 import edu.wpi.first.wpilibj2.command.Command;
 
-import frc.robot.Constants.ElevatorConstants;
+// Import Actors, Utils & Constants
 import frc.robot.Actors.Subsystems.Elevator.ElevatorLift;
+import frc.robot.Constants.ElevatorConstants;
 
 public class RetractLiftCommand extends Command {
     // Real Variables
@@ -15,6 +16,7 @@ public class RetractLiftCommand extends Command {
      * Creates and sets up the RetractLiftCommand
      * 
      * @param elevatorLift The subsystem to be controlled by the command ({@link ElevatorLift})
+     * @param stopAtHandoff Input to control the elevator to stop at handoff or bottom limit switch
      */
     public RetractLiftCommand(ElevatorLift elevatorLift, boolean stopAtHandoff) {
         // Assign the variables and add the subsystem as a requirement to the command
@@ -25,7 +27,7 @@ public class RetractLiftCommand extends Command {
 
     @Override
     public void initialize() {
-        // Call the ElevatorLift subsystem start function
+        // Call the ElevatorLift subsystem set function
         elevatorLift.set(ElevatorConstants.maxSpeedPercentage);
     }
 

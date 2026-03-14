@@ -24,7 +24,7 @@ public class ElevatorLift extends SubsystemBase {
     private DigitalInput topLimitMagneticSwitch;        // Top limit magnetic switch for the elevator lift
 
     // code to rotate 30 motor rotations
-    private double initMotorRotations = -999999.0;
+    private double initMotorRotations = -999999.0;          // Picked a vaule that cannot be reached to indicate it is not set
     private double motorRotationsSinceTopLimitSwitch = 0.0;
 
     public ElevatorLift() {
@@ -51,16 +51,19 @@ public class ElevatorLift extends SubsystemBase {
         // Clamp input percentage to proper range
         percent = MathUtil.clamp(percent, -1.0, 1.0);
 
-        // Set initMotorRotations
+        // Set initMotorRotations if the top limit is active and it has not been set
         if (topLimitActive() && this.initMotorRotations == -999999.0) {
             // Set motor rotations
             this.initMotorRotations = motor.pos();
         }
 
+
         if (!topLimitActive()) {
-            // Set motor rotations
+            // reset variables
             this.initMotorRotations = -999999.0;
+            this.motorRotationsSinceTopLimitSwitch = 0.0;
         } else {
+            // keep track of motor rotations
             this.motorRotationsSinceTopLimitSwitch = motor.pos();
         }
 
@@ -130,10 +133,10 @@ public class ElevatorLift extends SubsystemBase {
     @Override
     public void periodic() {
         // TODO: put logic to send position states to dashboard
-        System.out.println("--------------------------------------------------");
-        System.out.println("Swith 0: " + lowerLimitActive());
-        System.out.println("Swith 1: " + handoffLimitActive());
-        System.out.println("Swith 2: " + topLimitActive());
-        System.out.println("Can I rotate (30+ no):" + Math.abs(Math.abs(this.motorRotationsSinceTopLimitSwitch) - Math.abs(this.initMotorRotations)));
+        // System.out.println("--------------------------------------------------");
+        // System.out.println("Swith 0: " + lowerLimitActive());
+        // System.out.println("Swith 1: " + handoffLimitActive());
+        // System.out.println("Swith 2: " + topLimitActive());
+        // System.out.println("Can I rotate (30+ no):" + Math.abs(Math.abs(this.motorRotationsSinceTopLimitSwitch) - Math.abs(this.initMotorRotations)));
     }
 }

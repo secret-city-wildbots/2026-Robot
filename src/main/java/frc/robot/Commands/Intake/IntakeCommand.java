@@ -2,7 +2,10 @@ package frc.robot.Commands.Intake;
 
 // Import WPILib Libraries
 import edu.wpi.first.wpilibj2.command.Command;
+
+// Import Actors, Utils & Constants
 import frc.robot.Actors.Subsystems.Intake.Intake;
+
 public class IntakeCommand extends Command {
     // Real Variables
     private final Intake intake;
@@ -12,6 +15,7 @@ public class IntakeCommand extends Command {
      * Creates and sets up the IntakeCommand
      * 
      * @param intake The subsystem to be controlled by the command ({@link Intake})
+     * @param motorSpeedPercentage The the input to control intake motor speed
      */
     public IntakeCommand(Intake intake, double motorSpeedPercentage) {
         // Assign the variables and add the subsystem as a requirement to the command
@@ -22,7 +26,7 @@ public class IntakeCommand extends Command {
 
     @Override
     public void initialize() {
-        // Call the intake subsystem start function
+        // Call the intake subsystem set function
         intake.set(this.motorSpeedPercentage);
     }
 

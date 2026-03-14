@@ -2,6 +2,8 @@ package frc.robot.Commands.Spindexer;
 
 // Import WPILib Libraries
 import edu.wpi.first.wpilibj2.command.Command;
+
+// Import Actors, Utils & Constants
 import frc.robot.Actors.Subsystems.Spindexer.Spindexer;
 
 public class SpinFuelCommand extends Command {
@@ -13,6 +15,7 @@ public class SpinFuelCommand extends Command {
      * Creates and sets up the SpinFuelCommand
      * 
      * @param spindexer The subsystem to be controlled by the command ({@link Spindexer})
+     * @param motorRPS The rps for the spindexer
      */
     public SpinFuelCommand(Spindexer spindexer, double motorRPS) {
         // Assign the variables and add the subsystem as a requirement to the command

@@ -1,26 +1,32 @@
 package frc.robot.Actors.Subsystems.Shooter;
 
-import frc.robot.Actors.Motor;
-import frc.robot.Constants.TurretConstants;
-import frc.robot.Utils.MotorType;
-import frc.robot.Utils.RotationDir;
+// Import WPILib Libraries
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+// Import Phoneix6 Libraries
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.signals.ForwardLimitSourceValue;
 import com.ctre.phoenix6.signals.ForwardLimitTypeValue;
 import com.ctre.phoenix6.signals.ForwardLimitValue;
 
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+// Import Actors, Utils & Constants
+import frc.robot.Actors.Motor;
+import frc.robot.Utils.MotorType;
+import frc.robot.Utils.RotationDir;
+import frc.robot.Constants.TurretConstants;
 
 public class Turret extends SubsystemBase {
 
-    // Real Motor Variables
+    // initiate motors
     private Motor motor;
+
+    // initiate cancoder 
     private CANcoder absEncoder;
 
     public Turret() {
+        // Configure the turret motor
         this.motor = new Motor(TurretConstants.turretMotorID, MotorType.TFX);
         this.motor.motorConfig.direction = RotationDir.CounterClockwise;
         this.motor.motorConfig.peakForwardDC = 0.25;
@@ -31,6 +37,7 @@ public class Turret extends SubsystemBase {
         this.motor.configTFX.HardwareLimitSwitch.ForwardLimitEnable = true;
         this.motor.configTFX.HardwareLimitSwitch.ForwardLimitType = ForwardLimitTypeValue.NormallyClosed;
 
+        // TODO: DELETE THIS?
         // this.motor.configTFX.ClosedLoopGeneral.ContinuousWrap = true;
         // this.motor.configTFX.Feedback.FeedbackRemoteSensorID =
         // TurretConstants.encoderID;
@@ -45,31 +52,60 @@ public class Turret extends SubsystemBase {
         this.motor.motionMagic(0.0, 0.0, 0.0, 0.0, 0.0, 1.5, 4.0);
     }
 
+    /**
+     * Set the duty cycle output for the turret motor
+     * 
+     * @param dc
+     */
     public void dc(double dc) {
+        // Send the output to the motor
         this.motor.dc(dc);
     }
 
+    /**
+     * Set the zero of the turret motor
+     */
     public void zero() {
-        this.motor.motorTFX.setPosition(0);
+        // Set the current position to 0.0
+        this.motor.motorTFX.setPosition(0.0);
     }
 
+    /**
+     * @return true if beam break is active, false otherwise
+     */
     public boolean beambreakActive() {
+        // Return beam breat status (true or false)
         return this.motor.motorTFX.getForwardLimit().getValue().equals(ForwardLimitValue.Open);
     }
 
+    /**
+     * Sets the forward limit to a true or false state for the turret motor
+     * @param state
+     */
     public void setForwardLimit(boolean state) {
         this.motor.configTFX.HardwareLimitSwitch.ForwardLimitEnable = state;
         this.motor.applyConfig();
     } 
 
+    /**
+     * @return the turret position in degrees
+     */
     public double getTurretDegrees() {
         return absEncoder.getPosition().getValueAsDouble() * 360.0; // Convert rotations to degrees
     }
 
+    /**
+     * @return the turret position in Rotation2d 
+     */
     public Rotation2d getTurretAngle() {
         return Rotation2d.fromDegrees(getTurretDegrees());
     }
 
+    /**
+     * Sets the target angle for the turret
+     * 
+     * @param angle 
+     */
     public void setTargetAngle(Rotation2d angle) {
         // System.out.println((Math.round(angle.getRotations() * 100) / 100.0) + " : "
         //         + (Math.round(motor.motorTFX.getPosition().getValueAsDouble() / TurretConstants.turretGearRatio * 100)
@@ -78,7 +114,7 @@ public class Turret extends SubsystemBase {
         //         (Math.round(motor.motorTFX.getClosedLoopOutput().getValueAsDouble() * 100) / 100.0));
         this.motor.posMM(angle.getRotations() * TurretConstants.turretGearRatio);
         SmartDashboard.putNumber("diff", Math.abs((angle.minus(new Rotation2d(
-                motor.motorTFX.getPosition().getValueAsDouble() * 2 * Math.PI / TurretConstants.turretGearRatio)))
-                .getDegrees()));
+            motor.motorTFX.getPosition().getValueAsDouble() * 2 * Math.PI / TurretConstants.turretGearRatio)))
+            .getDegrees()));
     }
 }

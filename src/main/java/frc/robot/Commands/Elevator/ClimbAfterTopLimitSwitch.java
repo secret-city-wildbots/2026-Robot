@@ -1,15 +1,19 @@
 package frc.robot.Commands.Elevator;
 
+// Import WPILib Libraries
 import edu.wpi.first.wpilibj2.command.Command;
+
+// Import Actors, Utils & Constants
 import frc.robot.Actors.Subsystems.Elevator.ElevatorLift;
 import frc.robot.Constants.ElevatorConstants;
 
 public class ClimbAfterTopLimitSwitch extends Command {
-    // Real Variables
+    
+    // Define variables
     private final ElevatorLift elevatorLift;
 
     /**
-     * Creates and sets up the ExtendLiftCommand
+     * Creates and sets up the ClimbAfterTopLimitSwitch
      * 
      * @param elevatorLift The subsystem to be controlled by the command ({@link ElevatorLift})
      */
@@ -21,7 +25,7 @@ public class ClimbAfterTopLimitSwitch extends Command {
 
     @Override
     public void initialize() {
-        // Call the ElevatorLift subsystem start function
+        // Call the ElevatorLift subsystem set function
         elevatorLift.set(-ElevatorConstants.maxSpeedPercentage);
     }
 
@@ -39,7 +43,7 @@ public class ClimbAfterTopLimitSwitch extends Command {
 
     @Override
     public boolean isFinished() {
-        // End the command when we reach the top limit
+        // End the command when we the set rotations after the limit switch
         return elevatorLift.climbAfterTopLimitSwitch();
     }
 }
