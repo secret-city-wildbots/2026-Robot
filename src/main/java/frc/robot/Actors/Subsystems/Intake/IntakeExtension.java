@@ -22,7 +22,7 @@ public class IntakeExtension extends SubsystemBase {
         this.motor.motorTFX.setPosition(0.0);             // 0 degrees
         this.motor.motorConfig.direction = RotationDir.Clockwise;
         this.motor.applyConfig();
-        this.motor.pid(6.0, 0.0, 0.0);
+        this.motor.pid(0.02, 0.01, 0.0);
     }
 
     // Motor Controls

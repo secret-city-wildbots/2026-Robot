@@ -42,7 +42,7 @@ public final class Constants {
 
     // Intake Ranges
     public static final double minDegree = 0.0;
-    public static final double maxDegree = 25.0;
+    public static final double maxDegree = 86.0;
   }
   public static class ElevatorConstants {
     // Elevator motor CANBus IDs
