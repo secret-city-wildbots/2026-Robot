@@ -40,6 +40,10 @@ public class ElevatorLift extends SubsystemBase {
         this.topLimitMagneticSwitch = new DigitalInput(ElevatorConstants.topLimitMagneticSensorPort);
     }
 
+    public double getTemp() {
+        return this.motor.getTemp();
+    }
+
     // Motor Controls
 
     /**

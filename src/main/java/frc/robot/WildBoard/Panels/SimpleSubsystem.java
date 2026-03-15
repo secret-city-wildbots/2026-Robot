@@ -17,6 +17,16 @@ public class SimpleSubsystem extends WBPanel {
         this.addProp("velocity", false);
     }
 
+    public SimpleSubsystem(String name, boolean absolute, String unit) {
+        this.usesML = true;
+
+        this.setPanelName("SimpleSubsystem");
+        this.addProp("name", name);
+        this.addProp("absolute", absolute);
+        this.addProp("unit", unit);
+        this.addProp("velocity", false);
+    }
+
     public void updateVals(double pos, double temp_C) {
         this.ml.send(pos + "," + temp_C);
     }

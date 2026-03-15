@@ -1,63 +1,70 @@
 package frc.robot;
 
+import java.util.function.Consumer;
+
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.swerve.SwerveModule;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.hal.can.CANStatus;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Actors.Subsystems.CommandSwerveDrivetrain;
+import frc.robot.Actors.Subsystems.Elevator.ElevatorHook;
+import frc.robot.Actors.Subsystems.Elevator.ElevatorLift;
+import frc.robot.Actors.Subsystems.Intake.Intake;
+import frc.robot.Actors.Subsystems.Intake.IntakeExtension;
+import frc.robot.Actors.Subsystems.Shooter.Shooter;
+import frc.robot.Actors.Subsystems.Shooter.Turret;
+import frc.robot.Actors.Subsystems.Spindexer.Spindexer;
+import frc.robot.Actors.Subsystems.Spindexer.Transfer;
 import frc.robot.WildBoard.WildBoard;
-import frc.robot.WildBoard.Panels.AutoChooser;
-import frc.robot.WildBoard.Panels.CameraFeed;
-import frc.robot.WildBoard.Panels.Checklist;
-import frc.robot.WildBoard.Panels.Col;
-import frc.robot.WildBoard.Panels.FPSMonitor;
-import frc.robot.WildBoard.Panels.FieldMap;
-import frc.robot.WildBoard.Panels.LooptimeMonitor;
-import frc.robot.WildBoard.Panels.MasterAlarms;
-import frc.robot.WildBoard.Panels.Overrides;
-import frc.robot.WildBoard.Panels.PingMonitor;
-import frc.robot.WildBoard.Panels.Placeholder;
-import frc.robot.WildBoard.Panels.Row;
-import frc.robot.WildBoard.Panels.SimpleSubsystem;
-import frc.robot.WildBoard.Panels.SwerveModules;
-import frc.robot.WildBoard.Panels.SystemsCheck;
-import frc.robot.WildBoard.Panels.Tab;
-import frc.robot.WildBoard.Panels.VelocitySimpleSubsystem;
+import frc.robot.WildBoard.Panels.*;
 
 public class Dashboard {
     public WildBoard dashboard;
 
     private CommandSwerveDrivetrain drivetrain;
+    private Shooter shooter;
+    private Spindexer spindexer;
+    private Transfer transfer;
+    private Turret turret;
+    private Intake intake;
+    private IntakeExtension intakeExtension;
+    private ElevatorHook elevatorHook;
+    private ElevatorLift elevatorLift;
     private PowerDistribution pdh;
 
     final VelocitySimpleSubsystem WBshooter;
-    final VelocitySimpleSubsystem WBintake;
+    final SimpleSubsystem WBintake;
     final VelocitySimpleSubsystem WBspindexer;
-    final VelocitySimpleSubsystem WBindexer;
+    final VelocitySimpleSubsystem WBtransfer;
     final SimpleSubsystem WBturret;
     final SimpleSubsystem WBhood;
     final SwerveModules WBswerveModules;
     final MasterAlarms WBalarms;
 
-    public double[] temps = new double[] { 40, 40, 40, 40, 40, 40 };
-    public double[] tempDirs = new double[] { 1, 1, 1, 1, 1, 1 };
-    public double[] swervePoses = new double[] { 0, 0, 0, 0 };
-    public double[] swervePosesDirs = new double[] { 0, 0, 0, 0 };
-    public double[] swerveVels = new double[] { 0, 0, 0, 0 };
-    public double[] swerveTemps = new double[] { 40, 40, 40, 40 };
-    public double[] swerveTempsDirs = new double[] { 1, 1, 1, 1 };
-
     public double battAvg = 12.0;
     public double currAvg = 50.0;
 
-    public Dashboard(CommandSwerveDrivetrain drivetrain, PowerDistribution pdh) {
-        this.drivetrain = drivetrain;
-        this.pdh = pdh;
+    private Consumer<Command> autoChosen;
 
+    public Dashboard(CommandSwerveDrivetrain drivetrain, ElevatorHook elevatorHook, ElevatorLift elevatorLift, Shooter shooter, Spindexer spindexer, Transfer transfer, Turret turret, Intake intake, IntakeExtension intakeExtension, PowerDistribution pdh, Consumer<Command> autoChoosen) {
+        this.drivetrain = drivetrain;
+        this.shooter = shooter;
+        this.spindexer = spindexer;
+        this.transfer = transfer;
+        this.turret = turret;
+        this.intake = intake;
+        this.intakeExtension = intakeExtension;
+        this.elevatorHook = elevatorHook;
+        this.elevatorLift = elevatorLift;
+        this.pdh = pdh;
+        this.autoChosen = autoChoosen;
         dashboard = new WildBoard(5804);
 
         // Checklist
@@ -80,7 +87,8 @@ public class Dashboard {
                                                 new CameraFeed(5803))))
                 .addChild(new Col(4).addChild(
                         new AutoChooser(new String[] { "Go Forward", "Move Fast" }).onChange((String choice) -> {
-                            System.out.println(choice);
+                            System.out.println("Auto Chosen: "+choice);
+                            autoChosen.accept(new PathPlannerAuto(choice));
                         })).addChild(
                                 new Overrides(new String[] { "Limelight PowerSaver", "Disable Camera Feeds", "CompMode",
                                         "Disable Shot Smoothing", "Always Aim at Hub", "Disable Shoot Safeties" },
@@ -88,12 +96,11 @@ public class Dashboard {
 
         // Subsystems
         WBshooter = new VelocitySimpleSubsystem("Shooter");
-        WBintake = new VelocitySimpleSubsystem("Intake");
-        WBindexer = new VelocitySimpleSubsystem("Indexer");
-        WBspindexer = new VelocitySimpleSubsystem("Spindexer");
-
         WBturret = new SimpleSubsystem("Turret", false);
         WBhood = new SimpleSubsystem("Turret Hood", true);
+        WBintake = new SimpleSubsystem("Intake", true, "rps");
+        WBtransfer = new VelocitySimpleSubsystem("Transfer");
+        WBspindexer = new VelocitySimpleSubsystem("Spindexer");
 
         WBswerveModules = new SwerveModules();
         WBalarms = new MasterAlarms(
@@ -133,7 +140,7 @@ public class Dashboard {
                                                 WBintake))
                                 .addChild(
                                         new Row().addChild(
-                                                WBindexer).addChild(
+                                                WBtransfer).addChild(
                                                         WBspindexer))
                                 .addChild(
                                         new Row().addChild(
@@ -146,100 +153,68 @@ public class Dashboard {
         dashboard.addPanel(new FPSMonitor());
         dashboard.addPanel(WBalarms);
         dashboard.start();
-    }
 
-    public void update() {
-        WBshooter.updateVals(10 + Math.round(Math.random() * 5), temps[0]);
-        WBintake.updateVals(8 + Math.round(Math.random() * 0.55), temps[1]);
-        WBspindexer.updateVals(4 + Math.round(Math.random() * 0.6), temps[2]);
-        WBindexer.updateVals(0, temps[3]);
+        WBintake.onUnlock((Boolean locked) -> {
+            System.out.println("intake " + (locked ? "locked" : "unlocked"));
+            intakeExtension.setBrake(locked);
+        });
 
-        // fake temp vals
-        for (int i = 0; i < temps.length; i++) {
-            temps[i] += (Math.random() - 0.5) * 0.8 + tempDirs[i] * 0.2;
-            if (temps[i] < 20) {
-                temps[i] += 0.5;
-                tempDirs[i] = 1;
-            }
-            if (temps[i] > 80) {
-                temps[i] -= 0.5;
-                tempDirs[i] = -1;
-            }
-
-            if (Math.random() < 0.1) {
-                temps[i] += (Math.random() - 0.5) * 1.5;
-            }
-
-            if (Math.random() < 0.015) {
-                tempDirs[i] = Math.random() * 2 - 1;
-            }
-        }
-
-        WBturret.updateVals(289 + Math.round(Math.random() * 0.6) * 10, temps[4]);
-        WBhood.updateVals(21 + Math.round(Math.random() * 0.6) * 2, temps[5]);
-
-        for (int i = 0; i < swervePoses.length; i++) {
-            swervePoses[i] += (Math.random() - 0.5) * 5 + swervePosesDirs[i] * 2;
-
-            if (Math.random() < 0.05) {
-                swervePosesDirs[i] = Math.random() * 2 - 1;
-            }
-            if (swervePoses[i] < 0) {
-                swervePoses[i] += 360;
-            }
-            if (swervePoses[i] > 360) {
-                swervePoses[i] -= 360;
-            }
-
-            swerveVels[i] += (Math.random() - 0.5) * 0.1;
-            if (swerveVels[i] < 4) {
-                swerveVels[i] += 0.02;
-            }
-            if (swerveVels[i] < 0) {
-                swerveVels[i] = 0;
-            }
-            if (swerveVels[i] > 6) {
-                swerveVels[i] -= 0.03;
-            }
-            if (Math.random() < 0.01 && swerveVels[i] > 2) {
-                swerveVels[i] -= (Math.random()) * 2;
-            }
-
-            swerveTemps[i] += (Math.random() - 0.5) * 0.8 + swerveTempsDirs[i] * 0.2;
-            if (swerveTemps[i] < 20) {
-                swerveTemps[i] += 0.5;
-                swerveTempsDirs[i] = 1;
-            }
-            if (swerveTemps[i] > 80) {
-                swerveTemps[i] -= 0.5;
-                swerveTempsDirs[i] = -1;
-            }
-            if (Math.random() < 0.1) {
-                swerveTemps[i] += (Math.random() - 0.5) * 1.5;
-            }
-            if (Math.random() < 0.015) {
-                swerveTempsDirs[i] = Math.random() * 2 - 1;
-            }
-        }
-
-        WBswerveModules.updateVals(swervePoses, swerveTemps, swerveVels);
+        WBhood.onUnlock((Boolean locked) -> {
+            System.out.println("hood " + (locked ? "locked" : "unlocked"));
+            shooter.setBrake(locked);
+        });
 
         WBturret.onUnlock((Boolean locked) -> {
             System.out.println("turret " + (locked ? "locked" : "unlocked"));
+            turret.setBrake(locked);
         });
 
         WBturret.onCalib((Boolean pressed) -> {
             System.out.println("turret calib " + (pressed ? "pressed" : "released"));
+            turret.zero();
         });
+    }
+
+    public void update() {
+        WBshooter.updateVals(shooter.getRPS(), (shooter.getLeadTemp()+shooter.getFollowTemp())/2.0);
+        WBturret.updateVals(turret.getTurretDegrees(), turret.getTemp());
+        WBhood.updateVals(shooter.getPos(), shooter.getHoodTemp());
+        WBintake.updateVals(intake.getVel(), intake.getTemp());
+        WBspindexer.updateVals(spindexer.getRPS(), spindexer.getTemp());
+        WBtransfer.updateVals(transfer.getRPS(), transfer.getTemp());
+
+        double[] swerveAngles = new double[4];
+        double[] swerveTemps = new double[4];
+        double[] swerveVels = new double[4];
+        SwerveModuleState[] states = drivetrain.getState().ModuleStates;
+        SwerveModule<TalonFX, TalonFX, CANcoder>[] modules = drivetrain.getModules();
+
+        for (int i = 0; i < states.length; i++) {
+            swerveAngles[i] = states[i].angle.getDegrees();
+            swerveTemps[i] = drivetrain.getModules()[i].getDriveMotor().getDeviceTemp().getValueAsDouble();
+            swerveVels[i] = states[i].speedMetersPerSecond;
+        }
+
+        WBswerveModules.updateVals(swerveAngles, swerveTemps, swerveVels);
 
         // Master Alarms update
-        for (SwerveModule<TalonFX, TalonFX, CANcoder> module : drivetrain.getModules()) {
+
+        for (SwerveModule<TalonFX, TalonFX, CANcoder> module : modules) {
             if (module.getDriveMotor().getDeviceTemp().getValueAsDouble() > 80) {
                 WBalarms.triggerAlarm(0);
             }
         }
 
-        //TODO 1, need to detect subsystem overheats
+        double maxHeat = 70.0;
+        if (
+            shooter.getHoodTemp() > maxHeat || shooter.getLeadTemp() > maxHeat ||
+            shooter.getFollowTemp() > maxHeat || turret.getTemp() > maxHeat ||
+            intake.getTemp() > maxHeat || intakeExtension.getTemp() > maxHeat ||
+            elevatorHook.getTemp() > maxHeat || elevatorLift.getTemp() > maxHeat ||
+            spindexer.getTemp() > maxHeat || transfer.getTemp() > maxHeat
+        ) {
+            WBalarms.triggerAlarm(1);
+        }
 
         CANStatus can = RobotController.getCANStatus();
         if (can.transmitErrorCount > 0 || can.receiveErrorCount > 0 || can.percentBusUtilization > 0.9) {
