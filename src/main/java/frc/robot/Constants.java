@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 
 /**
@@ -35,11 +36,19 @@ public final class Constants {
     // Intake motor CANBus IDs
     public static final int intakeMotorID = 40;
     public static final int extensionMotorID = 41;
+
+    // Gear Ratios
+    public static final double extensionGearRatio = 81.0;
+
+    // Intake Ranges
+    public static final double minDegree = 0.0;
+    public static final double maxDegree = 86.0;
   }
   public static class ElevatorConstants {
     // Elevator motor CANBus IDs
     public static final int liftMotorID = 48;
     public static final int hookMotorID = 49;
+    public static final double maxSpeedPercentage = 0.2;
 
     // Sensor ID / Ports
     public static final int lowerLimitMagneticSensorPort = 0;
@@ -52,7 +61,9 @@ public final class Constants {
 
     // Hook motor positions
     public static final double hookSafePosition = 0.0;
-    public static final double hookDeployedPosition = 75.0;
+    public static final double hookGuideDeployedPosition = 10.00;
+    public static final double hookDeployedPosition = 66.24;
+    public static final double hookPosForTopRungClearance = 43.56;
     public static final double angleTolerance = 2.0; 
   }
 
@@ -60,6 +71,37 @@ public final class Constants {
     // CANBus IDs
     public static final int spinMotorID = 42;
     public static final int transferMotorID = 43;
+
+    // Properties
+    public static final int transferRPS = 30;
+    public static final int spindexerRPS = 10;
+    public static final double spinupTime = 0.1;
+  }
+
+  public static class ShooterConstants {
+    // CANBus IDs
+    public static final int leadMotorID = 46;
+    public static final int followMotorID = 47;
+    public static final int hoodMotorID = 44;
+
+    // Gear Ratios
+    public static final double hoodGearRatio = 90.0 / 16.0;
+
+    // Hood Ranges
+    public static final double minDegree = 5.0;
+    public static final double maxDegree = 75.0;
+
+    public static final double wheelRadius_m = 0.05; //abt 2 in
+  }
+
+  public static class TurretConstants {
+    // CANBus IDs
+    public static final int turretMotorID = 45;
+    //public static final int encoderID = 44;
+    public static final double turretBaseAirtime_s = 0.0;
+    public static final double turretDistAirtime_sPm = 0.0; // Additional airtime per meter of distance to target
+    public static final double turretGearRatio = 102.0/10.0;
+    public static final Translation2d turretPos = new Translation2d(0.5,0.5);
   }
   
   public static class DrivetrainConstants {

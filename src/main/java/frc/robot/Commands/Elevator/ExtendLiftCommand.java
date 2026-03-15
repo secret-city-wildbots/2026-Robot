@@ -2,10 +2,14 @@ package frc.robot.Commands.Elevator;
 
 // Import WPILib Libraries
 import edu.wpi.first.wpilibj2.command.Command;
+
+// Import Actors, Utils & Constants
 import frc.robot.Actors.Subsystems.Elevator.ElevatorLift;
+import frc.robot.Constants.ElevatorConstants;
 
 public class ExtendLiftCommand extends Command {
-    // Real Variables
+    
+    // Define Variables
     private final ElevatorLift elevatorLift;
 
     /**
@@ -22,7 +26,7 @@ public class ExtendLiftCommand extends Command {
     @Override
     public void initialize() {
         // Call the ElevatorLift subsystem start function
-        elevatorLift.set(-1.0);
+        elevatorLift.set(-ElevatorConstants.maxSpeedPercentage);
     }
 
     @Override

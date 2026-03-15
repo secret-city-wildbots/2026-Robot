@@ -3,7 +3,10 @@ package frc.robot.Actors;
 // Import Phoenix 6 Libraries
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.PositionDutyCycle;
+import com.ctre.phoenix6.controls.PositionVoltage;
+import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.controls.VelocityDutyCycle;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
@@ -26,6 +29,7 @@ public class Motor {
     public MotorType type;
     public TalonFX motorTFX;
     public TalonFXConfiguration configTFX;
+    public MotionMagicConfigs motionMagicConfigs = new MotionMagicConfigs();
     public Slot0Configs slot0TFX;
     public SparkMax motorSPX;
     public SparkMaxConfig configSPX;
@@ -34,6 +38,29 @@ public class Motor {
     public int CanID;
     public double desiredSpeed_rPs;
     public double actualSpeed_rPs;
+
+    public Motor(int CanID, MotorType type) {
+        this.CanID = CanID;
+        this.type = type;
+
+        switch (type) {
+            case SPX:
+                this.motorSPX = new SparkMax(CanID, com.revrobotics.spark.SparkLowLevel.MotorType.kBrushless);
+                this.configSPX = new SparkMaxConfig();
+                break;
+            case TFX:
+                this.motorTFX = new TalonFX(CanID);
+                this.configTFX = new TalonFXConfiguration();
+                this.slot0TFX = new Slot0Configs();
+                this.motorTFX.getConfigurator().setPosition(0);
+                break;
+            case None:
+                System.err.println("Motor initialized with None type with CanID " + this.CanID);
+        }
+
+        this.motorConfig = new MotorConfig();
+        this.applyConfig();
+    }
 
     public Motor(int CanID, MotorType type, String canbus) {
         this.CanID = CanID;
@@ -59,27 +86,29 @@ public class Motor {
     }
 
     // public Motor(int CanID, MotorType type, String actuatorName) {
-    //     this.CanID = CanID;
-    //     this.type = type;
-    //     this.actuatorName = actuatorName;
+    // this.CanID = CanID;
+    // this.type = type;
+    // this.actuatorName = actuatorName;
 
-    //     switch (type) {
-    //         case SPX:
-    //             this.motorSPX = new SparkMax(CanID, com.revrobotics.spark.SparkLowLevel.MotorType.kBrushless);
-    //             this.configSPX = new SparkMaxConfig();
-    //             break;
-    //         case TFX:
-    //             this.motorTFX = new TalonFX(CanID);
-    //             this.configTFX = new TalonFXConfiguration();
-    //             this.slot0TFX = new Slot0Configs();
-    //             this.motorTFX.getConfigurator().setPosition(0);
-    //             break;
-    //         case None:
-    //             System.err.println("Motor initialized with None type with CanID " + this.CanID);
-    //     }
+    // switch (type) {
+    // case SPX:
+    // this.motorSPX = new SparkMax(CanID,
+    // com.revrobotics.spark.SparkLowLevel.MotorType.kBrushless);
+    // this.configSPX = new SparkMaxConfig();
+    // break;
+    // case TFX:
+    // this.motorTFX = new TalonFX(CanID);
+    // this.configTFX = new TalonFXConfiguration();
+    // this.slot0TFX = new Slot0Configs();
+    // this.motorTFX.getConfigurator().setPosition(0);
+    // break;
+    // case None:
+    // System.err.println("Motor initialized with None type with CanID " +
+    // this.CanID);
+    // }
 
-    //     this.motorConfig = new MotorConfig();
-    //     this.applyConfig();
+    // this.motorConfig = new MotorConfig();
+    // this.applyConfig();
     // }
 
     /**
@@ -101,34 +130,6 @@ public class Motor {
     }
 
     /**
-     * Sets the duty cycle of the motor
-     * 
-     * @param motor_rPs from ? to ?
-     */
-    public void vel_dc(double motor_rPs) {
-
-        switch (this.type) {
-            case SPX:
-                this.motorSPX.set(motor_rPs);
-                break;
-            case TFX:
-                //this.motorTFX.set(motor_rPs);
-                if (Math.abs(motor_rPs) > 0.1) {
-                    VelocityDutyCycle controlRequest = new VelocityDutyCycle(motor_rPs);
-                    desiredSpeed_rPs = motor_rPs;
-                    actualSpeed_rPs = motorTFX.getVelocity().getValueAsDouble();
-                    motorTFX.setControl(controlRequest);   
-                }else{
-                    motorTFX.set(0.0);
-                }
-
-                break;
-            case None:
-                System.err.println("tried to set dc on None motor with CanID " + this.CanID);
-        }
-    } 
-    
-    /**
      * Gets the duty cycle of the motor
      * 
      * @return the duty cycle from -1.0 to 1.0
@@ -141,6 +142,34 @@ public class Motor {
                 return this.motorTFX.get();
             default:
                 return 0.0;
+        }
+    }
+
+    /**
+     * Sets the velocity of the motor
+     * 
+     * @param motor_rPs from ? to ?
+     */
+    public void vel(double motor_rPs) {
+
+        switch (this.type) {
+            case SPX:
+                this.motorSPX.set(motor_rPs);
+                break;
+            case TFX:
+                // this.motorTFX.set(motor_rPs);
+                if (Math.abs(motor_rPs) > 0.1) {
+                    VelocityDutyCycle controlRequest = new VelocityDutyCycle(motor_rPs);
+                    desiredSpeed_rPs = motor_rPs;
+                    actualSpeed_rPs = motorTFX.getVelocity().getValueAsDouble();
+                    motorTFX.setControl(controlRequest);
+                } else {
+                    motorTFX.set(0.0);
+                }
+
+                break;
+            case None:
+                System.err.println("tried to set dc on None motor with CanID " + this.CanID);
         }
     }
 
@@ -178,8 +207,29 @@ public class Motor {
                 motorSPX.getClosedLoopController().setSetpoint(pos, ControlType.kPosition, ClosedLoopSlot.kSlot0, ff);
                 break;
             case TFX:
-                PositionDutyCycle controlRequest = new PositionDutyCycle(pos);
+                PositionVoltage controlRequest = new PositionVoltage(pos);
                 controlRequest.FeedForward = ff;
+                motorTFX.setControl(controlRequest);
+                break;
+            case None:
+                System.err.println("tried to set pos on None motor with CanID " + this.CanID);
+        }
+    }
+
+    /**
+     * Sets the position of the motor using motionmagic
+     * 
+     * @param pos the position to set to in whatever unit is being used, usually
+     *            motor rotations
+     * @param ff  the feedforward
+     */
+    public void posMM(double pos) {
+        switch (this.type) {
+            case SPX:
+                motorSPX.getClosedLoopController().setSetpoint(pos, ControlType.kPosition, ClosedLoopSlot.kSlot0);
+                break;
+            case TFX:
+                MotionMagicVoltage controlRequest = new MotionMagicVoltage(pos);
                 motorTFX.setControl(controlRequest);
                 break;
             case None:
@@ -221,6 +271,7 @@ public class Motor {
 
     /**
      * gives current rotor velocity in RpS
+     * 
      * @return the motor velocity
      */
     public double vel() {
@@ -236,6 +287,7 @@ public class Motor {
 
     /**
      * gets if there are currently any faults oon the motor
+     * 
      * @return
      */
     public boolean isFault() {
@@ -286,7 +338,40 @@ public class Motor {
     }
 
     /**
-     * set it to brake or coast, doesn't cause performance hit if the value isn't different
+     * Sets the PID of the motor (motion magic mode)
+     * 
+     * @param p proportional
+     * @param i integral
+     * @param d derivative
+     */
+    public void motionMagic(double p, double i, double d, double s, double v, double vel, double acc) {
+        switch (type) {
+            case SPX:
+                configSPX.closedLoop.pid(p, i, d);
+                motorSPX.configure(configSPX, ResetMode.kNoResetSafeParameters,
+                        PersistMode.kPersistParameters);
+                break;
+            case TFX:
+                this.slot0TFX.kP = p;
+                this.slot0TFX.kI = i;
+                this.slot0TFX.kD = d;
+                this.slot0TFX.kS = s;
+                this.slot0TFX.kV = v;
+                this.motorTFX.getConfigurator().apply(this.slot0TFX);
+
+                motionMagicConfigs.MotionMagicCruiseVelocity = vel;
+                motionMagicConfigs.MotionMagicAcceleration = acc;
+
+                motorTFX.getConfigurator().apply(motionMagicConfigs);
+                break;
+            case None:
+                System.err.println("tried to set pid on None motor with CanID " + this.CanID);
+        }
+    }
+
+    /**
+     * set it to brake or coast, doesn't cause performance hit if the value isn't
+     * different
      * or if it is a TolonFX Motor, as TFX has a way of setting to idleMode
      * without pushing the configs, allowing better performance
      * 
@@ -301,7 +386,7 @@ public class Motor {
                     break;
                 case TFX:
                     this.motorConfig.brake = brake;
-                    this.motorTFX.setNeutralMode((brake) ? NeutralModeValue.Brake:NeutralModeValue.Coast);
+                    this.motorTFX.setNeutralMode((brake) ? NeutralModeValue.Brake : NeutralModeValue.Coast);
                     break;
                 case None:
                     System.err.println("tried to set brake mode on None motor with CanID " + this.CanID);
@@ -311,7 +396,7 @@ public class Motor {
 
     public void applyConfig() {
         switch (this.type) {
-            //TODO add SPX config for all values
+            // TODO add SPX config for all values
             case SPX:
                 this.configSPX.inverted(this.motorConfig.direction == RotationDir.Clockwise);
                 this.configSPX.idleMode((this.motorConfig.brake) ? IdleMode.kBrake : IdleMode.kCoast);
@@ -338,6 +423,6 @@ public class Motor {
 
     public void applyTalonFxConfig(TalonFXConfiguration config) {
         // Apply the configuration passed in
-        this.motorTFX.getConfigurator().apply(config); 
+        this.motorTFX.getConfigurator().apply(config);
     }
 }

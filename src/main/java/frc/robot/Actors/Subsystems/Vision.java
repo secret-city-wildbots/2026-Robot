@@ -1,10 +1,15 @@
 package frc.robot.Actors.Subsystems;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 // Import WPILib Libraries
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 // Import Actors, Utils & Constants
 import frc.robot.Utils.LimelightHelpers;
+import frc.robot.Utils.LimelightHelpers.RawFiducial;
+
 import java.util.function.DoubleSupplier;
 import frc.robot.Constants.VisionConstants;
 
@@ -71,15 +76,13 @@ public class Vision extends SubsystemBase {
             }
 
             // Prefer:
-            // 1) more tags
+            // 1) closer tags
             // 2) lower ambiguity
-            // 3) closer tags
+            // 3) more tags
             if (
-                pose.tagCount > best.pose.tagCount ||
-                (pose.tagCount == best.pose.tagCount && scored.avgAmbiguity < best.avgAmbiguity) ||
-                (pose.tagCount == best.pose.tagCount &&
-                scored.avgAmbiguity == best.avgAmbiguity &&
-                scored.avgDistance < best.avgDistance)
+                scored.avgDistance < best.avgDistance ||
+                (scored.avgDistance < best.avgDistance && scored.avgAmbiguity < best.avgAmbiguity) ||
+                (scored.avgDistance < best.avgDistance && scored.avgAmbiguity < best.avgAmbiguity && pose.tagCount > best.pose.tagCount)
             ) {
                 // Set the best to the currently better scored camera
                 best = scored;
@@ -88,6 +91,77 @@ public class Vision extends SubsystemBase {
 
         // If best is not null return the pose else return null
         return best != null ? best.pose : null;
+    }
+
+    /*
+     * returns all the poses from all of the cameras
+     */
+    public LimelightHelpers.PoseEstimate[] getPoses() {
+        // Create an array of poses for our cameras
+        LimelightHelpers.PoseEstimate[] poses = new LimelightHelpers.PoseEstimate[VisionConstants.limelightNames.length];
+
+        // Loop through each camera name to setup the camera to pull data
+        for (int index = 0; index < VisionConstants.limelightNames.length; index++) {
+            // Get the camera name
+            String limelightID = VisionConstants.limelightNames[index];
+            // Set the camera to the robot orientation
+            LimelightHelpers.SetRobotOrientation(limelightID, this.headingSupplier.getAsDouble(), 0, 0, 0, 0, 0);
+            // Get the pose of the camera
+            poses[index] = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(limelightID);
+        }
+
+        return poses;
+    }
+
+    /*
+     * Get the meanPose from all of the cameras
+     */
+    public LimelightHelpers.PoseEstimate getMeanPose() {
+        LimelightHelpers.PoseEstimate[] poses = this.getPoses();
+
+        Translation2d meant2d = new Translation2d();
+        double totalt2d = 0.0;
+        Rotation2d meanr2d = new Rotation2d();
+        double totalr2d = 0.0;
+
+        double timestamp = 0.0;
+        double highestWeight = 0.0;
+
+        for (LimelightHelpers.PoseEstimate pose : poses) {
+            if (!pose.isMegaTag2) {
+                continue;
+            }
+            if (pose.tagCount == 0) {
+                continue;
+            }
+
+            // change this to however we want to pick whats best
+            double weight = 0.0;
+
+            for (RawFiducial rawF : pose.rawFiducials) {
+                weight += 1 / rawF.distToCamera;
+            }
+
+            meant2d.plus(pose.pose.getTranslation().times(weight));
+            meanr2d.plus(pose.pose.getRotation().times(weight));
+
+            totalt2d += weight;
+            totalr2d += weight;
+
+            if (weight > highestWeight) {
+                timestamp = pose.timestampSeconds;
+            }
+        }
+
+        meant2d.div(totalt2d);
+        meanr2d.div(totalr2d);
+
+        Pose2d mean = new Pose2d(meant2d, meanr2d);
+
+        LimelightHelpers.PoseEstimate poseEst = new LimelightHelpers.PoseEstimate();
+        poseEst.pose = mean;
+        poseEst.timestampSeconds = timestamp;
+        return poseEst;
     }
 
     /*

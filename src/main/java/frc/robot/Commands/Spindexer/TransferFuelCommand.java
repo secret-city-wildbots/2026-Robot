@@ -2,6 +2,8 @@ package frc.robot.Commands.Spindexer;
 
 // Import WPILib Libraries
 import edu.wpi.first.wpilibj2.command.Command;
+
+// Import Actors, Utils & Constants
 import frc.robot.Actors.Subsystems.Spindexer.Transfer;
 
 public class TransferFuelCommand extends Command {
@@ -13,6 +15,7 @@ public class TransferFuelCommand extends Command {
      * Creates and sets up the TransferFuelCommand
      * 
      * @param spindexerTransfer The subsystem to be controlled by the command ({@link Transfer})
+     * @param motorRPS The rps for the transfer
      */
     public TransferFuelCommand(Transfer spindexerTransfer, double motorRPS) {
         // Assign the variables and add the subsystem as a requirement to the command

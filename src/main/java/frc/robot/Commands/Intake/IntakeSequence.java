@@ -1,22 +1,24 @@
 
 package frc.robot.Commands.Intake;
 
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+// Import WPILib Libraries
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 
+// Import Actors, Utils & Constants
 import frc.robot.Actors.Subsystems.Intake.Intake;
 import frc.robot.Actors.Subsystems.Intake.IntakeExtension;
 
-public class IntakeSequence extends SequentialCommandGroup {
+public class IntakeSequence extends ParallelCommandGroup {
 
     public IntakeSequence(Intake intake, IntakeExtension extender) {
 
         addCommands(
 
             // 1. extend out intake
-            // new ExtensionCommand(extender, 0.2),
+            new ExtensionCommand(extender, 86),
 
             // 2. turn on intake
-            new IntakeCommand(intake, -0.8)
+            new IntakeCommand(intake, 0.6)
 
         );
     }
