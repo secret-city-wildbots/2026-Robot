@@ -86,7 +86,7 @@ public class Dashboard {
                                         new CameraFeed(5802)).addChild(
                                                 new CameraFeed(5803))))
                 .addChild(new Col(4).addChild(
-                        new AutoChooser(new String[] { "Go Forward", "Move Fast" }).onChange((String choice) -> {
+                        new AutoChooser(new String[] { "Awesome", "Bumpy Ride L-R" }).onChange((String choice) -> {
                             System.out.println("Auto Chosen: "+choice);
                             autoChosen.accept(new PathPlannerAuto(choice));
                         })).addChild(

@@ -99,7 +99,7 @@ public class RobotContainer {
     private final Consumer<Command> autoChosen = (Command newAuto) -> {this.auto = newAuto;};
     
     public RobotContainer() {
-        dashboard = new Dashboard(drivetrain, elevatorHook, elevatorLift, shooter, spindexer, transfer, turret, intake, intakeExtension, pdh);
+        dashboard = new Dashboard(drivetrain, elevatorHook, elevatorLift, shooter, spindexer, transfer, turret, intake, intakeExtension, pdh, autoChosen);
 
         //TODO: Make sure values for Commands are correct
          // Register Named Commands within Pathplanner
