@@ -2,39 +2,37 @@ package frc.robot.Commands.Elevator;
 
 // Import WPILib Libraries
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 // Import Actors, Utils & Constants
 import frc.robot.Actors.Subsystems.Elevator.ElevatorLift;
+import frc.robot.Constants.ElevatorConstants;
 
-public class LiftCommand extends Command {
-    // Real Variables
+public class ClimbAfterTopLimitSwitch extends Command {
+    
+    // Define variables
     private final ElevatorLift elevatorLift;
-    private final CommandXboxController joystick;
 
     /**
-     * Creates and sets up the LiftCommand
+     * Creates and sets up the ClimbAfterTopLimitSwitch
      * 
      * @param elevatorLift The subsystem to be controlled by the command ({@link ElevatorLift})
-     * @param joystick input to control the elevator ({@link CommandXboxController})
      */
-    public LiftCommand(ElevatorLift elevatorLift, CommandXboxController joystick) {
+    public ClimbAfterTopLimitSwitch(ElevatorLift elevatorLift) {
         // Assign the variables and add the subsystem as a requirement to the command
         this.elevatorLift = elevatorLift;
-        this.joystick = joystick;
         addRequirements(this.elevatorLift);
     }
 
     @Override
     public void initialize() {
-        // Call the ElevatorLift subsystem start function
+        // Call the ElevatorLift subsystem set function
+        elevatorLift.set(-ElevatorConstants.maxSpeedPercentage);
     }
 
     @Override
     public void execute() {
         // Only use execute if we have dynamically changing speeds. This is called each loop (~20ms).
         // So if we have just a constant speed, use initialize to avoid spamming the canbus network.
-        elevatorLift.set(this.joystick.getLeftY() * 0.8);
     }
 
     @Override
@@ -45,7 +43,7 @@ public class LiftCommand extends Command {
 
     @Override
     public boolean isFinished() {
-        // Do not end the command
-        return false;
+        // End the command when we the set rotations after the limit switch
+        return elevatorLift.climbAfterTopLimitSwitch();
     }
 }

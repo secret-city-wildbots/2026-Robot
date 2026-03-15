@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 // Import Actors, Utils & Constants
 import frc.robot.Actors.Motor;
 import frc.robot.Utils.MotorType;
+import frc.robot.Utils.RotationDir;
 import frc.robot.Constants.IntakeConstants;
 
 public class Intake extends SubsystemBase {
@@ -16,6 +17,8 @@ public class Intake extends SubsystemBase {
     public Intake() {
         // Configure the intake motor
         this.motor = new Motor(IntakeConstants.intakeMotorID, MotorType.TFX, "rio");
+        this.motor.motorConfig.direction = RotationDir.CounterClockwise;
+        this.motor.applyConfig();
     }
 
     // Motor Controls

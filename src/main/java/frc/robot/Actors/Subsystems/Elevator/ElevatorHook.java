@@ -83,6 +83,14 @@ public class ElevatorHook extends SubsystemBase {
         return this.encoder.getAbsolutePosition().getValueAsDouble() * 360.0;
     }
 
+    /**
+     * Get the target position in degrees
+     */
+    public double getTargetAngle() {
+        // We return the target angle
+        return this.targetAngle;
+    }
+
     @Override
     public void periodic() {
         // TODO: put logic to send position states to dashboard
