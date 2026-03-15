@@ -21,6 +21,14 @@ public class Intake extends SubsystemBase {
         this.motor.applyConfig();
     }
 
+    public double getTemp() {
+        return this.motor.getTemp();
+    }
+
+    public double getVel() {
+        return this.motor.vel();
+    }
+
     // Motor Controls
 
     /**

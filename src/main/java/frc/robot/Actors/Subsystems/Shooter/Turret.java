@@ -22,9 +22,6 @@ public class Turret extends SubsystemBase {
     // initiate motors
     private Motor motor;
 
-    // initiate cancoder 
-    private CANcoder absEncoder;
-
     public Turret() {
         // Configure the turret motor
         this.motor = new Motor(TurretConstants.turretMotorID, MotorType.TFX);
@@ -62,6 +59,11 @@ public class Turret extends SubsystemBase {
         this.motor.dc(dc);
     }
 
+    public void setBrake(boolean brake) {
+        this.motor.motorConfig.brake = brake;
+        this.motor.applyConfig();
+    }
+
     /**
      * Set the zero of the turret motor
      */
@@ -91,7 +93,7 @@ public class Turret extends SubsystemBase {
      * @return the turret position in degrees
      */
     public double getTurretDegrees() {
-        return absEncoder.getPosition().getValueAsDouble() * 360.0; // Convert rotations to degrees
+        return this.motor.pos() * TurretConstants.turretGearRatio * 360.0; // Convert rotations to degrees
     }
 
     /**
@@ -99,6 +101,10 @@ public class Turret extends SubsystemBase {
      */
     public Rotation2d getTurretAngle() {
         return Rotation2d.fromDegrees(getTurretDegrees());
+    }
+
+    public double getTemp() {
+        return this.motor.getTemp();
     }
 
     /**

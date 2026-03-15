@@ -25,6 +25,15 @@ public class IntakeExtension extends SubsystemBase {
         this.motor.pid(0.02, 0.01, 0.0);
     }
 
+    public double getTemp() {
+        return this.motor.getTemp();
+    }
+
+    public void setBrake(boolean brake) {
+        this.motor.motorConfig.brake = brake;
+        this.motor.applyConfig();
+    }
+
     // Motor Controls
 
     /**

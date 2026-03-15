@@ -75,6 +75,8 @@ public class Robot extends TimedRobot {
     }
     // TODO: Printing pose
     // System.out.println(m_robotContainer.drivetrain.getState().Pose);
+
+    m_robotContainer.dashboard.update();
   }
 
   @Override

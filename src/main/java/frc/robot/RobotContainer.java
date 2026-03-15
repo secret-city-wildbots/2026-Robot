@@ -13,15 +13,21 @@ import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.FollowPathCommand;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 
 // Import WPILib Librarires
 import static edu.wpi.first.units.Units.*;
+
+import java.util.function.Consumer;
+
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
@@ -31,6 +37,7 @@ import edu.wpi.first.math.filter.SlewRateLimiter;
 import frc.robot.generated.TunerConstants;
 import frc.robot.Constants.SpindexerConstants;
 import frc.robot.Utils.JoystickScaler;
+import frc.robot.WildBoard.Panels.AutoChooser;
 // Import subystems
 import frc.robot.Actors.Subsystems.CommandSwerveDrivetrain;
 import frc.robot.Actors.Subsystems.Intake.Intake;
@@ -83,26 +90,29 @@ public class RobotContainer {
     private final Shooter shooter = new Shooter();
     private final Turret turret = new Turret();
 
+    private final PowerDistribution pdh = new PowerDistribution();
+
+    public final Dashboard dashboard;
+
       /* Path follower */
-    private final SendableChooser<Command> autoChooser;
+    private Command auto;
+    private final Consumer<Command> autoChosen = (Command newAuto) -> {this.auto = newAuto;};
     
     public RobotContainer() {
+        dashboard = new Dashboard(drivetrain, elevatorHook, elevatorLift, shooter, spindexer, transfer, turret, intake, intakeExtension, pdh);
+
         //TODO: Make sure values for Commands are correct
          // Register Named Commands within Pathplanner
         NamedCommands.registerCommand("Shoot", new SpinAndFeedCommand(transfer, spindexer, SpindexerConstants.transferRPS, SpindexerConstants.spindexerRPS , SpindexerConstants.spinupTime));
         NamedCommands.registerCommand("Intake", new IntakeSequence(intake, intakeExtension));
         NamedCommands.registerCommand("L1Climb", new ClimbSequenceL1(elevatorLift));
-        
-        // TODO: Set default auto
-        autoChooser = AutoBuilder.buildAutoChooser("Awesome");
-        SmartDashboard.putData("Auto Mode", autoChooser);
+
+        auto = new PathPlannerAuto("Awesome");
 
         configureBindings();
 
         // Warmup PathPlanner to avoid Java pauses
-        FollowPathCommand.warmupCommand().schedule();
-
-
+        CommandScheduler.getInstance().schedule(FollowPathCommand.warmupCommand());
     }
 
     private void configureBindings() {
@@ -181,7 +191,7 @@ public class RobotContainer {
 
     public Command getAutonomousCommand() {
          /* Run the path selected from the auto chooser */
-        return autoChooser.getSelected();
+        return auto;
         // /* Run the path selected from the auto chooser */
         // return Commands.print("No autonomous command configured");
     }
