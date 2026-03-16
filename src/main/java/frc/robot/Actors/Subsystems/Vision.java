@@ -3,7 +3,7 @@ package frc.robot.Actors.Subsystems;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.wpilibj.Timer;
+
 // Import WPILib Libraries
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -18,36 +18,27 @@ import frc.robot.Constants.VisionConstants;
 
 public class Vision extends SubsystemBase {
 
+    public record FusedVisionResult(Pose2d pose, double tiemstamp) {}
+
     // This is a scored pose record to help compare the camera readings to determine the best position
     private record ScoredPose(
         LimelightHelpers.PoseEstimate pose,
         double lowestDist
     ) {}
 
-    // Used to define a rectangular vision zone on field 
-    // Since coordinates are relative to blue-origin whether were on red or blue side
-    // We only need to take in the value of the blue and red AprilTags    
-    private record VisionZone(
-        double xMin,
-        double xMax,
-        double yMin,
-        double yMax,
-        int[] blueTags,
-        int[] redTags
-    ) {}
-
     // These are suppliers needing to be fed when instantiated. These will help to align the cameras indiviually with each
     // heading and rotation speeds in more real time
     private final DoubleSupplier headingSupplier;
     private final DoubleSupplier omegaRpsSupplier;
-    //private final Supplier<Pose2d> poseSupplier;
+    private final Supplier<Rotation2d> rotation2dSupplier;
 
     /*
      * Constructor for vision
      */
-    public Vision(DoubleSupplier headingSupplier, DoubleSupplier omegaRpsSupplier) {
+    public Vision(DoubleSupplier headingSupplier, DoubleSupplier omegaRpsSupplier, Supplier<Rotation2d> rotation2dSupplier) {
         this.headingSupplier = headingSupplier;
         this.omegaRpsSupplier = omegaRpsSupplier;
+        this.rotation2dSupplier = rotation2dSupplier;
     }
 
     /*
@@ -102,6 +93,49 @@ public class Vision extends SubsystemBase {
 
         // If best is not null return the pose else return null
         return best != null ? best.pose : null;
+    }
+
+    public FusedVisionResult fuseFourLimelights() {
+        double sumX = 0, sumY = 0, sumWeight = 0;
+
+        // Create an array of poses for our cameras
+        LimelightHelpers.PoseEstimate[] poses = new LimelightHelpers.PoseEstimate[VisionConstants.limelightNames.length];
+
+        // Loop through each camera name to setup the camera to pull data
+        for (int index = 0; index < VisionConstants.limelightNames.length; index++) {
+            // Get the camera name
+            String limelightID = VisionConstants.limelightNames[index];
+            // Set the camera to the robot orientation
+            LimelightHelpers.SetRobotOrientation(limelightID, this.headingSupplier.getAsDouble(), 0, 0, 0, 0, 0);
+            // Get the pose of the camera
+            poses[index] = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(limelightID);
+        }
+
+        // Loop through all of the poses to determine the best one
+        for (var pose : poses) {
+            if (pose.tagCount == 0) continue;
+
+            // Weight = 1 / variance = 1 / (k * distance)²
+            double dist = pose.avgTagDist;
+            double weight = 1.0 / (dist * dist);
+
+            // Scale down if only 1 tag
+            if (pose.tagCount == 1) weight *= 0.5;
+
+            sumX += pose.pose.getX() * weight;
+            sumY += pose.pose.getY() * weight;
+            sumWeight += weight;
+        }
+
+        if (sumWeight == 0) return null; // No valid estimates
+
+        Pose2d fusedPose = new Pose2d(
+            sumX / sumWeight,
+            sumY / sumWeight,
+            this.rotation2dSupplier.get() // Trust gyro for heading
+        );
+
+        return new FusedVisionResult(fusedPose, poses[VisionConstants.limelightNames.length - 1].timestampSeconds);
     }
 
     /*
