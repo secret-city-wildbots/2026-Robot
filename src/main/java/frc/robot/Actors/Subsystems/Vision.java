@@ -3,6 +3,7 @@ package frc.robot.Actors.Subsystems;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.Timer;
 // Import WPILib Libraries
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -11,6 +12,8 @@ import frc.robot.Utils.LimelightHelpers;
 import frc.robot.Utils.LimelightHelpers.RawFiducial;
 
 import java.util.function.DoubleSupplier;
+import java.util.function.Supplier;
+
 import frc.robot.Constants.VisionConstants;
 
 public class Vision extends SubsystemBase {
@@ -18,14 +21,26 @@ public class Vision extends SubsystemBase {
     // This is a scored pose record to help compare the camera readings to determine the best position
     private record ScoredPose(
         LimelightHelpers.PoseEstimate pose,
-        double avgAmbiguity,
-        double avgDistance
+        double lowestDist
+    ) {}
+
+    // Used to define a rectangular vision zone on field 
+    // Since coordinates are relative to blue-origin whether were on red or blue side
+    // We only need to take in the value of the blue and red AprilTags    
+    private record VisionZone(
+        double xMin,
+        double xMax,
+        double yMin,
+        double yMax,
+        int[] blueTags,
+        int[] redTags
     ) {}
 
     // These are suppliers needing to be fed when instantiated. These will help to align the cameras indiviually with each
     // heading and rotation speeds in more real time
     private final DoubleSupplier headingSupplier;
     private final DoubleSupplier omegaRpsSupplier;
+    //private final Supplier<Pose2d> poseSupplier;
 
     /*
      * Constructor for vision
@@ -77,13 +92,9 @@ public class Vision extends SubsystemBase {
 
             // Prefer:
             // 1) closer tags
-            // 2) lower ambiguity
-            // 3) more tags
             if (
-                scored.avgDistance < best.avgDistance ||
-                (scored.avgDistance < best.avgDistance && scored.avgAmbiguity < best.avgAmbiguity) ||
-                (scored.avgDistance < best.avgDistance && scored.avgAmbiguity < best.avgAmbiguity && pose.tagCount > best.pose.tagCount)
-            ) {
+                scored.lowestDist < best.lowestDist
+                && scored.lowestDist < 2) {
                 // Set the best to the currently better scored camera
                 best = scored;
             }
@@ -112,6 +123,28 @@ public class Vision extends SubsystemBase {
 
         return poses;
     }
+
+    /*public LimelightHelpers.PoseEstimate[] getTurretPoses() {
+        LimelightHelpers.PoseEstimate[] poses = getPoses();
+
+        int[] hubIDs = new int[] {
+            2,3,4,5,8,9,10,11,18,19,20,21,24,25,26
+        };
+
+        for (LimelightHelpers.PoseEstimate pose: poses) {
+            LimelightHelpers.RawFiducial[] rawFs = pose.rawFiducials;
+
+            for (LimelightHelpers.RawFiducial rawF: rawFs) {
+                boolean good = false;
+                for (int id: hubIDs) {
+                    if (rawF.id == id) {
+                        good = true;
+                    }
+                }
+                //TODO finish that
+            }
+        }
+    }*/
 
     /*
      * Get the meanPose from all of the cameras
@@ -252,21 +285,15 @@ public class Vision extends SubsystemBase {
      */
     private ScoredPose score(LimelightHelpers.PoseEstimate mt2) {
         // Initialize the ambiguity and distance
-        double amb = 0.0;
-        double dist = 0.0;
+        double lowestDist = 999999999.9;
 
         // Loop through all of the raw fiducial data and add them all up
         for (var rawF : mt2.rawFiducials) {
-            amb += rawF.ambiguity;
-            dist += rawF.distToRobot;
+            if (rawF.distToRobot < lowestDist) lowestDist = rawF.distToRobot;
         }
 
-        // Average the results
-        amb /= mt2.rawFiducials.length;
-        dist /= mt2.rawFiducials.length;
-
         // Return a new scored pose
-        return new ScoredPose(mt2, amb, dist);
+        return new ScoredPose(mt2, lowestDist);
     }
 
     @Override
