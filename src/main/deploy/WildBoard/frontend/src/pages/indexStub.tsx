@@ -1,9 +1,9 @@
-import { h, Fragment } from "[DEPLOY]/Wildboard/frontend/src/node_modules/preact";
-import { useMemo, useState } from "[DEPLOY]/Wildboard/frontend/src/node_modules/preact/hooks";
-import { CompModeContext } from "[DEPLOY]/Wildboard/frontend/src/ws/CompModeContext.tsx";
-import TabbedContainer from "[DEPLOY]/Wildboard/frontend/src/components/TabbedContainer.tsx";
-import Container from "[DEPLOY]/Wildboard/frontend/src/components/Container.tsx";
-import { WsEventBus } from "[DEPLOY]/Wildboard/frontend/src/ws/WSEventBus.ts";
+import { h, Fragment } from "[DEPLOY]/WildBoard/frontend/src/node_modules/preact";
+import { useMemo, useState } from "[DEPLOY]/WildBoard/frontend/src/node_modules/preact/hooks";
+import { CompModeContext } from "[DEPLOY]/WildBoard/frontend/src/ws/CompModeContext.tsx";
+import TabbedContainer from "[DEPLOY]/WildBoard/frontend/src/components/TabbedContainer.tsx";
+import Container from "[DEPLOY]/WildBoard/frontend/src/components/Container.tsx";
+import { WsEventBus } from "[DEPLOY]/WildBoard/frontend/src/ws/WSEventBus.ts";
 [IMPORTS]
 
 export default function () {
