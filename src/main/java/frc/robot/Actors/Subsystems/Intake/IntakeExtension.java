@@ -33,6 +33,15 @@ public class IntakeExtension extends SubsystemBase {
         SmartDashboard.putNumber("D", d);
     }
 
+    public double getTemp() {
+        return this.motor.getTemp();
+    }
+
+    public void setBrake(boolean brake) {
+        this.motor.motorConfig.brake = brake;
+        this.motor.applyConfig();
+    }
+
     // Motor Controls
 
     /**
