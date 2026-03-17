@@ -7,12 +7,15 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.swerve.SwerveModule;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
+import edu.wpi.first.networktables.NetworkTableInstance; 
 import edu.wpi.first.hal.can.CANStatus;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.VisionConstants;
 import frc.robot.Actors.Subsystems.CommandSwerveDrivetrain;
 import frc.robot.Actors.Subsystems.Elevator.ElevatorHook;
 import frc.robot.Actors.Subsystems.Elevator.ElevatorLift;
@@ -24,6 +27,7 @@ import frc.robot.Actors.Subsystems.Spindexer.Spindexer;
 import frc.robot.Actors.Subsystems.Spindexer.Transfer;
 import frc.robot.WildBoard.WildBoard;
 import frc.robot.WildBoard.Panels.*;
+
 
 public class Dashboard {
     public WildBoard dashboard;
@@ -47,9 +51,12 @@ public class Dashboard {
     final SimpleSubsystem WBhood;
     final SwerveModules WBswerveModules;
     final MasterAlarms WBalarms;
+    final FieldMap WBfieldMap;
 
     public double battAvg = 12.0;
     public double currAvg = 50.0;
+    
+    public boolean shotSmoothing = true;
 
     private Consumer<Command> autoChosen;
 
@@ -67,6 +74,8 @@ public class Dashboard {
         this.autoChosen = autoChoosen;
         dashboard = new WildBoard(5804);
 
+        WBfieldMap = new FieldMap();
+
         // Checklist
         dashboard.addTab(new Tab()
                 .addChild(new Checklist())
@@ -76,7 +85,7 @@ public class Dashboard {
         dashboard.addTab(new Tab()
                 .setTitle("TeleOp")
                 .addChild(new Col(2).addChild(
-                        new FieldMap()))
+                        WBfieldMap))
                 .addChild(new Col(6).addChild(
                         new Row().addChild(
                                 new CameraFeed(5800)).addChild(
@@ -86,13 +95,27 @@ public class Dashboard {
                                         new CameraFeed(5802)).addChild(
                                                 new CameraFeed(5803))))
                 .addChild(new Col(4).addChild(
-                        new AutoChooser(new String[] { "Awesome", "Bumpy Ride L-R" }).onChange((String choice) -> {
+                    // TODO: Add autos into Dashboard
+                        new AutoChooser(new String[] { "Awesome", "Simple Left" }).onChange((String choice) -> {
                             System.out.println("Auto Chosen: "+choice);
                             autoChosen.accept(new PathPlannerAuto(choice));
                         })).addChild(
                                 new Overrides(new String[] { "Limelight PowerSaver", "Disable Camera Feeds", "CompMode",
                                         "Disable Shot Smoothing", "Always Aim at Hub", "Disable Shoot Safeties" },
-                                        2))));
+                                        2).onChange((Integer id, Boolean state) -> {
+                                            // TODO: Check if this actually overrides anything
+                                            if (id == 3) { //shot smoothing
+                                                this.shotSmoothing = !state;
+                                            }
+                                            if (id == 1) {
+                                                for (String ll : VisionConstants.limelightNames) {
+                                                    NetworkTableInstance.getDefault()
+                                                        .getTable(ll)
+                                                        .getEntry("camMode")
+                                                        .setNumber(state ? 1 : 0);
+                                                }
+                                            }
+                                        }))));
 
         // Subsystems
         WBshooter = new VelocitySimpleSubsystem("Shooter");
@@ -176,6 +199,9 @@ public class Dashboard {
     }
 
     public void update() {
+        Pose2d pose = drivetrain.getPose();
+        WBfieldMap.sendPose(8.0-pose.getY(), pose.getX(), pose.getRotation().getDegrees());
+
         WBshooter.updateVals(shooter.getRPS(), (shooter.getLeadTemp()+shooter.getFollowTemp())/2.0);
         WBturret.updateVals(turret.getTurretDegrees(), turret.getTemp());
         WBhood.updateVals(shooter.getPos(), shooter.getHoodTemp());
