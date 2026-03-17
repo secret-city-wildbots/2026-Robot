@@ -6,9 +6,6 @@ import com.sun.net.httpserver.HttpServer;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotBase;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-
 import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.URLConnection;
@@ -26,32 +23,34 @@ import org.java_websocket.server.WebSocketServer;
 public class Server {
 
     private final Path publicDir;
+    private final Path dynamicDir;
     public WsServer ws;
     private HttpServer httpServer;
 
     public Server(int port) {
         try {
-            File tmp;
-            if (RobotBase.isSimulation()) {
-                tmp = new File(Filesystem.getOperatingDirectory(), "sim/tmp");
-            } else {
-                tmp = new File("/tmp");
-            }
+            File tmp = RobotBase.isSimulation()
+                    ? new File(Filesystem.getOperatingDirectory(), "sim/tmp")
+                    : new File("/tmp");
 
             publicDir = Filesystem.getDeployDirectory()
                     .toPath()
                     .resolve("WildBoard/frontend/public");
-            Path dynamicDir = new File(tmp, "frontend-public").toPath();
+
+            dynamicDir = RobotBase.isSimulation()
+                    ? new File(Filesystem.getOperatingDirectory(), "sim/home/frontend-public/dynamic").toPath()
+                    : new File("/home/lvuser/WildBoard/frontend-public/dynamic").toPath();
 
             httpServer = HttpServer.create(new InetSocketAddress(port), 0);
             httpServer.createContext("/dynamic/", new StaticFileHandler(dynamicDir));
             httpServer.createContext("/", new StaticFileHandler(publicDir));
-            httpServer.setExecutor(null);
+            httpServer.setExecutor(java.util.concurrent.Executors.newFixedThreadPool(4));
 
             ws = new WsServer(port + 1);
 
             System.out.println("HTTP + WebSocket server running on port " + (port + 1));
-            System.out.println("Serving files from: " + publicDir.toAbsolutePath());
+            System.out.println("Serving public: " + publicDir.toAbsolutePath());
+            System.out.println("Serving dynamic: " + dynamicDir.toAbsolutePath());
 
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -63,16 +62,11 @@ public class Server {
         ws.start();
     }
 
-    // --------------------------
-    // Static File Handler
-    // --------------------------
     static class StaticFileHandler implements HttpHandler {
         private final Path rootPath;
-        private final Path tmpIndexJs;
 
         public StaticFileHandler(Path rootDir) {
             this.rootPath = rootDir.toAbsolutePath();
-            this.tmpIndexJs = Path.of("/tmp/frontend-public/index.js").toAbsolutePath();
         }
 
         @Override
@@ -87,21 +81,36 @@ public class Server {
             if (requestPath.equals("/"))
                 requestPath = "/index.html";
 
-            Path filePath;
-            if (requestPath.equals("/index.js")) {
-                filePath = tmpIndexJs;
-            } else {
-                filePath = rootPath.resolve("." + requestPath).normalize();
-                if (!filePath.startsWith(rootPath)) {
-                    sendResponse(exchange, 403, "Forbidden");
-                    return;
+            Path filePath = rootPath.resolve("." + requestPath).normalize();
+
+            if (!filePath.startsWith(rootPath)) {
+                sendResponse(exchange, 403, "Forbidden");
+                return;
+            }
+
+            if (requestPath.equals("/dynamic/index.js")) {
+                byte[] fileBytes = Files.readAllBytes(Path.of("/home/lvuser/WildBoard/frontend-public/dynamic/index.js"));
+                exchange.getResponseHeaders().set("Content-Type", "application/javascript");
+                exchange.sendResponseHeaders(200, fileBytes.length);
+
+                try (OutputStream os = exchange.getResponseBody()) {
+                    os.write(fileBytes);
                 }
             }
 
             if (Files.exists(filePath) && !Files.isDirectory(filePath)) {
-                String mimeType = URLConnection.guessContentTypeFromName(filePath.toString());
-                if (mimeType == null)
-                    mimeType = "application/octet-stream";
+                String mimeType;
+                if (filePath.toString().endsWith(".js")) {
+                    mimeType = "application/javascript";
+                } else if (filePath.toString().endsWith(".css")) {
+                    mimeType = "text/css";
+                } else if (filePath.toString().endsWith(".html")) {
+                    mimeType = "text/html";
+                } else {
+                    mimeType = URLConnection.guessContentTypeFromName(filePath.toString());
+                    if (mimeType == null)
+                        mimeType = "application/octet-stream";
+                }
 
                 byte[] fileBytes = Files.readAllBytes(filePath);
                 exchange.getResponseHeaders().set("Content-Type", mimeType);
@@ -124,23 +133,14 @@ public class Server {
         }
     }
 
-    // -----------------------
-    // WebSocket Server
-    // -----------------------
     static class WsServer extends WebSocketServer {
-
         private final Set<WebSocket> clients = Collections.synchronizedSet(new HashSet<>());
-        private final ObjectMapper mapper = new ObjectMapper();
-        private final Map<String, List<BiConsumer<WebSocket, Object>>> eventHandlers = new ConcurrentHashMap<>();
         public Map<Integer, Consumer<String>> onMsg;
-
-        // ===== BATCHING =====
         private final StringBuilder batch = new StringBuilder();
         private final Object batchLock = new Object();
 
         public WsServer(int port) {
             super(new InetSocketAddress(port));
-            
             onMsg = new ConcurrentHashMap<>();
         }
 
@@ -162,19 +162,15 @@ public class Server {
                 this.ping();
                 return;
             }
-            if (onMsg != null) {
-                try {
-                    int dot = message.indexOf('.');
-                    if (dot <= 1)
-                        throw new RuntimeException();
-
-                    int id = Integer.parseInt(message.substring(1, dot));
-                    String payload = message.substring(dot + 1);
-
-                    onMsg.get(id).accept(payload);
-                } catch (Exception e) {
-                    System.err.println("Invalid message: " + message);
-                }
+            try {
+                int dot = message.indexOf('.');
+                if (dot <= 1)
+                    throw new RuntimeException();
+                int id = Integer.parseInt(message.substring(1, dot));
+                String payload = message.substring(dot + 1);
+                onMsg.get(id).accept(payload);
+            } catch (Exception e) {
+                System.err.println("Invalid message: " + message);
             }
         }
 
@@ -200,16 +196,12 @@ public class Server {
 
         public void flush() {
             String out;
-
             synchronized (batchLock) {
                 out = batch.toString();
                 batch.setLength(0);
             }
-
             if (out.isEmpty())
                 return;
-
-            //System.out.println(out);
 
             synchronized (clients) {
                 for (WebSocket client : clients) {
@@ -219,14 +211,10 @@ public class Server {
         }
 
         public void ping() {
-            try {
-                synchronized (clients) {
+            synchronized (clients) {
                 for (WebSocket client : clients) {
                     client.send("p");
                 }
-            }
-            } catch (Exception e) {
-                e.printStackTrace();
             }
         }
     }
