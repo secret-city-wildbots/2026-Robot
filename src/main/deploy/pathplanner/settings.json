@@ -4,14 +4,19 @@
   "holonomicMode": true,
   "pathFolders": [
     "Bumpy Ride L + R",
+    "Dippy Doo",
     "L + R Spread",
-    "Reverse 9",
+    "Orbit",
     "Simple Left",
-    "Simple Right + Outpost"
+    "Simple Right + Outpost",
+    "Testing"
   ],
   "autoFolders": [
-    "New Folder",
-    "Top 5 Autos"
+    "Bumpy",
+    "Dips",
+    "Plow",
+    "Simple",
+    "Testing"
   ],
   "defaultMaxVel": 3.0,
   "defaultMaxAccel": 3.0,
@@ -43,7 +48,7 @@
     "{\"name\":\"Left\",\"type\":\"line\",\"data\":{\"start\":{\"x\":0.3429,\"y\":0.3429},\"end\":{\"x\":-0.3429,\"y\":0.3429},\"strokeWidth\":0.005}}",
     "{\"name\":\"Back\",\"type\":\"line\",\"data\":{\"start\":{\"x\":-0.3429,\"y\":-0.3429},\"end\":{\"x\":-0.3429,\"y\":0.3429},\"strokeWidth\":0.005}}",
     "{\"name\":\"Right\",\"type\":\"line\",\"data\":{\"start\":{\"x\":-0.3429,\"y\":-0.3429},\"end\":{\"x\":0.3429,\"y\":-0.3429},\"strokeWidth\":0.005}}",
-    "{\"name\":\"Line\",\"type\":\"line\",\"data\":{\"start\":{\"x\":0.0,\"y\":0.445},\"end\":{\"x\":0.0,\"y\":0.623},\"strokeWidth\":0.02}}",
-    "{\"name\":\"Circle\",\"type\":\"circle\",\"data\":{\"center\":{\"x\":0.0,\"y\":-0.2},\"radius\":0.09,\"strokeWidth\":0.02,\"filled\":false}}"
+    "{\"name\":\"Intake\",\"type\":\"line\",\"data\":{\"start\":{\"x\":0.445,\"y\":0.0},\"end\":{\"x\":0.623,\"y\":0.0},\"strokeWidth\":0.02}}",
+    "{\"name\":\"Turret\",\"type\":\"circle\",\"data\":{\"center\":{\"x\":0.0,\"y\":0.2},\"radius\":0.09,\"strokeWidth\":0.02,\"filled\":false}}"
   ]
 }

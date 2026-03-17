@@ -2,6 +2,7 @@ package frc.robot.Actors.Subsystems.Intake;
 
 // Import WPILib Libraries
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 // Import Actors, Utils & Constants
@@ -14,6 +15,9 @@ public class IntakeExtension extends SubsystemBase {
 
     // Define variables
      private Motor motor; // Motor to control the intake extension position
+     public double p = 0.02;
+     public double i = 0.01;
+     public double d = 0.00;
 
     public IntakeExtension() {
         // Configure the intake extension motor
@@ -22,7 +26,11 @@ public class IntakeExtension extends SubsystemBase {
         this.motor.motorTFX.setPosition(0.0);             // 0 degrees
         this.motor.motorConfig.direction = RotationDir.Clockwise;
         this.motor.applyConfig();
-        this.motor.pid(0.02, 0.01, 0.0);
+        this.motor.pid(p, i, d);
+
+        SmartDashboard.putNumber("P", p);
+        SmartDashboard.putNumber("I", i);
+        SmartDashboard.putNumber("D", d);
     }
 
     public double getTemp() {
@@ -63,5 +71,17 @@ public class IntakeExtension extends SubsystemBase {
      */
     private double degreesToMotorRotations(double degrees) {
         return (degrees - IntakeConstants.minDegree) * IntakeConstants.extensionGearRatio / 360.0;
+    }
+
+    @Override
+    public void periodic() {
+        if (SmartDashboard.getNumber("P", p) != p || 
+            SmartDashboard.getNumber("I", i) != i ||
+            SmartDashboard.getNumber("D", d) != d) {
+                p = SmartDashboard.getNumber("P", p);
+                i = SmartDashboard.getNumber("I", i);
+                d = SmartDashboard.getNumber("D", d);
+                this.motor.pid(p,i,d);
+        }
     }
 }

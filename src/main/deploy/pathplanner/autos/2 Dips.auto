@@ -7,37 +7,37 @@
         {
           "type": "path",
           "data": {
-            "pathName": "L Trench"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Shoot"
+            "pathName": "L Trench Dip 1"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "L Trench Reverse"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Shoot"
+            "pathName": "L Trench RDip 1"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "L Trench to Depot to Climb"
+            "pathName": "L Trench Dip 2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "L Trench RDip 2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "L Bump to Depot to Climb"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "Simple",
+  "folder": "Dips",
   "choreoAuto": false
 }

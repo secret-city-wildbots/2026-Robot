@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.5536000000000003,
-        "y": 2.845822222222222
+        "x": 3.58,
+        "y": 2.56
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.439608433734939,
-        "y": 2.8329518072289157
+        "x": 6.466,
+        "y": 2.56
       },
       "isLocked": false,
       "linkedName": null
@@ -80,12 +80,12 @@
     },
     {
       "anchor": {
-        "x": 3.5636777777777784,
-        "y": 5.214099999999999
+        "x": 3.58,
+        "y": 5.5
       },
       "prevControl": {
-        "x": 5.337366666666667,
-        "y": 5.17378888888889
+        "x": 5.353688888888889,
+        "y": 5.45968888888889
       },
       "nextControl": null,
       "isLocked": false,
@@ -108,8 +108,24 @@
     {
       "name": "Intake",
       "waypointRelativePos": 1.1811023622047263,
-      "endWaypointRelativePos": 3.9482564679414853,
-      "command": null
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "Shoot"
+        }
+      }
+    },
+    {
+      "name": "Intake",
+      "waypointRelativePos": 4.059553349875941,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "Shoot"
+        }
+      }
     }
   ],
   "globalConstraints": {

@@ -57,7 +57,7 @@
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Left Climb"
     }
   ],
   "rotationTargets": [
@@ -69,10 +69,10 @@
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 0.5780730897009916,
-      "maxWaypointRelativePos": 0.8504983388704228,
+      "minWaypointRelativePos": 0.7574750830564787,
+      "maxWaypointRelativePos": 1.2093023255813997,
       "constraints": {
-        "maxVelocity": 2.5,
+        "maxVelocity": 1.25,
         "maxAcceleration": 3.0,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0,
@@ -82,10 +82,10 @@
     },
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 0.7574750830564787,
-      "maxWaypointRelativePos": 1.2093023255813997,
+      "minWaypointRelativePos": 0.30074441687344644,
+      "maxWaypointRelativePos": 0.8504983388704228,
       "constraints": {
-        "maxVelocity": 1.25,
+        "maxVelocity": 2.5,
         "maxAcceleration": 3.0,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0,
@@ -112,7 +112,7 @@
   "folder": "Simple Left",
   "idealStartingState": {
     "velocity": 3.0,
-    "rotation": 180.0
+    "rotation": 90.0
   },
   "useDefaultConstraints": true
 }

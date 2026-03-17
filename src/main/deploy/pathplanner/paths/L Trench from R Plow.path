@@ -25,18 +25,20 @@
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "L Trench Start"
+      "linkedName": null
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.729824561403509,
-      "rotationDegrees": 180.0
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "Intake",
+      "waypointRelativePos": 0.2660049627791549,
+      "endWaypointRelativePos": null,
+      "command": null
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -46,13 +48,13 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 3.0,
+    "velocity": 2.0,
     "rotation": 180.0
   },
   "reversed": false,
   "folder": "L + R Spread",
   "idealStartingState": {
-    "velocity": 3.0,
+    "velocity": 1.5,
     "rotation": 90.0
   },
   "useDefaultConstraints": true

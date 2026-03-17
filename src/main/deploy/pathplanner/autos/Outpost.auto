@@ -11,15 +11,21 @@
           }
         },
         {
-          "type": "wait",
+          "type": "named",
           "data": {
-            "waitTime": 0.5
+            "name": "Shoot"
           }
         },
         {
           "type": "path",
           "data": {
             "pathName": "Outpost to R Trench + Shoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot"
           }
         },
         {
@@ -35,15 +41,21 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "Shoot"
+          }
+        },
+        {
           "type": "path",
           "data": {
-            "pathName": "R Shoot+Preclimb"
+            "pathName": "R Trench Shoot+Preclimb"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "Top 5 Autos",
+  "folder": "Simple",
   "choreoAuto": false
 }
