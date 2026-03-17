@@ -148,9 +148,9 @@ public class RobotContainer {
                     double inputX = joystick.getLeftY();
                     double inputY = joystick.getLeftX();
                     double inputH = joystick.getRightX();
-                    xVelAvg = xVelAvg+(inputX*0.1)/1.1;
-                    yVelAvg = yVelAvg+(inputY*0.1)/1.1;
-                    hVelAvg = hVelAvg+(inputH*0.1)/1.1;
+                    xVelAvg = (xVelAvg+(inputX*0.1))/1.1;
+                    yVelAvg = (yVelAvg+(inputY*0.1))/1.1;
+                    hVelAvg = (hVelAvg+(inputH*0.1))/1.1;
                     if (drivetrain.getPose().getX() < 4.25 && joystick.getRightTriggerAxis() > 0.4 && dashboard.shotSmoothing) {
                         inputX = xVelAvg;
                         inputY = yVelAvg;
