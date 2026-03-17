@@ -44,6 +44,11 @@ public class Shooter extends SubsystemBase {
         this.hoodMotor.pid(6.0, 0.0, 0.0);
     }
 
+    public void setBrake(boolean brake) {
+        this.hoodMotor.motorConfig.brake = brake;
+        this.hoodMotor.applyConfig();
+    }
+
     /**
      * Set target RPS for the shooter
      * 
@@ -71,6 +76,20 @@ public class Shooter extends SubsystemBase {
         return leadMotor.vel();
     }
 
+    public double getLeadTemp() {
+        return this.leadMotor.getTemp();
+    }
+    public double getFollowTemp() {
+        return this.followMotor.getTemp();
+    }
+    public double getHoodTemp() {
+        return this.hoodMotor.getTemp();
+    }
+
+    public double getPos() {
+        return motorRotationsToDegrees(hoodMotor.pos());
+    }
+
     /**
      * Sets the hood angle target in degrees
      * 
@@ -89,5 +108,14 @@ public class Shooter extends SubsystemBase {
      */
     private double degreesToMotorRotations(double degrees) {
         return (degrees - ShooterConstants.minDegree) * ShooterConstants.hoodGearRatio / 360.0;
+    }
+
+    /**
+     * degreesToMotorRotations is a private function to calculate what the degrees translates to for motor rotations for the motor
+     * 
+     * @param degrees
+     */
+    private double motorRotationsToDegrees(double motorRotations) {
+        return motorRotations * 360.0 / ShooterConstants.hoodGearRatio + ShooterConstants.minDegree;
     }
 }

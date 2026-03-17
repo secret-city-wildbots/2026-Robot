@@ -26,6 +26,10 @@ public class Spindexer extends SubsystemBase {
         this.motor.pid(13, 0.6, 0.025); // Setup the spindexer PID
     }
 
+    public double getTemp() {
+        return this.motor.getTemp();
+    }
+
     // Motor Controls
 
     /**

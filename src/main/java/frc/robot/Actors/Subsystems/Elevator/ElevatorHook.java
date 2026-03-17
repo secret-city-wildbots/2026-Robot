@@ -37,6 +37,10 @@ public class ElevatorHook extends SubsystemBase {
         this.targetAngle = 0.0;
     }
 
+    public double getTemp() {
+        return this.motor.getTemp();
+    }
+
     // Motor Controls
 
     /**
