@@ -17,6 +17,12 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "Shoot"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "L Trench to Depot to Climb"
@@ -26,6 +32,6 @@
     }
   },
   "resetOdom": true,
-  "folder": "Top 5 Autos",
+  "folder": "Plow",
   "choreoAuto": false
 }

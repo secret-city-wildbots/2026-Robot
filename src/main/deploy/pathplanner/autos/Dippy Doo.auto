@@ -7,43 +7,49 @@
         {
           "type": "path",
           "data": {
-            "pathName": "five ft path"
+            "pathName": "L Trench Dip 1"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "9 stem"
+            "pathName": "L Trench RDip 1"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 2.0
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Square Left"
+            "pathName": "L Trench Dip 2"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Square Front"
+            "pathName": "L Trench RDip 2"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Square Right"
+            "pathName": "L Trench Dip 3 and Push"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Square Back"
+            "pathName": "Dip 3 to Depot to Climb"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "Dips",
   "choreoAuto": false
 }

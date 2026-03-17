@@ -7,37 +7,37 @@
         {
           "type": "path",
           "data": {
-            "pathName": "L Trench Dip 1"
+            "pathName": "L Trench + Plow"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "L Trench RDip 1"
+            "pathName": "R Trench from L Plow"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "L Trench Dip 2"
+            "pathName": "Outpost + Shoot"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "L Trench RDip 2"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "L Bump to Depot to Climb"
+            "pathName": "Outpost+Preclimb"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "Top 5 Autos",
+  "folder": "Plow",
   "choreoAuto": false
 }

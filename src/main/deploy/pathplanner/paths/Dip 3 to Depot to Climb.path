@@ -3,45 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.58,
-        "y": 5.5
+        "x": 3.4,
+        "y": 5.4
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.8926999407468614,
-        "y": 5.362219017359541
-      },
-      "isLocked": false,
-      "linkedName": "L Bump Start"
-    },
-    {
-      "anchor": {
-        "x": 0.701588888888889,
-        "y": 5.9699333333333335
-      },
-      "prevControl": {
-        "x": 1.081351132182339,
-        "y": 6.065656678521551
-      },
-      "nextControl": {
-        "x": 0.45917129226215225,
-        "y": 5.90882925126252
+        "x": 1.7126999407468613,
+        "y": 5.262219017359541
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.4701897983392653,
-        "y": 5.051743772241994
+        "x": 0.6524911032028475,
+        "y": 5.955516014234875
       },
       "prevControl": {
-        "x": 1.014,
-        "y": 5.345111111111112
+        "x": 1.0282175356944958,
+        "y": 6.066023788497123
       },
       "nextControl": {
-        "x": 1.6804629303171246,
-        "y": 4.916520956237365
+        "x": 0.4126497278100296,
+        "y": 5.884974433236988
       },
       "isLocked": false,
       "linkedName": null
@@ -52,12 +36,12 @@
         "y": 4.2
       },
       "prevControl": {
-        "x": 1.9411555555555555,
-        "y": 4.236555555555555
+        "x": 1.8202222222222222,
+        "y": 5.1435555555555545
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Left Climb"
+      "linkedName": null
     }
   ],
   "rotationTargets": [
@@ -98,7 +82,7 @@
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
-    "maxAcceleration": 2.0,
+    "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
@@ -106,13 +90,13 @@
   },
   "goalEndState": {
     "velocity": 0.0,
-    "rotation": 0.0
+    "rotation": 90.0
   },
   "reversed": false,
-  "folder": "Bumpy Ride L + R",
+  "folder": "Dippy Doo",
   "idealStartingState": {
     "velocity": 3.0,
     "rotation": 180.0
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }

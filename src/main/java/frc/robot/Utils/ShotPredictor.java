@@ -11,6 +11,8 @@ import frc.robot.Constants.TurretConstants;
 public class ShotPredictor {
 
     private static final Translation2d hubPosition = new Translation2d(4.625594, 4.02336);
+    private static final Translation2d bumpLeft = new Translation2d(4.35, 5.8);
+    private static final Translation2d bumpRight = new Translation2d(4.35, 8-5.8);
 
     private static final double g = 9.81;
 
@@ -42,12 +44,22 @@ public class ShotPredictor {
         Rotation2d robotRot = robotPose.getRotation();
         ChassisSpeeds robotVel = robotVelSupplier.get();
 
+        Translation2d targetPos;
+
+        if (robotPos.getX() < 4.25) {
+            targetPos = hubPosition;
+        } else if (robotPos.getY() > 4.0) {
+            targetPos = bumpLeft;
+        } else {
+            targetPos = bumpRight;
+        }
+
         Translation2d turretPos = robotPos.plus(new Translation2d(
                 robotRot.getCos() * TurretConstants.turretPos.getX(),
                 robotRot.getSin() * TurretConstants.turretPos.getY()));
 
         // tuned airtime model (need to tune this function, maybe make non-linear?)
-        double distance = hubPosition.getDistance(turretPos);
+        double distance = targetPos.getDistance(turretPos);
         double airtime = getAirtime(distance);
 
         shot.airtime_s = airtime;
@@ -62,7 +74,7 @@ public class ShotPredictor {
                 futureRobotRot.getSin() * TurretConstants.turretPos.getY()));
 
         // yaw calculation
-        Translation2d delta = hubPosition.minus(futureTurretPos);
+        Translation2d delta = targetPos.minus(futureTurretPos);
         Rotation2d fieldAngleToTarget = delta.getAngle();
         shot.yaw = fieldAngleToTarget.minus(robotPose.getRotation());
 
@@ -80,7 +92,7 @@ public class ShotPredictor {
     }
 
     public static Rotation2d getTilt(double dist) {
-        return new Rotation2d(5/180*Math.PI);
+        return new Rotation2d();
     }
 
     public static double getAirtime(double dist) {

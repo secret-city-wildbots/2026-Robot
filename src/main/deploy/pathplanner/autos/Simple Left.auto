@@ -5,6 +5,12 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "Shoot"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "L Trench"
@@ -26,6 +32,6 @@
     }
   },
   "resetOdom": true,
-  "folder": "Top 5 Autos",
+  "folder": "Simple",
   "choreoAuto": false
 }

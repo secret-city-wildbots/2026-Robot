@@ -60,8 +60,11 @@ public class Robot extends TimedRobot {
     // (rps))
     // This allows each limelight to be as accurate as possible when being setup
     vision = new Vision(
-        () -> m_robotContainer.drivetrain.getState().Pose.getRotation().getDegrees(),
-        () -> Units.radiansToRotations(m_robotContainer.drivetrain.getState().Speeds.omegaRadiansPerSecond));
+      () -> m_robotContainer.drivetrain.getState().Pose.getRotation().getDegrees(),
+      () -> Units.radiansToRotations(m_robotContainer.drivetrain.getState().Speeds.omegaRadiansPerSecond),
+      () -> m_robotContainer.drivetrain.getPose(),
+      () -> m_robotContainer.drivetrain.getPigeon2().getRotation2d()
+    );
   }
 
   @Override
@@ -77,14 +80,15 @@ public class Robot extends TimedRobot {
 
     // Get the best pose estimate from all of the cameras
     LimelightHelpers.PoseEstimate bestPose = vision.getBestPose();
+    //Vision.FusedVisionResult fusedPose = vision.fuseFourLimelights();
 
     // If bestPose is not null, add vision measurement to the drivetrain
     // TODO: need to tune 0.7,0.7 values
     if (bestPose != null) {
       // TODO: Do we want to just only add or reset the whole pose?
-      m_robotContainer.drivetrain.addVisionMeasurement(bestPose.pose, bestPose.timestampSeconds,
-          VecBuilder.fill(0.7, 0.7, 9999999));
-      // m_robotContainer.drivetrain.resetPose(bestPose.pose);
+      m_robotContainer.drivetrain.addVisionMeasurement(bestPose.pose, bestPose.timestampSeconds, VecBuilder.fill(0.7,0.7,9999999));
+      //m_robotContainer.drivetrain.addVisionMeasurement(fusedPose.pose(), fusedPose.tiemstamp(), VecBuilder.fill(0.7,0.7,9999999));
+      //m_robotContainer.drivetrain.resetPose(bestPose.pose);
     }
     // TODO: Printing pose
     // System.out.println(m_robotContainer.drivetrain.getState().Pose);

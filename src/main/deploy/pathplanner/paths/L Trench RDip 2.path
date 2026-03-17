@@ -3,32 +3,37 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.46,
-        "y": 5.554
+        "x": 7.6,
+        "y": 5.9
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.46,
-        "y": 5.554
+        "x": 6.3854555555555566,
+        "y": 5.738144444444445
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.1,
-        "y": 5.554
+        "x": 3.4,
+        "y": 5.4
       },
       "prevControl": {
-        "x": 2.1,
-        "y": 5.554
+        "x": 4.450522222222222,
+        "y": 5.566822222222222
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.6210526315789487,
+      "rotationDegrees": -45.0
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
@@ -41,13 +46,13 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 2.0,
-    "rotation": 0.0
+    "velocity": 3.0,
+    "rotation": -90.0
   },
   "reversed": false,
-  "folder": "Reverse 9",
+  "folder": "Dippy Doo",
   "idealStartingState": {
-    "velocity": 0.0,
+    "velocity": 3.0,
     "rotation": 0.0
   },
   "useDefaultConstraints": true

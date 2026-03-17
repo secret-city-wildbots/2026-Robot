@@ -11,6 +11,12 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "Shoot"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "L Bump to Depot to Climb"
@@ -20,6 +26,6 @@
     }
   },
   "resetOdom": true,
-  "folder": "Top 5 Autos",
+  "folder": "Bumpy",
   "choreoAuto": false
 }
