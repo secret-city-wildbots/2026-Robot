@@ -15,6 +15,12 @@
           "data": {
             "pathName": "L Trench Reverse"
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "L Trench + Depot + Pickup"
+          }
         }
       ]
     }
