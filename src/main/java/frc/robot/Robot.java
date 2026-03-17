@@ -52,6 +52,7 @@ public class Robot extends TimedRobot {
     vision = new Vision(
       () -> m_robotContainer.drivetrain.getState().Pose.getRotation().getDegrees(),
       () -> Units.radiansToRotations(m_robotContainer.drivetrain.getState().Speeds.omegaRadiansPerSecond),
+      () -> m_robotContainer.drivetrain.getPose(),
       () -> m_robotContainer.drivetrain.getPigeon2().getRotation2d()
     );
   }
