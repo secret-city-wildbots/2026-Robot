@@ -13,6 +13,7 @@ import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.FollowPathCommand;
+import com.pathplanner.lib.events.EventTrigger;
 
 // Import WPILib Librarires
 import static edu.wpi.first.units.Units.*;
@@ -22,6 +23,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
@@ -89,9 +91,22 @@ public class RobotContainer {
     public RobotContainer() {
         //TODO: Make sure values for Commands are correct
          // Register Named Commands within Pathplanner
-        NamedCommands.registerCommand("Shoot", new SpinAndFeedCommand(transfer, spindexer, SpindexerConstants.transferRPS, SpindexerConstants.spindexerRPS , SpindexerConstants.spinupTime));
+        NamedCommands.registerCommand("ShootName",
+            new SpinAndFeedCommand(
+                transfer, spindexer, SpindexerConstants.transferRPS, SpindexerConstants.spindexerRPS , SpindexerConstants.spinupTime
+            ).alongWith(Commands.print("Shooting")));
+        //NamedCommands.registerCommand("Intake", new IntakeSequence(intake, intakeExtension).alongWith(Commands.print("Intaking (Named)")));
+        NamedCommands.registerCommand("L1Climb", new ClimbSequenceL1(elevatorLift).alongWith(Commands.print("Climbing")));
         NamedCommands.registerCommand("Intake", new IntakeSequence(intake, intakeExtension));
-        NamedCommands.registerCommand("L1Climb", new ClimbSequenceL1(elevatorLift));
+
+        // Register Event Triggers within Pathplanner
+        new EventTrigger("Intake").onTrue(new IntakeSequence(intake, intakeExtension).alongWith(Commands.print("Intaking (Trigger)")));
+        //new EventTrigger("Intake").onTrue(Commands.print("Intaking (Trigger)"));
+        new EventTrigger("Shoot").onTrue(
+            new SpinAndFeedCommand(
+                transfer, spindexer, SpindexerConstants.transferRPS, SpindexerConstants.spindexerRPS, SpindexerConstants.spinupTime
+            ).alongWith(Commands.print("Shooting (Trigger)")));
+        new EventTrigger("L1Climb").onTrue(new ClimbSequenceL1(elevatorLift));
         
         // TODO: Set default auto
         autoChooser = AutoBuilder.buildAutoChooser("Awesome");
