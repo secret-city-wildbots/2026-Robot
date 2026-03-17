@@ -21,13 +21,4 @@ public class FieldMap extends WBPanel {
     public void sendPose(double x, double y, double h) {
         this.ml.send(Math.round(x*10)/10.0 + "," + Math.round(y*10)/10.0 + "," + Math.round(h*10)/10.0);
     }
-
-    @Override
-    public void update() {
-        if (blah > 16.54) {
-            blah = 0;
-        }
-        blah += 0.05;
-        this.ml.send("5," + Math.round(blah*10)/10.0 + ",30");
-    }
 }

@@ -1,0 +1,25 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "L Trench"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "L Trench Reverse"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "No Climb",
+  "choreoAuto": false
+}

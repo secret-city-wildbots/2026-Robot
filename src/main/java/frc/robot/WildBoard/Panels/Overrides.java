@@ -6,7 +6,7 @@ import java.util.function.BiConsumer;
 import frc.robot.WildBoard.WBPanel;
 
 public class Overrides extends WBPanel {
-    public BiConsumer<Integer, String> handleChange;
+    public BiConsumer<Integer, Boolean> handleChange;
     public boolean[] overrideVals;
     public boolean compMode = false;
 
@@ -32,8 +32,9 @@ public class Overrides extends WBPanel {
      * Takes in a function that will be called when a switch is toggled. The function should take in the index of the switch and the new value of the switch.
      * @param changeHandler
      */
-    public void onChange(BiConsumer<Integer, String> changeHandler) {
+    public Overrides onChange(BiConsumer<Integer, Boolean> changeHandler) {
         this.handleChange = changeHandler;
+        return this;
     }
 
     @Override
@@ -47,7 +48,7 @@ public class Overrides extends WBPanel {
         for (int i = 0; i < newVals.length; i++) {
             if (newVals[i] != overrideVals[i]) {
                 overrideVals[i] = newVals[i];
-                handleChange.accept(i, newVals[i] ? "1" : "0");
+                handleChange.accept(i, newVals[i]);
             }
         }
     }
