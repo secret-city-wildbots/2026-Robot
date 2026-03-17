@@ -16,16 +16,16 @@
     },
     {
       "anchor": {
-        "x": 1.0686385542168677,
-        "y": 4.717981927710843
+        "x": 1.6,
+        "y": 4.2
       },
       "prevControl": {
-        "x": 2.115121390950785,
-        "y": 5.860376493299025
+        "x": 2.646482836733917,
+        "y": 5.342394565588182
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Left Climb"
     }
   ],
   "rotationTargets": [],
@@ -56,13 +56,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 90.0
+    "rotation": 0.0
   },
   "reversed": false,
   "folder": "Simple Left",
   "idealStartingState": {
     "velocity": 3.0,
-    "rotation": 180.0
+    "rotation": -90.0
   },
   "useDefaultConstraints": true
 }
