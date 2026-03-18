@@ -84,15 +84,18 @@ public class ShotPredictor {
     }
 
     public static double getVelocity(double dist) {
-        return 1.0;
+        return HubShooterTrajectoryCalc.lookupCache(dist).speed_rps;
+        //return 1.0;
     }
 
     public static Rotation2d getTilt(double dist) {
-        return new Rotation2d();
+        return new Rotation2d(90-HubShooterTrajectoryCalc.lookupCache(dist).elevation_deg);
+        //return new Rotation2d();
     }
 
     public static double getAirtime(double dist) {
-        return TurretConstants.turretBaseAirtime_s
-                + TurretConstants.turretDistAirtime_sPm * dist;
+        return HubShooterTrajectoryCalc.lookupCache(dist).airtime_s;
+        //return TurretConstants.turretBaseAirtime_s
+        //        + TurretConstants.turretDistAirtime_sPm * dist;
     }
 }
