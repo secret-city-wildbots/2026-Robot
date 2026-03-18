@@ -52,7 +52,7 @@ public class FrontendBuilder {
         File indexLoader = new File(wildboardHome, "frontend/src/pages/indexLoader.tsx");
 
         if (RobotBase.isSimulation()) {
-            esbuildTmp = new File(tmp, "esbuild.exe");
+            esbuildTmp = new File(Filesystem.getOperatingDirectory(), "esbuild.exe");
         }
 
         ProcessBuilder pb = new ProcessBuilder(

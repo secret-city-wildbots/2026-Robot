@@ -118,7 +118,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("L1Climb", new ClimbSequenceL1(elevatorLift).alongWith(Commands.print("Climbing")));
         NamedCommands.registerCommand("Intake", new IntakeSequence(intake, intakeExtension));
 
-        auto = new PathPlannerAuto("Awesome");
+        auto = new PathPlannerAuto("Simple L no climb");
 
         // Register Event Triggers within Pathplanner
         new EventTrigger("Intake").onTrue(new IntakeSequence(intake, intakeExtension).alongWith(Commands.print("Intaking (Trigger)")));
