@@ -7,37 +7,31 @@
         {
           "type": "path",
           "data": {
-            "pathName": "L Trench"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ShootStop"
+            "pathName": "R Trench"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "L Trench Reverse"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Shoot"
+            "pathName": "R Trench Reverse no climb"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "L Trench to Depot to Climb"
+            "pathName": "R Trench Pickup"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "R Trench Back to Mid"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "Simple",
+  "folder": "No Climb",
   "choreoAuto": false
 }

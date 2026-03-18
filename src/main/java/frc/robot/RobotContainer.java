@@ -51,9 +51,12 @@ import frc.robot.Actors.Subsystems.Spindexer.Spindexer;
 import frc.robot.Actors.Subsystems.Spindexer.Transfer;
 import frc.robot.Actors.Subsystems.Shooter.Shooter;
 import frc.robot.Actors.Subsystems.Shooter.Turret;
-
+import frc.robot.Commands.Intake.AutoIntakeExtend;
+import frc.robot.Commands.Intake.AutoIntakeRetract;
 // Import Custom Commands
 import frc.robot.Commands.Intake.IntakeSequence;
+import frc.robot.Commands.Spindexer.AutoStartIndexCommand;
+import frc.robot.Commands.Spindexer.AutoStopIndexCommand;
 import frc.robot.Commands.Spindexer.SpinAndFeedCommand;
 import frc.robot.Commands.Elevator.ClimbSequenceL1;
 import frc.robot.Commands.Elevator.ClimbSequenceL3;
@@ -110,23 +113,31 @@ public class RobotContainer {
 
         //TODO: Make sure values for Commands are correct
          // Register Named Commands within Pathplanner
-        NamedCommands.registerCommand("ShootName",
-            new SpinAndFeedCommand(
-                transfer, spindexer, SpindexerConstants.transferRPS, SpindexerConstants.spindexerRPS , SpindexerConstants.spinupTime
-            ).alongWith(Commands.print("Shooting")));
+        NamedCommands.registerCommand("Shoot",
+            new AutoStartIndexCommand(
+                transfer, spindexer
+            ).alongWith(Commands.print("Shooting Start (Named)")));
+        NamedCommands.registerCommand("ShootStop",
+            new AutoStopIndexCommand(
+                transfer, spindexer
+            ).alongWith(Commands.print("Shooting Stop (Named)")));
         //NamedCommands.registerCommand("Intake", new IntakeSequence(intake, intakeExtension).alongWith(Commands.print("Intaking (Named)")));
         NamedCommands.registerCommand("L1Climb", new ClimbSequenceL1(elevatorLift).alongWith(Commands.print("Climbing")));
-        NamedCommands.registerCommand("Intake", new IntakeSequence(intake, intakeExtension));
+        NamedCommands.registerCommand("Intake", new AutoIntakeExtend(intake, intakeExtension));
+
 
         auto = new PathPlannerAuto("Simple L no climb");
 
         // Register Event Triggers within Pathplanner
-        new EventTrigger("Intake").onTrue(new IntakeSequence(intake, intakeExtension).alongWith(Commands.print("Intaking (Trigger)")));
+        new EventTrigger("Intake").onTrue(new AutoIntakeExtend(intake, intakeExtension));
+        new EventTrigger("IntakeRetract").onTrue(new AutoIntakeRetract(intake, intakeExtension));
         //new EventTrigger("Intake").onTrue(Commands.print("Intaking (Trigger)"));
         new EventTrigger("Shoot").onTrue(
-            new SpinAndFeedCommand(
-                transfer, spindexer, SpindexerConstants.transferRPS, SpindexerConstants.spindexerRPS, SpindexerConstants.spinupTime
-            ).alongWith(Commands.print("Shooting (Trigger)")));
+        new AutoStartIndexCommand(transfer, spindexer).alongWith(
+        Commands.print("Shooting Start (Trigger)")));
+        new EventTrigger("ShootStop").onTrue(
+        new AutoStopIndexCommand(transfer, spindexer).alongWith(
+        Commands.print("Shooting Stop (Trigger)")));
 
         configureBindings();
 
@@ -208,7 +219,7 @@ public class RobotContainer {
         
         joystick.leftBumper().toggleOnTrue(new IntakeSequence(intake, intakeExtension));
         drivetrain.registerTelemetry(logger::telemeterize);
-        joystick.rightTrigger(0.4).whileTrue(new SpinAndFeedCommand(transfer, spindexer, SpindexerConstants.transferRPS, SpindexerConstants.spindexerRPS , SpindexerConstants.spinupTime));  
+        joystick.rightTrigger(0.4).whileTrue(new SpinAndFeedCommand(transfer, spindexer, SpindexerConstants.transferRPS, SpindexerConstants.spindexerRPS));  
         // Descend from Auto L1 + Retract Lift down
         joystick.x().whileTrue(new ClimbSequenceL3(elevatorLift, elevatorHook));
         joystick.y().whileTrue(new LiftCommand(elevatorLift, joystick));

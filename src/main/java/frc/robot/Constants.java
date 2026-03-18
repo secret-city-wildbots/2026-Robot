@@ -73,9 +73,8 @@ public final class Constants {
     public static final int transferMotorID = 43;
 
     // Properties
-    public static final int transferRPS = 30;
+    public static final int transferRPS = 50;
     public static final int spindexerRPS = 10;
-    public static final double spinupTime = 0.1;
   }
 
   public static class ShooterConstants {
