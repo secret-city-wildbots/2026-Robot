@@ -9,16 +9,19 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
-
+import frc.robot.Utils.HubShooterTrajectoryCalc;
 // Import Limelight Utils
 import frc.robot.Utils.LimelightHelpers;
-
+import frc.robot.Constants.TurretConstants;
 // Import Subsystems
 // Vision was put here for now so we can utilize the periodic loops
 // We can look to refactor in the future if people want :)
 import frc.robot.Actors.Subsystems.Vision;
 
+import com.ctre.phoenix.CANifier;
 import com.ctre.phoenix6.SignalLogger;
 
 /**
@@ -40,6 +43,8 @@ public class Robot extends TimedRobot {
    * for any initialization code.
    */
   public Robot() {
+    HubShooterTrajectoryCalc.initializeCache();
+
     System.setErr(new java.io.PrintStream(new java.io.OutputStream() {
       @Override
       public void write(int b) {
@@ -94,6 +99,12 @@ public class Robot extends TimedRobot {
     // System.out.println(m_robotContainer.drivetrain.getState().Pose);
 
     m_robotContainer.dashboard.update();
+
+    Translation2d robotPos = m_robotContainer.drivetrain.getPose().getTranslation();
+    Rotation2d robotRot = m_robotContainer.drivetrain.getPose().getRotation();
+    Translation2d turretPos = robotPos.plus(TurretConstants.turretPos.rotateBy(robotRot));
+    double distance = new Translation2d(4.625594, 4.02336).getDistance(turretPos);
+    System.out.println(distance);
   }
 
   @Override
