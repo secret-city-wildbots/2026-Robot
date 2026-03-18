@@ -89,7 +89,12 @@ public class Server {
             }
 
             if (requestPath.equals("/dynamic/index.js")) {
-                byte[] fileBytes = Files.readAllBytes(Path.of("/home/lvuser/WildBoard/frontend-public/dynamic/index.js"));
+                byte[] fileBytes;
+                if (RobotBase.isSimulation()) {
+                    fileBytes = Files.readAllBytes(Path.of(new File(Filesystem.getOperatingDirectory(), "sim/home/frontend-public/dynamic/index.js").getAbsolutePath()));
+                } else {
+                    fileBytes = Files.readAllBytes(Path.of("/home/lvuser/WildBoard/frontend-public/dynamic/index.js"));
+                }
                 exchange.getResponseHeaders().set("Content-Type", "application/javascript");
                 exchange.sendResponseHeaders(200, fileBytes.length);
 
