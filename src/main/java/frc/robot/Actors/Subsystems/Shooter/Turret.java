@@ -126,6 +126,6 @@ public class Turret extends SubsystemBase {
 
     @Override
     public void periodic() {
-        System.out.println(this.beambreakActive());
+        //System.out.println(this.beambreakActive());
     }
 }
