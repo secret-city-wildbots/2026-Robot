@@ -73,7 +73,7 @@ public final class Constants {
     public static final int transferMotorID = 43;
 
     // Properties
-    public static final int transferRPS = 60;
+    public static final int transferRPS = 70; //?
     public static final int spindexerRPS = 40;
     public static final double spinupTime = 0.1;
   }
@@ -100,7 +100,7 @@ public final class Constants {
     //public static final int encoderID = 44;
     public static final double turretBaseAirtime_s = 0.0;
     public static final double turretDistAirtime_sPm = 0.0; // Additional airtime per meter of distance to target
-    public static final double turretGearRatio = 102.0/10.0;
+    public static final double turretGearRatio = 51.0/1.0; //?
     public static final Translation2d turretPos = new Translation2d(-0.133,-0.02413);
   }
   

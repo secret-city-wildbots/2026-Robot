@@ -133,6 +133,6 @@ public class Shooter extends SubsystemBase {
         /*if (!Robot.shooterEnabled && RobotState.isEnabled()) {
             this.setRPS(0.0);
         }*/
-        System.out.println("H: "+motorRotationsToDegrees(this.hoodMotor.pos()));
+        //System.out.println("H: "+motorRotationsToDegrees(this.hoodMotor.pos()));
     }
 }

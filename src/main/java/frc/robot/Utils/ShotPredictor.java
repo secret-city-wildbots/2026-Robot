@@ -6,15 +6,17 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.RobotController;
 import frc.robot.Constants.TurretConstants;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
 public class ShotPredictor {
 
-    private static final Translation2d hubPosition = new Translation2d(11.9, 4.035);
-    private static final Translation2d bumpLeft = new Translation2d(4.35, 5.8);
-    private static final Translation2d bumpRight = new Translation2d(4.35, 8-5.8);
-
-    private static final double g = 9.81;
+    private static final double targetX = (DriverStation.getAlliance().get() == Alliance.Blue) ? 4.63:11.9; //?
+    private static final Translation2d hubPosition = new Translation2d(targetX, 4.035); //?
+    private static final Translation2d bumpLeft = new Translation2d(targetX, 6); //?
+    private static final Translation2d bumpRight = new Translation2d(targetX, 8-6); //?
 
     /**
      * Output of ShotPredictor: contains desired angle, velocity and speed.
@@ -46,14 +48,13 @@ public class ShotPredictor {
 
         Translation2d targetPos;
 
-        if (robotPos.getX() < 4.25) {
+        if ((DriverStation.getAlliance().get() == Alliance.Blue) ? (robotPos.getX() < targetX):(robotPos.getX() > targetX)) { //?
             targetPos = hubPosition;
         } else if (robotPos.getY() > 4.0) {
             targetPos = bumpLeft;
         } else {
             targetPos = bumpRight;
         }
-        targetPos = hubPosition;
 
         Translation2d turretPos = robotPos.plus(TurretConstants.turretPos.rotateBy(robotRot));
 

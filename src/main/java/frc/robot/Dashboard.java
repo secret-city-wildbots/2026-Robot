@@ -88,15 +88,15 @@ public class Dashboard {
                         WBfieldMap))
                 .addChild(new Col(6).addChild(
                         new Row().addChild(
-                                new CameraFeed(5800)).addChild(
-                                        new CameraFeed(5801)))
+                                new CameraFeed(11)).addChild(
+                                        new CameraFeed(12)))
                         .addChild(
                                 new Row().addChild(
-                                        new CameraFeed(5802)).addChild(
-                                                new CameraFeed(5803))))
+                                        new CameraFeed(13)).addChild(
+                                                new CameraFeed(14))))
                 .addChild(new Col(4).addChild(
                     // TODO: Add autos into Dashboard
-                        new AutoChooser(new String[] { "Awesome", "Simple Left" }).onChange((String choice) -> {
+                        new AutoChooser(new String[] { "Awesome", "Simple Left", "SMR 1", "EventTest" }).onChange((String choice) -> {
                             System.out.println("Auto Chosen: "+choice);
                             autoChosen.accept(new PathPlannerAuto(choice));
                         })).addChild(

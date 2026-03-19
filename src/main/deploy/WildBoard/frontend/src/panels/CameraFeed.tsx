@@ -11,8 +11,8 @@ export default function Limelight({ port, aspectRatio = 1.6 }: LimelightProps) {
 
   return (
     <img
-      src={`10.42.65.2:${port}`}
-      alt={`Limelight Disconnected src: 10.42.65.2:${port}`}
+      src={`http://10.42.65.${port}:5800`}
+      alt={`Limelight Disconnected src: 10.42.65.${port}:5801`}
       onError={() => setError(true)}
       onLoad={() => setError(false)}
       style={{

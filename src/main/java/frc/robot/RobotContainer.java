@@ -28,6 +28,7 @@ import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -72,7 +73,7 @@ import frc.robot.Commands.Shooter.TestShooterCommand;
 public class RobotContainer {
     // TODO: Set max speed back to normal
     // private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
-    private double MaxSpeed = 1.0; // kSpeedAt12Volts desired top speed
+    private double MaxSpeed = (Robot.test) ? 1.0:TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed //?
 
     // TODO: Set max rotation back to normal
     // private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
@@ -127,11 +128,24 @@ public class RobotContainer {
         //NamedCommands.registerCommand("Intake", new IntakeSequence(intake, intakeExtension).alongWith(Commands.print("Intaking (Named)")));
         NamedCommands.registerCommand("L1Climb", new ClimbSequenceL1(elevatorLift).alongWith(Commands.print("Climbing")));
         NamedCommands.registerCommand("Intake", new AutoIntakeExtend(intake, intakeExtension));
+        NamedCommands.registerCommand("AutoAim", new AimAtHubCommand(shooter, turret, drivetrain::getPose, () -> {
+            var state = drivetrain.getState();
+            return ChassisSpeeds.fromRobotRelativeSpeeds(
+                state.Speeds,
+                state.Pose.getRotation()
+            );
+        }));
 
-
-        auto = new PathPlannerAuto("Simple L no climb");
+        auto = new WaitCommand(5.0); //?
 
         // Register Event Triggers within Pathplanner
+        new EventTrigger("AutoAim").onTrue( new AimAtHubCommand(shooter, turret, drivetrain::getPose, () -> {
+            var state = drivetrain.getState();
+            return ChassisSpeeds.fromRobotRelativeSpeeds(
+                state.Speeds,
+                state.Pose.getRotation()
+            );
+        }));
         new EventTrigger("Intake").onTrue(new AutoIntakeExtend(intake, intakeExtension));
         new EventTrigger("IntakeRetract").onTrue(new AutoIntakeRetract(intake, intakeExtension));
         //new EventTrigger("Intake").onTrue(Commands.print("Intaking (Trigger)"));
@@ -186,7 +200,7 @@ public class RobotContainer {
 
         joystick.a().whileTrue(new Zero(turret));
 
-        shooter.setDefaultCommand(new AimAtHubCommand(shooter, turret, drivetrain::getPose, () -> {
+        joystick.rightBumper().toggleOnTrue(new AimAtHubCommand(shooter, turret, drivetrain::getPose, () -> {
             var state = drivetrain.getState();
             return ChassisSpeeds.fromRobotRelativeSpeeds(
                 state.Speeds,
@@ -256,8 +270,8 @@ public class RobotContainer {
 
     public Command getAutonomousCommand() {
          /* Run the path selected from the auto chooser */
-        //return auto;
+        return auto; //?WB
         // /* Run the path selected from the auto chooser */
-        return Commands.print("No autonomous command configured");
+        //return Commands.print("No autonomous command configured");
     }
 }

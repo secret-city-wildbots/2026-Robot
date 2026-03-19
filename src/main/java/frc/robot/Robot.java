@@ -38,6 +38,7 @@ public class Robot extends TimedRobot {
   private final RobotContainer m_robotContainer;
   public static boolean shooterEnabled = false;
   private final Vision vision;
+  public static final boolean test = false; //?
 
   /**
    * This function is run when the robot is first started up and should be used

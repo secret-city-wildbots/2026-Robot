@@ -113,11 +113,11 @@ public class Turret extends SubsystemBase {
         //         + " : " +
         //         (Math.round(motor.motorTFX.getClosedLoopOutput().getValueAsDouble() * 100) / 100.0));
         double desired = angle.getRotations() * TurretConstants.turretGearRatio;
-        while (desired < -1.83 || desired > 9.14) {
-            if (desired < -1.83) {
+        while (desired < -1.83*5 || desired > 9.14*5) { //?
+            if (desired < -1.83*5) {
                 desired+=TurretConstants.turretGearRatio;
             }
-            if (desired > 9.14) {
+            if (desired > 9.14*5) {
                 desired-=TurretConstants.turretGearRatio;
             }
         }

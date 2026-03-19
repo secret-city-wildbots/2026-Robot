@@ -3,6 +3,7 @@ package frc.robot.Commands.Shooter;
 
 // Import WPILib Libraries
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -53,17 +54,23 @@ public class AimAtHubCommand extends Command {
     public void execute() {
         Shot shot = ShotPredictor.predict(this.robotPoseSupplier, this.robotVelSupplier);
 
-        this.shooter.setHoodAngle(shot.tilt.getDegrees());
-        this.shooter.setRPS(shot.velocity_mPs / (ShooterConstants.wheelRadius_m * Math.PI * 2));
-        this.turret.setTargetAngle(shot.yaw);
+        if ((this.robotPoseSupplier.get().getX() > 4 && this.robotPoseSupplier.get().getX() < 5.2) || //?
+        (this.robotPoseSupplier.get().getX() > 11.25 && this.robotPoseSupplier.get().getX() < 12.5)) {
+            this.shooter.setHoodAngle(0);
+            this.shooter.setRPS(0);
+        } else {
+            this.shooter.setHoodAngle(shot.tilt.getDegrees());
+            this.shooter.setRPS(shot.velocity_mPs / (ShooterConstants.wheelRadius_m * Math.PI * 2));
+            this.turret.setTargetAngle(shot.yaw);
+        }
         // Only use execute if we have dynamically changing speeds. This is called each loop (~20ms).
         // So if we have just a constant speed, use initialize to avoid spamming the canbus network.
     }
 
     @Override
     public void end(boolean interrupted) {
-        // When the command is interrupted or cancelled, we will stop the spindexer
-        // subsystem
+        this.shooter.setHoodAngle(0);
+        this.shooter.setRPS(0);
     }
 
     @Override

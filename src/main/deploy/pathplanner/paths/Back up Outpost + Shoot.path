@@ -20,7 +20,7 @@
         "y": 0.6589444444458172
       },
       "prevControl": {
-        "x": 1.8327719781948757,
+        "x": 1.8327719781948755,
         "y": 0.658944444445817
       },
       "nextControl": null,
@@ -36,7 +36,12 @@
       "name": "Shoot",
       "waypointRelativePos": 0.6644518272425207,
       "endWaypointRelativePos": null,
-      "command": null
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "AutoAim"
+        }
+      }
     }
   ],
   "globalConstraints": {
