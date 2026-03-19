@@ -67,7 +67,7 @@ public class HubShooterTrajectoryCalc {
     private static final double CACHE_MAX_DISTANCE_M = 8.0;
     private static final int CACHE_SIZE = 500;
     private static final double CACHE_STEP_M = (CACHE_MAX_DISTANCE_M - CACHE_MIN_DISTANCE_M) / (CACHE_SIZE - 1);
-    private static final String CACHE_FILE = "trajectory_cache.json";
+    private static final String CACHE_FILE = System.getProperty("user.home", "/home/lvuser") + "/trajectory_cache.json";
     
     // ========== CACHE STORAGE ==========
     private static CacheEntry[] cache = null;
