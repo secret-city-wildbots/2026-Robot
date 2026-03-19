@@ -30,8 +30,8 @@ public class Turret extends SubsystemBase {
         this.motor.motorConfig.peakReverseDC = -0.25;
 
         this.motor.configTFX.HardwareLimitSwitch.ForwardLimitSource = ForwardLimitSourceValue.RemoteCANifier;
-        this.motor.configTFX.HardwareLimitSwitch.ForwardLimitRemoteSensorID = 40;
-        this.motor.configTFX.HardwareLimitSwitch.ForwardLimitEnable = true;
+        this.motor.configTFX.HardwareLimitSwitch.ForwardLimitRemoteSensorID = 51;
+        this.motor.configTFX.HardwareLimitSwitch.ForwardLimitEnable = false;
         this.motor.configTFX.HardwareLimitSwitch.ForwardLimitType = ForwardLimitTypeValue.NormallyClosed;
 
         // TODO: DELETE THIS?
@@ -46,7 +46,7 @@ public class Turret extends SubsystemBase {
         // TurretConstants.turretGearRatio;
 
         this.motor.applyConfig();
-        this.motor.motionMagic(0.0, 0.0, 0.0, 0.0, 0.0, 1.5, 4.0);
+        this.motor.motionMagic(1.0, 0.0, 0.0, 0.05, 0.0, 4, 6.0);
     }
 
     /**
@@ -122,5 +122,10 @@ public class Turret extends SubsystemBase {
         SmartDashboard.putNumber("diff", Math.abs((angle.minus(new Rotation2d(
             motor.motorTFX.getPosition().getValueAsDouble() * 2 * Math.PI / TurretConstants.turretGearRatio)))
             .getDegrees()));
+    }
+
+    @Override
+    public void periodic() {
+        System.out.println(this.beambreakActive());
     }
 }

@@ -2,12 +2,15 @@ package frc.robot.Actors.Subsystems.Shooter;
 
 // Import WPILib Libraries
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 // Import Phoneix6 Libraries
 import com.ctre.phoenix6.controls.Follower;
+import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
 
+import frc.robot.Robot;
 // Import Actors, Utils & Constants
 import frc.robot.Actors.Motor;
 //import frc.robot.Utils.HubShooterTrajectoryCalc;
@@ -32,16 +35,20 @@ public class Shooter extends SubsystemBase {
         // Configure the lead motor
         this.leadMotor.motorConfig.direction = RotationDir.CounterClockwise;
         this.leadMotor.motorConfig.dutyCycleClosedLoopRampPeriod = 0.3;
+        this.leadMotor.motorConfig.brake = false;
         this.leadMotor.applyConfig();
-        this.leadMotor.pid(13, 0.6, 0.025); // Setup the Shooter PID
+        this.leadMotor.pid(0.2, 0.0, 0.2); // Setup the Shooter PID
 
         // Set the followMotor to follow the lead motor and make it opposed
         this.followMotor.motorTFX.setControl(new Follower(ShooterConstants.leadMotorID, MotorAlignmentValue.Opposed));
     
         this.hoodMotor.motorTFX.setPosition(0.02604);        // 5 degrees
         this.hoodMotor.motorConfig.direction = RotationDir.Clockwise;
+        this.hoodMotor.motorConfig.peakReverseDC = 0.0;
         this.hoodMotor.applyConfig();
-        this.hoodMotor.pid(6.0, 0.0, 0.0);
+        this.hoodMotor.slot0TFX.kG = 0.025;
+        this.hoodMotor.slot0TFX.GravityType = GravityTypeValue.Elevator_Static;
+        this.hoodMotor.pid(0.35, 0.0, 0.012);
     }
 
     public void setBrake(boolean brake) {
@@ -56,7 +63,9 @@ public class Shooter extends SubsystemBase {
      */
     public void setRPS(double rps) {
         // Send the output to the motor
-        leadMotor.vel(rps);
+        //if (Robot.shooterEnabled) {
+            leadMotor.vel(rps);
+        //}
     }
 
     /**
@@ -118,4 +127,12 @@ public class Shooter extends SubsystemBase {
     private double motorRotationsToDegrees(double motorRotations) {
         return motorRotations * 360.0 / ShooterConstants.hoodGearRatio + ShooterConstants.minDegree;
     }
+
+    /*@Override
+    public void periodic() {
+        if (!Robot.shooterEnabled && RobotState.isEnabled()) {
+            this.setRPS(0.0);
+        }
+        //System.out.println("H: "+motorRotationsToDegrees(this.hoodMotor.pos()));
+    }*/
 }
