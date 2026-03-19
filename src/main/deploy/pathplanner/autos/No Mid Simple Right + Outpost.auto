@@ -13,19 +13,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "R Trench Reverse"
+            "pathName": "Back up R Trench Reverse"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Outpost + Shoot"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Copy of R Trench Back to Mid"
+            "pathName": "Back up Outpost + Shoot"
           }
         }
       ]
