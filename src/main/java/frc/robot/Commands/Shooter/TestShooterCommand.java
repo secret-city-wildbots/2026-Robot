@@ -41,7 +41,7 @@ public class TestShooterCommand extends Command {
 
     @Override
     public void execute() {
-        this.shooter.setHoodAngle(20);
+        this.shooter.setHoodAngle(30);
         this.shooter.setRPS(50);
         // Only use execute if we have dynamically changing speeds. This is called each loop (~20ms).
         // So if we have just a constant speed, use initialize to avoid spamming the canbus network.

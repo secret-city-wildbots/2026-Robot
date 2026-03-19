@@ -48,7 +48,7 @@ public final class Constants {
     // Elevator motor CANBus IDs
     public static final int liftMotorID = 48;
     public static final int hookMotorID = 49;
-    public static final double maxSpeedPercentage = 0.2;
+    public static final double maxSpeedPercentage = 0.1;
 
     // Sensor ID / Ports
     public static final int lowerLimitMagneticSensorPort = 0;
@@ -57,12 +57,12 @@ public final class Constants {
 
     // Hook Cancoder CANBus IDs
     public static final int hookMotorCancoderID = 34;
-    public static final double hookEncoderOffset = 0.02051;
+    public static final double hookEncoderOffset = 0.0794921875;
 
     // Hook motor positions
     public static final double hookSafePosition = 0.0;
-    public static final double hookGuideDeployedPosition = 10.00;
-    public static final double hookDeployedPosition = 66.24;
+    public static final double hookGuideDeployedPosition = 0.1;
+    public static final double hookDeployedPosition = 0.18;
     public static final double hookPosForTopRungClearance = 43.56;
     public static final double angleTolerance = 2.0; 
   }
@@ -73,8 +73,9 @@ public final class Constants {
     public static final int transferMotorID = 43;
 
     // Properties
-    public static final int transferRPS = 50;
-    public static final int spindexerRPS = 10;
+    public static final int transferRPS = 60;
+    public static final int spindexerRPS = 40;
+    public static final double spinupTime = 0.1;
   }
 
   public static class ShooterConstants {
@@ -84,7 +85,7 @@ public final class Constants {
     public static final int hoodMotorID = 44;
 
     // Gear Ratios
-    public static final double hoodGearRatio = 90.0 / 16.0;
+    public static final double hoodGearRatio = 23.5714;
 
     // Hood Ranges
     public static final double minDegree = 5.0;

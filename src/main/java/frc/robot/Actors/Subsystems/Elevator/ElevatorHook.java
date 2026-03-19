@@ -24,13 +24,13 @@ public class ElevatorHook extends SubsystemBase {
     public ElevatorHook() {
         // Configure the elevator hook motor
         this.motor = new Motor(ElevatorConstants.hookMotorID, MotorType.TFX, "rio");
-        this.motor.motorConfig.direction = RotationDir.CounterClockwise;
+        this.motor.motorConfig.direction = RotationDir.Clockwise;
         this.motor.applyConfig();
 
         // Configure the elevator hook encoder
         this.encoder = new CANcoder(ElevatorConstants.hookMotorCancoderID);
         MagnetSensorConfigs config = new MagnetSensorConfigs();
-        config.withMagnetOffset(-ElevatorConstants.hookEncoderOffset);
+        config.withMagnetOffset(ElevatorConstants.hookEncoderOffset);
         this.encoder.getConfigurator().apply(config);
 
         // Initialize the target angle to be 0.0 degrees
@@ -84,7 +84,7 @@ public class ElevatorHook extends SubsystemBase {
      */
     public double getCurrentAngle() {
         // We get the absolute position of the encoder (-1 - 1 rotations) and multiply by 360 to get degrees
-        return this.encoder.getAbsolutePosition().getValueAsDouble() * 360.0;
+        return this.encoder.getAbsolutePosition().getValueAsDouble();
     }
 
     /**

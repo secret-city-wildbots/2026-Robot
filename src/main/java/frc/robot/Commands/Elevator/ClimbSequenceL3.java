@@ -27,8 +27,8 @@ public class ClimbSequenceL3 extends SequentialCommandGroup {
                 new RotateHookToPositionCommand(hook, ElevatorConstants.hookGuideDeployedPosition)
             ),
 
-            // 2. Allow hooks to extend out fully
-            new ClimbAfterTopLimitSwitch(lift),
+            // // 2. Allow hooks to extend out fully
+            // new ClimbAfterTopLimitSwitch(lift),
 
             // 3. Pull down to handoff
             new RetractLiftCommand(lift, true),
@@ -39,8 +39,8 @@ public class ClimbSequenceL3 extends SequentialCommandGroup {
             // 5. Full extend
             new ExtendLiftCommand(lift),
 
-            // 6. Allow hooks to extend out fully
-            new ClimbAfterTopLimitSwitch(lift),
+            // // 6. Allow hooks to extend out fully
+            // new ClimbAfterTopLimitSwitch(lift),
 
             // 7. Allow hooks to extend out fully
             new RotateHookToPositionCommand(hook, ElevatorConstants.hookPosForTopRungClearance),
@@ -57,8 +57,8 @@ public class ClimbSequenceL3 extends SequentialCommandGroup {
             // 10. Full extend
             new ExtendLiftCommand(lift),
 
-            // 11. Allow hooks to extend out fully
-            new ClimbAfterTopLimitSwitch(lift),
+            // // 11. Allow hooks to extend out fully
+            // new ClimbAfterTopLimitSwitch(lift),
 
             // 12. Allow hooks to extend out fully
             new RotateHookToPositionCommand(hook, ElevatorConstants.hookPosForTopRungClearance),

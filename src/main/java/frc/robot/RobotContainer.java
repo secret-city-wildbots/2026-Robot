@@ -58,11 +58,14 @@ import frc.robot.Commands.Intake.IntakeSequence;
 import frc.robot.Commands.Spindexer.AutoStartIndexCommand;
 import frc.robot.Commands.Spindexer.AutoStopIndexCommand;
 import frc.robot.Commands.Spindexer.SpinAndFeedCommand;
+import frc.robot.Commands.Turret.JoystickAimCommand;
+import frc.robot.Commands.Turret.Zero;
 import frc.robot.Commands.Elevator.ClimbSequenceL1;
 import frc.robot.Commands.Elevator.ClimbSequenceL3;
 import frc.robot.Commands.Elevator.HookCommand;
 import frc.robot.Commands.Elevator.LiftCommand;
 import frc.robot.Commands.Shooter.AimAtHubCommand;
+import frc.robot.Commands.Shooter.TestShooterCommand;
 
 
 
@@ -89,7 +92,7 @@ public class RobotContainer {
 
     private final CommandXboxController joystick = new CommandXboxController(0);
 
-    public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
+    //public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
     public final Spindexer spindexer = new Spindexer();
     public final Transfer transfer = new Transfer();
 
@@ -97,19 +100,19 @@ public class RobotContainer {
     public final IntakeExtension intakeExtension = new IntakeExtension();
     private final ElevatorLift elevatorLift = new ElevatorLift();
     private final ElevatorHook elevatorHook = new ElevatorHook();
-    private final Shooter shooter = new Shooter();
+    private final Shooter shooter = new Shooter(); 
     private final Turret turret = new Turret();
 
     private final PowerDistribution pdh = new PowerDistribution();
 
-    public final Dashboard dashboard;
+    //public final Dashboard dashboard;
 
       /* Path follower */
     private Command auto;
     private final Consumer<Command> autoChosen = (Command newAuto) -> {this.auto = newAuto;};
     
     public RobotContainer() {
-        dashboard = new Dashboard(drivetrain, elevatorHook, elevatorLift, shooter, spindexer, transfer, turret, intake, intakeExtension, pdh, autoChosen);
+        //dashboard = new Dashboard(drivetrain, elevatorHook, elevatorLift, shooter, spindexer, transfer, turret, intake, intakeExtension, pdh, autoChosen);
 
         //TODO: Make sure values for Commands are correct
          // Register Named Commands within Pathplanner
@@ -126,7 +129,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("Intake", new AutoIntakeExtend(intake, intakeExtension));
 
 
-        auto = new PathPlannerAuto("Simple L no climb");
+        //auto = new PathPlannerAuto("Simple L no climb");
 
         // Register Event Triggers within Pathplanner
         new EventTrigger("Intake").onTrue(new AutoIntakeExtend(intake, intakeExtension));
@@ -152,7 +155,7 @@ public class RobotContainer {
 
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention.
-        drivetrain.setDefaultCommand(
+        /*drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
             drivetrain.applyRequest(new Supplier<SwerveRequest>() {
                 public SwerveRequest get() {
@@ -173,7 +176,7 @@ public class RobotContainer {
 
                 }
             })
-        );
+        );*/
 
         joystick.rightTrigger(0.4).onTrue(Commands.runOnce(() -> {
             xVelAvg = joystick.getLeftY();
@@ -181,20 +184,22 @@ public class RobotContainer {
             hVelAvg = joystick.getRightX();
         }));
 
-        shooter.setDefaultCommand(new AimAtHubCommand(shooter, turret, drivetrain::getPose, () -> {
+        joystick.a().whileTrue(new Zero(turret));
+
+        /*shooter.setDefaultCommand(new AimAtHubCommand(shooter, turret, drivetrain::getPose, () -> {
             var state = drivetrain.getState();
             return ChassisSpeeds.fromRobotRelativeSpeeds(
                 state.Speeds,
                 state.Pose.getRotation()
             );
-        }));
+        }));*/
 
         // Idle while the robot is disabled. This ensures the configured
         // neutral mode is applied to the drive motors while disabled.
-        final var idle = new SwerveRequest.Idle();
+        /*final var idle = new SwerveRequest.Idle();
         RobotModeTriggers.disabled().whileTrue(
             drivetrain.applyRequest(() -> idle).ignoringDisable(true)
-        );
+        );*/
 
         // Break when pressing A
         //joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
@@ -206,26 +211,38 @@ public class RobotContainer {
 
         // Run SysId routines when holding back/start and X/Y.
         // Note that each routine should be run exactly once in a single log.
-        joystick.back().and(joystick.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
+        /*joystick.back().and(joystick.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
         joystick.back().and(joystick.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
         joystick.start().and(joystick.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
         joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
         // reset the field-centric heading on left bumper press
-        joystick.povLeft().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+        joystick.povLeft().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));*/
 
         // TODO: Enable logger
         // drivetrain.registerTelemetry(logger::telemeterize);
         
         joystick.leftBumper().toggleOnTrue(new IntakeSequence(intake, intakeExtension));
-        drivetrain.registerTelemetry(logger::telemeterize);
-        joystick.rightTrigger(0.4).whileTrue(new SpinAndFeedCommand(transfer, spindexer, SpindexerConstants.transferRPS, SpindexerConstants.spindexerRPS));  
+        //drivetrain.registerTelemetry(logger::telemeterize);
+        joystick.rightBumper().whileTrue(new TestShooterCommand(shooter));
+
+        joystick.rightTrigger(0.4).onTrue(Commands.runOnce(() -> {
+            Robot.shooterEnabled = true;
+        }));
+        joystick.rightTrigger(0.4).onFalse(Commands.runOnce(() -> {
+            Robot.shooterEnabled = false;
+        }));
+        joystick.rightTrigger(0.4).whileTrue(new SpinAndFeedCommand(transfer, spindexer, SpindexerConstants.transferRPS, SpindexerConstants.spindexerRPS , SpindexerConstants.spinupTime));  
+
+
         // Descend from Auto L1 + Retract Lift down
-        joystick.x().whileTrue(new ClimbSequenceL3(elevatorLift, elevatorHook));
+        /*joystick.x().whileTrue(new ClimbSequenceL3(elevatorLift, elevatorHook));
         joystick.y().whileTrue(new LiftCommand(elevatorLift, joystick));
         joystick.a().whileTrue(new HookCommand(elevatorHook, joystick));
-        joystick.b().whileTrue(new ClimbSequenceL1(elevatorLift));
         
+        joystick.b().toggleOnTrue(new ClimbSequenceL1(elevatorLift));*/
+
+        turret.setDefaultCommand(new JoystickAimCommand(turret, joystick));
        
         /*************************************************
          * Commands for Spindexer Testing
@@ -241,8 +258,8 @@ public class RobotContainer {
 
     public Command getAutonomousCommand() {
          /* Run the path selected from the auto chooser */
-        return auto;
+        //return auto;
         // /* Run the path selected from the auto chooser */
-        // return Commands.print("No autonomous command configured");
+        return Commands.print("No autonomous command configured");
     }
 }
