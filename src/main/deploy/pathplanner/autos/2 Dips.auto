@@ -1,0 +1,43 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "L Trench Dip 1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "L Trench RDip 1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "L Trench Dip 2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "L Trench RDip 2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "L Bump to Depot to Climb"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "Dips",
+  "choreoAuto": false
+}

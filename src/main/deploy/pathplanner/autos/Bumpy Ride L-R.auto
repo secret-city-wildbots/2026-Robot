@@ -7,13 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "L Bump + Plow"
+            "pathName": "Full L Bump Plow"
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "L Bump Plow into R Bump"
+            "name": "Shoot"
           }
         },
         {
@@ -25,13 +25,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "R Bump Outpost to Climber"
+            "pathName": "Outpost+Preclimb"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "Top 5 Autos",
+  "folder": "Bumpy",
   "choreoAuto": false
 }

@@ -11,9 +11,21 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "ShootStop"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "L Trench Reverse"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot"
           }
         },
         {
@@ -26,6 +38,6 @@
     }
   },
   "resetOdom": true,
-  "folder": "Top 5 Autos",
+  "folder": "Simple",
   "choreoAuto": false
 }

@@ -25,13 +25,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "R Bump Outpost to Climber"
+            "pathName": "Outpost+Preclimb"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "Top 5 Autos",
+  "folder": "Simple",
   "choreoAuto": false
 }

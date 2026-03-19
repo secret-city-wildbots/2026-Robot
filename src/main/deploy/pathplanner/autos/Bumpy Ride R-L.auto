@@ -7,13 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "R Bump + Plow"
+            "pathName": "Full R Bump Plow"
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "R Bump Plow into L Bump"
+            "name": "Shoot"
           }
         },
         {
@@ -26,6 +26,6 @@
     }
   },
   "resetOdom": true,
-  "folder": "Top 5 Autos",
+  "folder": "Bumpy",
   "choreoAuto": false
 }
