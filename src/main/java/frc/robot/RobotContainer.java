@@ -92,7 +92,7 @@ public class RobotContainer {
 
     private final CommandXboxController joystick = new CommandXboxController(0);
 
-    //public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
+    public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
     public final Spindexer spindexer = new Spindexer();
     public final Transfer transfer = new Transfer();
 
@@ -105,14 +105,14 @@ public class RobotContainer {
 
     private final PowerDistribution pdh = new PowerDistribution();
 
-    //public final Dashboard dashboard;
+    public final Dashboard dashboard;
 
       /* Path follower */
     private Command auto;
     private final Consumer<Command> autoChosen = (Command newAuto) -> {this.auto = newAuto;};
     
     public RobotContainer() {
-        //dashboard = new Dashboard(drivetrain, elevatorHook, elevatorLift, shooter, spindexer, transfer, turret, intake, intakeExtension, pdh, autoChosen);
+        dashboard = new Dashboard(drivetrain, elevatorHook, elevatorLift, shooter, spindexer, transfer, turret, intake, intakeExtension, pdh, autoChosen);
 
         //TODO: Make sure values for Commands are correct
          // Register Named Commands within Pathplanner
@@ -129,7 +129,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("Intake", new AutoIntakeExtend(intake, intakeExtension));
 
 
-        //auto = new PathPlannerAuto("Simple L no climb");
+        auto = new PathPlannerAuto("Simple L no climb");
 
         // Register Event Triggers within Pathplanner
         new EventTrigger("Intake").onTrue(new AutoIntakeExtend(intake, intakeExtension));
@@ -155,7 +155,7 @@ public class RobotContainer {
 
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention.
-        /*drivetrain.setDefaultCommand(
+        drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
             drivetrain.applyRequest(new Supplier<SwerveRequest>() {
                 public SwerveRequest get() {
@@ -176,7 +176,7 @@ public class RobotContainer {
 
                 }
             })
-        );*/
+        );
 
         joystick.rightTrigger(0.4).onTrue(Commands.runOnce(() -> {
             xVelAvg = joystick.getLeftY();
@@ -196,10 +196,10 @@ public class RobotContainer {
 
         // Idle while the robot is disabled. This ensures the configured
         // neutral mode is applied to the drive motors while disabled.
-        /*final var idle = new SwerveRequest.Idle();
+        final var idle = new SwerveRequest.Idle();
         RobotModeTriggers.disabled().whileTrue(
             drivetrain.applyRequest(() -> idle).ignoringDisable(true)
-        );*/
+        );
 
         // Break when pressing A
         //joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
@@ -215,15 +215,15 @@ public class RobotContainer {
         joystick.back().and(joystick.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
         joystick.start().and(joystick.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
         joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
-
+        */
         // reset the field-centric heading on left bumper press
-        joystick.povLeft().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));*/
+        joystick.povLeft().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
         // TODO: Enable logger
-        // drivetrain.registerTelemetry(logger::telemeterize);
+        //drivetrain.registerTelemetry(logger::telemeterize);
         
         joystick.leftBumper().toggleOnTrue(new IntakeSequence(intake, intakeExtension));
-        //drivetrain.registerTelemetry(logger::telemeterize);
+
         joystick.rightBumper().whileTrue(new TestShooterCommand(shooter));
 
         joystick.rightTrigger(0.4).onTrue(Commands.runOnce(() -> {
@@ -232,7 +232,7 @@ public class RobotContainer {
         joystick.rightTrigger(0.4).onFalse(Commands.runOnce(() -> {
             Robot.shooterEnabled = false;
         }));
-        joystick.rightTrigger(0.4).whileTrue(new SpinAndFeedCommand(transfer, spindexer, SpindexerConstants.transferRPS, SpindexerConstants.spindexerRPS , SpindexerConstants.spinupTime));  
+        joystick.rightTrigger(0.4).whileTrue(new SpinAndFeedCommand(transfer, spindexer, SpindexerConstants.transferRPS, SpindexerConstants.spindexerRPS));  
 
 
         // Descend from Auto L1 + Retract Lift down
