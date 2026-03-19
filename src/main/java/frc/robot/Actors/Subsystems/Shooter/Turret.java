@@ -25,9 +25,9 @@ public class Turret extends SubsystemBase {
     public Turret() {
         // Configure the turret motor
         this.motor = new Motor(TurretConstants.turretMotorID, MotorType.TFX);
-        this.motor.motorConfig.direction = RotationDir.CounterClockwise;
-        this.motor.motorConfig.peakForwardDC = 0.25;
-        this.motor.motorConfig.peakReverseDC = -0.25;
+        this.motor.motorConfig.direction = RotationDir.Clockwise;
+        this.motor.motorConfig.peakForwardDC = 1;
+        this.motor.motorConfig.peakReverseDC = -1;
 
         this.motor.configTFX.HardwareLimitSwitch.ForwardLimitSource = ForwardLimitSourceValue.RemoteCANifier;
         this.motor.configTFX.HardwareLimitSwitch.ForwardLimitRemoteSensorID = 51;
@@ -36,17 +36,11 @@ public class Turret extends SubsystemBase {
 
         // TODO: DELETE THIS?
         // this.motor.configTFX.ClosedLoopGeneral.ContinuousWrap = true;
-        // this.motor.configTFX.Feedback.FeedbackRemoteSensorID =
-        // TurretConstants.encoderID;
-        // this.motor.configTFX.Feedback.FeedbackSensorSource =
-        // FeedbackSensorSourceValue.RemoteCANcoder;
-        // this.motor.configTFX.Feedback.RotorToSensorRatio =
-        // TurretConstants.turretGearRatio;
         // this.motor.configTFX.Feedback.SensorToMechanismRatio =
         // TurretConstants.turretGearRatio;
 
         this.motor.applyConfig();
-        this.motor.motionMagic(1.0, 0.0, 0.0, 0.05, 0.0, 4, 6.0);
+        this.motor.motionMagic(1.0, 0.0, 0.0, 0.05, 0.0, 8.0, 10.0);
     }
 
     /**
@@ -93,7 +87,7 @@ public class Turret extends SubsystemBase {
      * @return the turret position in degrees
      */
     public double getTurretDegrees() {
-        return this.motor.pos() * TurretConstants.turretGearRatio * 360.0; // Convert rotations to degrees
+        return this.motor.pos() / TurretConstants.turretGearRatio * 360.0; // Convert rotations to degrees
     }
 
     /**
@@ -118,7 +112,19 @@ public class Turret extends SubsystemBase {
         //                 / 100.0)
         //         + " : " +
         //         (Math.round(motor.motorTFX.getClosedLoopOutput().getValueAsDouble() * 100) / 100.0));
-        this.motor.posMM(angle.getRotations() * TurretConstants.turretGearRatio);
+        double desired = angle.getRotations() * TurretConstants.turretGearRatio;
+        while (desired < -1.83 || desired > 9.14) {
+            if (desired < -1.83) {
+                desired+=TurretConstants.turretGearRatio;
+            }
+            if (desired > 9.14) {
+                desired-=TurretConstants.turretGearRatio;
+            }
+        }
+
+        this.motor.posMM(desired);
+
+
         SmartDashboard.putNumber("diff", Math.abs((angle.minus(new Rotation2d(
             motor.motorTFX.getPosition().getValueAsDouble() * 2 * Math.PI / TurretConstants.turretGearRatio)))
             .getDegrees()));
@@ -126,6 +132,6 @@ public class Turret extends SubsystemBase {
 
     @Override
     public void periodic() {
-        //System.out.println(this.beambreakActive());
+        //System.out.println("turret: "+this.getTurretDegrees());
     }
 }

@@ -101,7 +101,7 @@ public final class Constants {
     public static final double turretBaseAirtime_s = 0.0;
     public static final double turretDistAirtime_sPm = 0.0; // Additional airtime per meter of distance to target
     public static final double turretGearRatio = 102.0/10.0;
-    public static final Translation2d turretPos = new Translation2d(0.5,0.5);
+    public static final Translation2d turretPos = new Translation2d(-0.133,-0.02413);
   }
   
   public static class DrivetrainConstants {

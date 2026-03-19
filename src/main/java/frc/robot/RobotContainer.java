@@ -186,13 +186,13 @@ public class RobotContainer {
 
         joystick.a().whileTrue(new Zero(turret));
 
-        /*shooter.setDefaultCommand(new AimAtHubCommand(shooter, turret, drivetrain::getPose, () -> {
+        shooter.setDefaultCommand(new AimAtHubCommand(shooter, turret, drivetrain::getPose, () -> {
             var state = drivetrain.getState();
             return ChassisSpeeds.fromRobotRelativeSpeeds(
                 state.Speeds,
                 state.Pose.getRotation()
             );
-        }));*/
+        }));
 
         // Idle while the robot is disabled. This ensures the configured
         // neutral mode is applied to the drive motors while disabled.
@@ -223,8 +223,6 @@ public class RobotContainer {
         //drivetrain.registerTelemetry(logger::telemeterize);
         
         joystick.leftBumper().toggleOnTrue(new IntakeSequence(intake, intakeExtension));
-
-        joystick.rightBumper().whileTrue(new TestShooterCommand(shooter));
 
         joystick.rightTrigger(0.4).onTrue(Commands.runOnce(() -> {
             Robot.shooterEnabled = true;

@@ -10,7 +10,7 @@ import frc.robot.Constants.TurretConstants;
 
 public class ShotPredictor {
 
-    private static final Translation2d hubPosition = new Translation2d(4.625594, 4.02336);
+    private static final Translation2d hubPosition = new Translation2d(11.9, 4.035);
     private static final Translation2d bumpLeft = new Translation2d(4.35, 5.8);
     private static final Translation2d bumpRight = new Translation2d(4.35, 8-5.8);
 
@@ -53,10 +53,10 @@ public class ShotPredictor {
         } else {
             targetPos = bumpRight;
         }
+        targetPos = hubPosition;
 
         Translation2d turretPos = robotPos.plus(TurretConstants.turretPos.rotateBy(robotRot));
 
-        // tuned airtime model (need to tune this function, maybe make non-linear?)
         double distance = targetPos.getDistance(turretPos);
         double airtime = getAirtime(distance);
 
@@ -89,7 +89,7 @@ public class ShotPredictor {
     }
 
     public static Rotation2d getTilt(double dist) {
-        return new Rotation2d(90-HubShooterTrajectoryCalc.lookupCache(dist).elevation_deg);
+        return new Rotation2d((90-HubShooterTrajectoryCalc.lookupCache(dist).elevation_deg)/180*Math.PI);
         //return new Rotation2d();
     }
 

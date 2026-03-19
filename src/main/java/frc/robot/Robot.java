@@ -97,8 +97,8 @@ public class Robot extends TimedRobot {
     Translation2d robotPos = m_robotContainer.drivetrain.getPose().getTranslation();
     Rotation2d robotRot = m_robotContainer.drivetrain.getPose().getRotation();
     Translation2d turretPos = robotPos.plus(TurretConstants.turretPos.rotateBy(robotRot));
-    double distance = new Translation2d(4.625594, 4.02336).getDistance(turretPos);
-    System.out.println(distance);
+    double distance = new Translation2d(11.9, 4.035).getDistance(robotPos);
+    //System.out.println("dist: "+distance);
   }
 
   @Override

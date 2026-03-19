@@ -35,6 +35,7 @@ public class Shooter extends SubsystemBase {
         // Configure the lead motor
         this.leadMotor.motorConfig.direction = RotationDir.CounterClockwise;
         this.leadMotor.motorConfig.dutyCycleClosedLoopRampPeriod = 0.3;
+        this.leadMotor.motorConfig.peakReverseDC = 0.0;
         this.leadMotor.motorConfig.brake = false;
         this.leadMotor.applyConfig();
         this.leadMotor.pid(0.2, 0.0, 0.2); // Setup the Shooter PID
@@ -44,7 +45,6 @@ public class Shooter extends SubsystemBase {
     
         this.hoodMotor.motorTFX.setPosition(0.02604);        // 5 degrees
         this.hoodMotor.motorConfig.direction = RotationDir.Clockwise;
-        this.hoodMotor.motorConfig.peakReverseDC = 0.0;
         this.hoodMotor.applyConfig();
         this.hoodMotor.slot0TFX.kG = 0.025;
         this.hoodMotor.slot0TFX.GravityType = GravityTypeValue.Elevator_Static;
@@ -128,11 +128,11 @@ public class Shooter extends SubsystemBase {
         return motorRotations * 360.0 / ShooterConstants.hoodGearRatio + ShooterConstants.minDegree;
     }
 
-    /*@Override
+    @Override
     public void periodic() {
-        if (!Robot.shooterEnabled && RobotState.isEnabled()) {
+        /*if (!Robot.shooterEnabled && RobotState.isEnabled()) {
             this.setRPS(0.0);
-        }
-        //System.out.println("H: "+motorRotationsToDegrees(this.hoodMotor.pos()));
-    }*/
+        }*/
+        System.out.println("H: "+motorRotationsToDegrees(this.hoodMotor.pos()));
+    }
 }
