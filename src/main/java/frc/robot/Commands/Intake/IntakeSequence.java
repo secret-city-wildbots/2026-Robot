@@ -15,7 +15,7 @@ public class IntakeSequence extends ParallelCommandGroup {
         addCommands(
 
             // 1. extend out intake
-            new ExtensionCommand(extender, 86),
+            new ExtensionCommand(extender, 90.0),
 
             // 2. turn on intake
             new IntakeCommand(intake, 0.6)

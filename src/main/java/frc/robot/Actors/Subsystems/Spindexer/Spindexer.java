@@ -22,8 +22,9 @@ public class Spindexer extends SubsystemBase {
         this.motor = new Motor(SpindexerConstants.spinMotorID, MotorType.TFX, "rio");
         this.motor.motorConfig.direction = RotationDir.CounterClockwise;
         this.motor.motorConfig.dutyCycleClosedLoopRampPeriod = 0.3;
+        this.motor.motorConfig.peakReverseDC = 0.0;
         this.motor.applyConfig();
-        this.motor.pid(13, 0.6, 0.025); // Setup the spindexer PID
+        this.motor.pid(0.3, 0.0, 0.0); // Setup the spindexer PID
     }
 
     public double getTemp() {

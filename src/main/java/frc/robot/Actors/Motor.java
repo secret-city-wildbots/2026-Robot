@@ -3,6 +3,7 @@ package frc.robot.Actors;
 // Import Phoenix 6 Libraries
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.MotionMagicDutyCycle;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.PositionDutyCycle;
 import com.ctre.phoenix6.controls.PositionVoltage;
@@ -207,7 +208,7 @@ public class Motor {
                 motorSPX.getClosedLoopController().setSetpoint(pos, ControlType.kPosition, ClosedLoopSlot.kSlot0, ff);
                 break;
             case TFX:
-                PositionVoltage controlRequest = new PositionVoltage(pos);
+                PositionDutyCycle controlRequest = new PositionDutyCycle(pos);
                 controlRequest.FeedForward = ff;
                 motorTFX.setControl(controlRequest);
                 break;
@@ -229,7 +230,7 @@ public class Motor {
                 motorSPX.getClosedLoopController().setSetpoint(pos, ControlType.kPosition, ClosedLoopSlot.kSlot0);
                 break;
             case TFX:
-                MotionMagicVoltage controlRequest = new MotionMagicVoltage(pos);
+                MotionMagicDutyCycle controlRequest = new MotionMagicDutyCycle(pos);
                 motorTFX.setControl(controlRequest);
                 break;
             case None:

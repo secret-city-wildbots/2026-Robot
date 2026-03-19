@@ -15,9 +15,6 @@ public class IntakeExtension extends SubsystemBase {
 
     // Define variables
      private Motor motor; // Motor to control the intake extension position
-     public double p = 0.02;
-     public double i = 0.01;
-     public double d = 0.00;
 
     public IntakeExtension() {
         // Configure the intake extension motor
@@ -25,12 +22,9 @@ public class IntakeExtension extends SubsystemBase {
 
         this.motor.motorTFX.setPosition(0.0);             // 0 degrees
         this.motor.motorConfig.direction = RotationDir.Clockwise;
+        this.motor.motorConfig.brake = false;
         this.motor.applyConfig();
-        this.motor.pid(p, i, d);
-
-        SmartDashboard.putNumber("P", p);
-        SmartDashboard.putNumber("I", i);
-        SmartDashboard.putNumber("D", d);
+        this.motor.pid(0.04, 0.015, 0.0);
     }
 
     public double getTemp() {
@@ -75,13 +69,6 @@ public class IntakeExtension extends SubsystemBase {
 
     @Override
     public void periodic() {
-        if (SmartDashboard.getNumber("P", p) != p || 
-            SmartDashboard.getNumber("I", i) != i ||
-            SmartDashboard.getNumber("D", d) != d) {
-                p = SmartDashboard.getNumber("P", p);
-                i = SmartDashboard.getNumber("I", i);
-                d = SmartDashboard.getNumber("D", d);
-                this.motor.pid(p,i,d);
-        }
+        //System.out.println("I: "+(motor.pos() * 360 / IntakeConstants.extensionGearRatio + IntakeConstants.minDegree));
     }
 }

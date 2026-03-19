@@ -25,13 +25,13 @@ public class Zero extends Command {
 
     @Override
     public void initialize() {
-        this.turret.dc(0.03);
+        this.turret.dc(0.05);
         this.turret.setForwardLimit(true);
     }
 
     @Override
     public void execute() {
-        
+        this.turret.dc(0.05);
     }
 
     @Override
