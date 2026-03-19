@@ -17,11 +17,11 @@
     {
       "anchor": {
         "x": 3.6,
-        "y": 0.7
+        "y": 0.6
       },
       "prevControl": {
         "x": 7.85,
-        "y": 0.6999999999999994
+        "y": 0.5999999999999994
       },
       "nextControl": null,
       "isLocked": false,
@@ -34,8 +34,8 @@
       "rotationDegrees": 90.0
     },
     {
-      "waypointRelativePos": 0.8578947368421027,
-      "rotationDegrees": -90.0
+      "waypointRelativePos": 0.8157894736842098,
+      "rotationDegrees": 0.0
     }
   ],
   "constraintZones": [],
@@ -44,12 +44,6 @@
     {
       "name": "IntakeRetract",
       "waypointRelativePos": 0.0,
-      "endWaypointRelativePos": null,
-      "command": null
-    },
-    {
-      "name": "Shoot",
-      "waypointRelativePos": 1.0,
       "endWaypointRelativePos": null,
       "command": null
     }
@@ -64,7 +58,7 @@
   },
   "goalEndState": {
     "velocity": 1.5,
-    "rotation": -90.0
+    "rotation": 0.0
   },
   "reversed": false,
   "folder": "Simple Right + Outpost",
