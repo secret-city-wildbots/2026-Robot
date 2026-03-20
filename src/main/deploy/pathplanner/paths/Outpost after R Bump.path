@@ -3,50 +3,42 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.45,
-        "y": 0.7
+        "x": 7.8,
+        "y": 3.35
       },
       "prevControl": null,
       "nextControl": {
-        "x": 0.6874085483146268,
-        "y": 0.7783401633081107
+        "x": 7.96079545454257,
+        "y": 2.259936868685322
       },
       "isLocked": false,
-      "linkedName": "Outpost"
+      "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.560385542168675,
-        "y": 3.319234939759036
+        "x": 0.43681818181818244,
+        "y": 0.6910101010101029
       },
       "prevControl": {
-        "x": 2.205120481927711,
-        "y": 3.335626506024097
+        "x": 0.49407828282539845,
+        "y": 2.9012499999984533
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Right Climb"
+      "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.4617604617604639,
+      "rotationDegrees": 45.0
+    }
+  ],
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 0.6699751861042155,
+      "minWaypointRelativePos": 0.3864229765013054,
       "maxWaypointRelativePos": 1.0,
-      "constraints": {
-        "maxVelocity": 1.0,
-        "maxAcceleration": 3.0,
-        "maxAngularVelocity": 540.0,
-        "maxAngularAcceleration": 720.0,
-        "nominalVoltage": 12.0,
-        "unlimited": false
-      }
-    },
-    {
-      "name": "Constraints Zone",
-      "minWaypointRelativePos": 0,
-      "maxWaypointRelativePos": 0.496277915632758,
       "constraints": {
         "maxVelocity": 2.0,
         "maxAcceleration": 1.5,
@@ -60,15 +52,15 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "L1Climb",
-      "waypointRelativePos": 1.0,
+      "name": "IntakeRetract",
+      "waypointRelativePos": 0.10269799825935348,
       "endWaypointRelativePos": null,
       "command": null
     }
   ],
   "globalConstraints": {
     "maxVelocity": 3.0,
-    "maxAcceleration": 1.5,
+    "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
@@ -82,7 +74,7 @@
   "folder": "Simple Right + Outpost",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 90.0
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }

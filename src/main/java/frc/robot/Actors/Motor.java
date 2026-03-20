@@ -21,6 +21,7 @@ import com.revrobotics.ResetMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.SparkMax;
+import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 
 // Import Actors, Utils & Constants
 import frc.robot.Utils.MotorType;
@@ -54,6 +55,10 @@ public class Motor {
                 this.configTFX = new TalonFXConfiguration();
                 this.slot0TFX = new Slot0Configs();
                 this.motorTFX.getConfigurator().setPosition(0);
+                CurrentLimitsConfigs curlim = new CurrentLimitsConfigs();
+                curlim.SupplyCurrentLimit = 30;
+                curlim.SupplyCurrentLimitEnable = true;
+                this.motorTFX.getConfigurator().apply(curlim);
                 break;
             case None:
                 System.err.println("Motor initialized with None type with CanID " + this.CanID);

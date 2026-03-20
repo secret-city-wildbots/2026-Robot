@@ -15,7 +15,7 @@ import frc.robot.Utils.ShotPredictor;
 import frc.robot.Utils.ShotPredictor.Shot;
 import frc.robot.Constants.ShooterConstants;
 
-public class AimAtHubCommand extends Command {
+public class SimpleShootCommand extends Command {
     // Real Variables
     private final Shooter shooter;
     private final Turret turret;
@@ -30,7 +30,7 @@ public class AimAtHubCommand extends Command {
      * @param robotPoseSupplier The pose supplier of the robot drivetrain to get its current position live
      * @param robotVelSupplier the vel supplier of the robot drivetrain to get its current vel live
      */
-    public AimAtHubCommand(
+    public SimpleShootCommand(
         Shooter shooter,
         Turret turret,
         Supplier<Pose2d> robotPoseSupplier,
@@ -53,8 +53,6 @@ public class AimAtHubCommand extends Command {
     @Override
     public void execute() {
         Shot shot = ShotPredictor.predict(this.robotPoseSupplier, this.robotVelSupplier);
-        double x = this.robotPoseSupplier.get().getX();
-        double y = this.robotPoseSupplier.get().getY();
         //System.out.println("Shooter Hood Angle (degrees): " + shot.tilt.getDegrees());
         //System.out.println("Shooter Speed (mPs): " + shot.velocity_mPs / (ShooterConstants.wheelRadius_m * Math.PI * 2));
         //System.out.println("Turret Angle (?): " + shot.yaw);
@@ -68,8 +66,8 @@ public class AimAtHubCommand extends Command {
         //     this.shooter.setHoodAngle(0);
         //     this.shooter.setRPS(0);
         // } else {
-            this.shooter.setHoodAngle(shot.tilt.getDegrees());
-            this.shooter.setRPS(shot.velocity_rPs*2);
+            this.shooter.setHoodAngle(10.0);
+            this.shooter.setRPS(40.0);
             this.turret.setTargetAngle(shot.yaw);
        // }
         // Only use execute if we have dynamically changing speeds. This is called each loop (~20ms).

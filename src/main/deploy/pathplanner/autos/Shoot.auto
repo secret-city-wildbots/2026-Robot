@@ -17,12 +17,6 @@
           }
         },
         {
-          "type": "path",
-          "data": {
-            "pathName": "Back up Outpost + Shoot"
-          }
-        },
-        {
           "type": "named",
           "data": {
             "name": "AimAndShoot"
@@ -32,6 +26,6 @@
     }
   },
   "resetOdom": true,
-  "folder": "Simple",
+  "folder": null,
   "choreoAuto": false
 }

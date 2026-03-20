@@ -14,9 +14,9 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 public class ShotPredictor {
 
     private static final double targetX = (DriverStation.getAlliance().get() == Alliance.Blue) ? 4.63:11.9; //?
-    private static final Translation2d hubPosition = new Translation2d(targetX, 4.035); //?
-    private static final Translation2d bumpLeft = new Translation2d(targetX, 6); //?
-    private static final Translation2d bumpRight = new Translation2d(targetX, 8-6); //?
+    private static final Translation2d hubPosition = new Translation2d(targetX, 4.035);
+    private static final Translation2d bumpLeft = new Translation2d(targetX, 6);
+    private static final Translation2d bumpRight = new Translation2d(targetX, 8-6);
 
     /**
      * Output of ShotPredictor: contains desired angle, velocity and speed.
@@ -25,7 +25,7 @@ public class ShotPredictor {
 
         public Rotation2d yaw;
         public Rotation2d tilt;
-        public double velocity_mPs;
+        public double velocity_rPs;
         public double airtime_s;
     }
 
@@ -78,7 +78,7 @@ public class ShotPredictor {
         // horizontal distance (adjusted by airtime)
         double futureDist = delta.getNorm();
 
-        shot.velocity_mPs = getVelocity(futureDist);
+        shot.velocity_rPs = getVelocity(futureDist);
         shot.tilt = getTilt(futureDist);
 
         return shot;

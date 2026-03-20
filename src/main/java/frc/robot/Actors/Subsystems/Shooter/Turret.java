@@ -40,7 +40,7 @@ public class Turret extends SubsystemBase {
         // TurretConstants.turretGearRatio;
 
         this.motor.applyConfig();
-        this.motor.motionMagic(1.0, 0.0, 0.0, 0.05, 0.0, 8.0, 10.0);
+        this.motor.motionMagic(0.3, 0.0, 0.0, 0.05/5.0, 0.0, 30.0*5.0, 30.0*5.0);//?
     }
 
     /**
@@ -112,14 +112,18 @@ public class Turret extends SubsystemBase {
         //                 / 100.0)
         //         + " : " +
         //         (Math.round(motor.motorTFX.getClosedLoopOutput().getValueAsDouble() * 100) / 100.0));
+        Rotation2d current = new Rotation2d(this.motor.pos()/TurretConstants.turretGearRatio *2*Math.PI);
         double desired = angle.getRotations() * TurretConstants.turretGearRatio;
-        while (desired < -1.83*5 || desired > 9.14*5) { //?
-            if (desired < -1.83*5) {
-                desired+=TurretConstants.turretGearRatio;
-            }
-            if (desired > 9.14*5) {
-                desired-=TurretConstants.turretGearRatio;
-            }
+
+        if (Math.abs(current.getDegrees() - angle.getDegrees()) > 180) {
+            desired+= Math.signum(current.getDegrees() - angle.getDegrees()) * TurretConstants.turretGearRatio;
+        }
+
+        while (desired > TurretConstants.posExtension) {
+            desired-=TurretConstants.turretGearRatio;
+        }
+        while (desired < TurretConstants.negExtension) {
+            desired+=TurretConstants.turretGearRatio;
         }
 
         this.motor.posMM(desired);

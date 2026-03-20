@@ -4,28 +4,28 @@
     {
       "anchor": {
         "x": 3.6,
-        "y": 0.7
+        "y": 5.271818181818182
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.9754513736888644,
-        "y": 0.7
+        "x": 3.6115803960082844,
+        "y": 5.022086536990597
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 0.45,
-        "y": 0.7
+        "x": 3.6,
+        "y": 5.122941919191919
       },
       "prevControl": {
-        "x": 2.45,
-        "y": 0.6999999999999995
+        "x": 3.5894251292471733,
+        "y": 5.3727181632756205
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Outpost"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
@@ -33,8 +33,8 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 1.5,
-    "maxAcceleration": 0.5,
+    "maxVelocity": 0.1,
+    "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
@@ -45,10 +45,10 @@
     "rotation": 0.0
   },
   "reversed": false,
-  "folder": "Simple Right + Outpost",
+  "folder": null,
   "idealStartingState": {
-    "velocity": 1.5,
-    "rotation": -90.0
+    "velocity": 0.0,
+    "rotation": 0.0
   },
   "useDefaultConstraints": false
 }

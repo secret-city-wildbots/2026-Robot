@@ -12,7 +12,7 @@ import frc.robot.Constants.SpindexerConstants;
 public class Transfer extends SubsystemBase {
 
     // Define variables
-    private Motor motor; // Motor to control the transfer
+    public Motor motor; // Motor to control the transfer
 
     /**
      * Transfer Constructor
@@ -22,7 +22,7 @@ public class Transfer extends SubsystemBase {
         this.motor = new Motor(SpindexerConstants.transferMotorID, MotorType.TFX, "rio");
         this.motor.motorConfig.direction = RotationDir.CounterClockwise;
         this.motor.motorConfig.dutyCycleClosedLoopRampPeriod = 0.3;
-        this.motor.motorConfig.peakReverseDC = 0.0;
+        this.motor.motorConfig.peakReverseDC = -0.3; //?
         this.motor.applyConfig();
         this.motor.pid(0.3, 0.0, 0.0); // Setup the transfer PID
     }

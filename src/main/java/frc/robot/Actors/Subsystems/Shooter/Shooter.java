@@ -34,11 +34,10 @@ public class Shooter extends SubsystemBase {
 
         // Configure the lead motor
         this.leadMotor.motorConfig.direction = RotationDir.CounterClockwise;
-        this.leadMotor.motorConfig.dutyCycleClosedLoopRampPeriod = 0.3;
         this.leadMotor.motorConfig.peakReverseDC = 0.0;
         this.leadMotor.motorConfig.brake = false;
         this.leadMotor.applyConfig();
-        this.leadMotor.pid(0.2, 0.0, 0.2); // Setup the Shooter PID
+        this.leadMotor.pid(0.5, 0.0, 0.05); // Setup the Shooter PID
 
         // Set the followMotor to follow the lead motor and make it opposed
         this.followMotor.motorTFX.setControl(new Follower(ShooterConstants.leadMotorID, MotorAlignmentValue.Opposed));

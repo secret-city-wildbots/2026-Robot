@@ -12,7 +12,7 @@ import frc.robot.Constants.SpindexerConstants;
 public class Spindexer extends SubsystemBase {
     
     // Define variables
-    private Motor motor; // Motor to control the spindexer
+    public Motor motor; // Motor to control the spindexer
 
     /**
      * Spindexer Constructor
@@ -22,7 +22,7 @@ public class Spindexer extends SubsystemBase {
         this.motor = new Motor(SpindexerConstants.spinMotorID, MotorType.TFX, "rio");
         this.motor.motorConfig.direction = RotationDir.CounterClockwise;
         this.motor.motorConfig.dutyCycleClosedLoopRampPeriod = 0.3;
-        this.motor.motorConfig.peakReverseDC = 0.0;
+        this.motor.motorConfig.peakReverseDC = -0.1; //?
         this.motor.applyConfig();
         this.motor.pid(0.3, 0.0, 0.0); // Setup the spindexer PID
     }

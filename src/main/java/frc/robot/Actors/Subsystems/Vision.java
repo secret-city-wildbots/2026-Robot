@@ -64,7 +64,7 @@ public class Vision extends SubsystemBase {
         // new VisionZone(0.0, 2.0, 2.5, 5.0, new int[] {31, 32}, new int[] {15, 16}),
 
         //Outpost Zone: 
-         new VisionZone(3.0, 6.0, 0.0, 1.25, new int[] {31, 32}, new int[] {15, 16})
+         new VisionZone(0.0, 1.2, 0.0, 1.05, new int[] {31, 32}, new int[] {15, 16})
     };
 
     /*
