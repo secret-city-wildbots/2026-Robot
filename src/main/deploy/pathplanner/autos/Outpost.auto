@@ -1,0 +1,43 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Outpost + Shoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Outpost to R Trench + Shoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "R Trench"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "R Trench Reverse"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "R Trench Shoot+Preclimb"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "Simple",
+  "choreoAuto": false
+}

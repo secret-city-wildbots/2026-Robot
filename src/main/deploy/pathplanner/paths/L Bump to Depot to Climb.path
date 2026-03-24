@@ -1,0 +1,118 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 3.58,
+        "y": 5.5
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 1.8926999407468614,
+        "y": 5.362219017359541
+      },
+      "isLocked": false,
+      "linkedName": "L Bump Start"
+    },
+    {
+      "anchor": {
+        "x": 0.701588888888889,
+        "y": 5.9699333333333335
+      },
+      "prevControl": {
+        "x": 1.081351132182339,
+        "y": 6.065656678521551
+      },
+      "nextControl": {
+        "x": 0.45917129226215225,
+        "y": 5.90882925126252
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 1.4701897983392653,
+        "y": 5.051743772241994
+      },
+      "prevControl": {
+        "x": 1.014,
+        "y": 5.345111111111112
+      },
+      "nextControl": {
+        "x": 1.6804629303171246,
+        "y": 4.916520956237365
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 1.48054,
+        "y": 4.172424242430004
+      },
+      "prevControl": {
+        "x": 1.8216955555555554,
+        "y": 4.20897979798556
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Left Climb"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 1,
+      "rotationDegrees": 180.0
+    }
+  ],
+  "constraintZones": [
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0.31364764267990464,
+      "maxWaypointRelativePos": 0.8337468982630238,
+      "constraints": {
+        "maxVelocity": 2.0,
+        "maxAcceleration": 3.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    },
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 1.15,
+      "maxWaypointRelativePos": 1.9295285359801584,
+      "constraints": {
+        "maxVelocity": 1.75,
+        "maxAcceleration": 3.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    }
+  ],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 2.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0.0,
+    "rotation": 0.0
+  },
+  "reversed": false,
+  "folder": "Bumpy Ride L + R",
+  "idealStartingState": {
+    "velocity": 3.0,
+    "rotation": 180.0
+  },
+  "useDefaultConstraints": false
+}

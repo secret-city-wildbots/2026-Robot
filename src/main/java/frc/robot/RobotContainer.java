@@ -5,65 +5,318 @@
 
 package frc.robot;
 
-// Import Constants
-import frc.robot.Constants.*;
+// Import Phoenix6 Libraries
+import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
+import com.ctre.phoenix6.swerve.SwerveRequest;
 
-// Import Subsystems
-import frc.robot.Actors.Subsystems.Drivetrain;
+// Import Path Planner Libraries
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.FollowPathCommand;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.events.EventTrigger;
 
-//Import Commands
-import frc.robot.Commands.Subsystems.Drivetrain.TeleopDrive;
-import frc.robot.Commands.Subsystems.Drivetrain.ResetIMU;
+// Import WPILib Librarires
+import static edu.wpi.first.units.Units.*;
 
-// Import WPILib Command Libraries
-import edu.wpi.first.wpilibj2.command.button.Trigger;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.PowerDistribution;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 
-/**
- * This class is where the bulk of the robot should be declared. Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
- * subsystems, commands, and trigger mappings) should be declared here.
- */
+// Import Custom TunerConstants
+import frc.robot.generated.TunerConstants;
+import frc.robot.Constants.SpindexerConstants;
+import frc.robot.Utils.JoystickScaler;
+import frc.robot.WildBoard.Panels.AutoChooser;
+// Import subystems
+import frc.robot.Actors.Subsystems.CommandSwerveDrivetrain;
+import frc.robot.Actors.Subsystems.Intake.Intake;
+import frc.robot.Actors.Subsystems.Intake.IntakeExtension;
+import frc.robot.Actors.Subsystems.Elevator.ElevatorLift;
+import frc.robot.Actors.Subsystems.Elevator.ElevatorHook;
+import frc.robot.Actors.Subsystems.Spindexer.Spindexer;
+import frc.robot.Actors.Subsystems.Spindexer.Transfer;
+import frc.robot.Actors.Subsystems.Shooter.Shooter;
+import frc.robot.Actors.Subsystems.Shooter.Turret;
+import frc.robot.Commands.Intake.AutoIntakeExtend;
+import frc.robot.Commands.Intake.AutoIntakeRetract;
+import frc.robot.Commands.Intake.ExpandHopperCommand;
+// Import Custom Commands
+import frc.robot.Commands.Intake.IntakeSequence;
+import frc.robot.Commands.Spindexer.AutoStartIndexCommand;
+import frc.robot.Commands.Spindexer.AutoStopIndexCommand;
+import frc.robot.Commands.Spindexer.ClearTransferCommand;
+import frc.robot.Commands.Spindexer.SpinAndFeedCommand;
+import frc.robot.Commands.Turret.JoystickAimCommand;
+import frc.robot.Commands.Turret.Zero;
+import frc.robot.Commands.Elevator.ClimbSequenceL1;
+import frc.robot.Commands.Elevator.ClimbSequenceL3;
+import frc.robot.Commands.Elevator.ExtendLiftCommand;
+import frc.robot.Commands.Elevator.HookCommand;
+import frc.robot.Commands.Elevator.LiftCommand;
+import frc.robot.Commands.Elevator.RetractLiftCommand;
+import frc.robot.Commands.Shooter.AimAndShootCommand;
+import frc.robot.Commands.Shooter.AimAtHubCommand;
+import frc.robot.Commands.Shooter.SimpleAimAndShootCommand;
+import frc.robot.Commands.Shooter.SimpleShootCommand;
+import frc.robot.Commands.Shooter.TestShooterCommand;
+
+
+
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
-  private final Drivetrain drivetrain = new Drivetrain();
+    // TODO: Set max speed back to normal
+    // private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
+    private double MaxSpeed = (Robot.test) ? 1.0:TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed //?
 
-  // Instantiate drive and manipulator Xbox Controllers
-  private final CommandXboxController driverController = new CommandXboxController(OperatorConstants.DriverControllerPort);
-  private final CommandXboxController manipulatorController = new CommandXboxController(OperatorConstants.ManipulatorControllerPort);
+    // TODO: Set max rotation back to normal
+    // private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
+    private double MaxAngularRate = RotationsPerSecond.of(0.5).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
+    /* Setting up bindings for necessary control of the swerve drive platform */
+    private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
+        .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
+        .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
+    private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
+    private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
 
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
-  public RobotContainer() {
-    // Configure the trigger bindings
-    configureBindings();
+    private double xVelAvg = 0.0;
+    private double yVelAvg = 0.0;
+    private double hVelAvg = 0.0;
 
-    // Configure default commands
-    drivetrain.setDefaultCommand(
-      // The left stick controls translation of the robot.
-      // Turning is controlled by the X axis of the right stick.
-      new TeleopDrive(drivetrain, driverController)
-    );
-  }
+    private final Telemetry logger = new Telemetry(MaxSpeed);
 
-  /**e this method to define your trigger->command mappings. Triggers can be created via the
-   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
-   * predicate, or via the named factories in {@link
-   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for {@link
-   * CommandXboxController Xbox}
-   * /{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
-   * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
-   * joysticks}.
-   */
-  private void configureBindings() {
+    private final CommandXboxController joystick = new CommandXboxController(0);
 
-    // Schedule the `ResetIMUCommand` when holding the down D-Pad of the driver controller for 1 second
-    driverController.pov(180).debounce(1).onTrue(new ResetIMU(drivetrain));
-  }
+    public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
+    public final Spindexer spindexer = new Spindexer();
+    public final Transfer transfer = new Transfer();
 
-  public Command getAutonomousCommand() {
-    return Commands.print("no auto selected");
-  }
+    public final Intake intake = new Intake();
+    public final IntakeExtension intakeExtension = new IntakeExtension();
+    private final ElevatorLift elevatorLift = new ElevatorLift();
+    //private final ElevatorHook elevatorHook = new ElevatorHook();
+    private final Shooter shooter = new Shooter(); 
+    private final Turret turret = new Turret();
+
+    private final PowerDistribution pdh = new PowerDistribution();
+
+    public final Dashboard dashboard;
+
+      /* Path follower */
+    private Command auto;
+    private final Consumer<Command> autoChosen = (Command newAuto) -> {this.auto = newAuto;};
+    
+    public RobotContainer() {
+        dashboard = new Dashboard(drivetrain, elevatorLift, shooter, spindexer, transfer, turret, intake, intakeExtension, pdh, autoChosen);
+
+        //TODO: Make sure values for Commands are correct
+         //Register Named Commands within Pathplanner
+        NamedCommands.registerCommand("Shoot",
+            new AutoStartIndexCommand(
+                transfer, spindexer
+            ).alongWith(Commands.print("Shooting Start (Named)")));
+        NamedCommands.registerCommand("ShootStop",
+            new AutoStopIndexCommand(
+                transfer, spindexer
+            ).alongWith(Commands.print("Shooting Stop (Named)")));
+        NamedCommands.registerCommand("Intake", new IntakeSequence(intake, intakeExtension).alongWith(Commands.print("Intaking (Named)")));
+        
+        NamedCommands.registerCommand("L1Climb", new ClimbSequenceL1(elevatorLift).alongWith(Commands.print("Climbing")));
+        NamedCommands.registerCommand("Intake", new AutoIntakeExtend(intake, intakeExtension));
+        NamedCommands.registerCommand("AutoAim", new AimAtHubCommand(shooter, turret, drivetrain::getPose, () -> {
+            var state = drivetrain.getState();
+            return ChassisSpeeds.fromRobotRelativeSpeeds(
+                state.Speeds,
+                state.Pose.getRotation()
+            );
+        }));
+        NamedCommands.registerCommand("AimAndShoot", new AimAndShootCommand(drivetrain::getPose, () -> { //?
+            var state = drivetrain.getState();
+            return ChassisSpeeds.fromRobotRelativeSpeeds(
+                state.Speeds,
+                state.Pose.getRotation()
+            );
+        }, spindexer, transfer, shooter, turret));
+        auto = new WaitCommand(5.0); //?
+
+        // Register Event Triggers within Pathplanner
+        new EventTrigger("ExpandHopper").onTrue( new ExpandHopperCommand(intake, intakeExtension));
+        new EventTrigger("AutoAim").onTrue( new AimAtHubCommand(shooter, turret, drivetrain::getPose, () -> {
+            var state = drivetrain.getState();
+            return ChassisSpeeds.fromRobotRelativeSpeeds(
+                state.Speeds,
+                state.Pose.getRotation()
+            );
+        }));
+        new EventTrigger("AimAndShoot").onTrue(new AimAndShootCommand(drivetrain::getPose, () -> { //?
+            var state = drivetrain.getState();
+            return ChassisSpeeds.fromRobotRelativeSpeeds(
+                state.Speeds,
+                state.Pose.getRotation()
+            );
+        }, spindexer, transfer, shooter, turret));
+        new EventTrigger("Intake").onTrue(new AutoIntakeExtend(intake, intakeExtension));
+        new EventTrigger("IntakeRetract").onTrue(new AutoIntakeRetract(intake, intakeExtension));
+        //new EventTrigger("Intake").onTrue(Commands.print("Intaking (Trigger)"));
+        new EventTrigger("Shoot").onTrue(
+        new AutoStartIndexCommand(transfer, spindexer).alongWith(
+        Commands.print("Shooting Start (Trigger)")));
+        new EventTrigger("ShootStop").onTrue(
+        new AutoStopIndexCommand(transfer, spindexer).alongWith(
+        Commands.print("Shooting Stop (Trigger)")));
+
+        configureBindings();
+
+        // Warmup PathPlanner to avoid Java pauses
+        CommandScheduler.getInstance().schedule(FollowPathCommand.warmupCommand());
+    }
+
+    private void configureBindings() {
+        /*************************************************
+         * Commands for Drivetrain
+         *************************************************/
+
+        // Note that X is defined as forward according to WPILib convention,
+        // and Y is defined as to the left according to WPILib convention.
+        drivetrain.setDefaultCommand(
+            // Drivetrain will execute this command periodically
+            drivetrain.applyRequest(new Supplier<SwerveRequest>() {
+                public SwerveRequest get() {
+                    double inputX = joystick.getLeftY();
+                    double inputY = joystick.getLeftX();
+                    double inputH = joystick.getRightX();
+                    xVelAvg = (xVelAvg+(inputX*0.1))/1.1;
+                    yVelAvg = (yVelAvg+(inputY*0.1))/1.1;
+                    hVelAvg = (hVelAvg+(inputH*0.1))/1.1;
+                    /*if (drivetrain.getPose().getX() < 4.25 && joystick.getRightTriggerAxis() > 0.4 && dashboard.shotSmoothing) {
+                        inputX = xVelAvg;
+                        inputY = yVelAvg;
+                        inputH = hVelAvg;
+                        System.out.println("shot smoothing active");
+                    }*/
+                    return drive.withVelocityX(-JoystickScaler.scaleStrafe(inputX) * MaxSpeed) // Drive forward with negative Y (forward)
+                    .withVelocityY(-JoystickScaler.scaleStrafe(inputY) * MaxSpeed) // Drive left with negative X (left)
+                    .withRotationalRate(-JoystickScaler.scaleRotate(inputH) * MaxAngularRate); // Drive counterclockwise with negative X (left)
+
+                }
+            })
+        );
+
+        joystick.rightTrigger(0.4).onTrue(Commands.runOnce(() -> {
+            xVelAvg = joystick.getLeftY();
+            yVelAvg = joystick.getLeftX();
+            hVelAvg = joystick.getRightX();
+        }));
+
+        //joystick.a().whileTrue(new Zero(turret));
+
+        /*joystick.rightBumper().whileTrue(new AimAtHubCommand(shooter, turret, drivetrain::getPose, () -> { //?
+            var state = drivetrain.getState();
+            return ChassisSpeeds.fromRobotRelativeSpeeds(
+                state.Speeds,
+                state.Pose.getRotation()
+            );
+        }));*/
+
+        // Idle while the robot is disabled. This ensures the configured
+        // neutral mode is applied to the drive motors while disabled.
+        final var idle = new SwerveRequest.Idle();
+        RobotModeTriggers.disabled().whileTrue(
+            drivetrain.applyRequest(() -> idle).ignoringDisable(true)
+        );
+
+        // Break when pressing A
+        //joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
+
+        // Orientate wheels when pressing B and and moving left and right joysticks
+        /*joystick.b().whileTrue(drivetrain.applyRequest(() ->
+            point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))
+        ));*/
+
+        // Run SysId routines when holding back/start and X/Y.
+        // Note that each routine should be run exactly once in a single log.
+        /*joystick.back().and(joystick.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
+        joystick.back().and(joystick.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
+        joystick.start().and(joystick.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
+        joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
+        */
+        // reset the field-centric heading on left bumper press
+        joystick.povLeft().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+
+        // TODO: Enable logger
+        //drivetrain.registerTelemetry(logger::telemeterize);
+        
+        joystick.leftBumper().toggleOnTrue(new IntakeSequence(intake, intakeExtension));
+
+        joystick.rightTrigger(0.4).onTrue(Commands.runOnce(() -> {
+            Robot.shooterEnabled = true;
+        }));
+        joystick.rightTrigger(0.4).onFalse(Commands.runOnce(() -> {
+            Robot.shooterEnabled = false;
+        }));
+        joystick.rightTrigger(0.4).whileTrue(new AimAndShootCommand(drivetrain::getPose, () -> { //?
+            var state = drivetrain.getState();
+            return ChassisSpeeds.fromRobotRelativeSpeeds(
+                state.Speeds,
+                state.Pose.getRotation()
+            );
+        }, spindexer, transfer, shooter, turret));  
+
+        joystick.rightBumper().whileTrue(new SimpleAimAndShootCommand(drivetrain::getPose, () -> { //?
+            var state = drivetrain.getState();
+            return ChassisSpeeds.fromRobotRelativeSpeeds(
+                state.Speeds,
+                state.Pose.getRotation()
+            );
+        }, spindexer, transfer, shooter, turret));
+        
+        joystick.y().whileTrue(new ClearTransferCommand(transfer, spindexer)); //?
+        /*joystick.rightTrigger(0.4).whileFalse(new ParallelRaceGroup( //?
+            new ClearTransferCommand(transfer, spindexer),
+            new WaitCommand(0.5)
+        ));*/
+
+        //Descend from Auto L1 + Retract Lift down
+        joystick.x().whileTrue(new ExtendLiftCommand(elevatorLift));
+        joystick.a().whileTrue(new RetractLiftCommand(elevatorLift, false));
+        
+        joystick.b().toggleOnTrue(new ClimbSequenceL1(elevatorLift));
+
+        //turret.setDefaultCommand(new JoystickAimCommand(turret, joystick));
+       
+        /*************************************************
+         * Commands for Spindexer Testing
+         *************************************************/
+
+    //     joystick.x().whileTrue(new SpinAndFeedCommand(
+    //         transfer, spindexer, 30, 10, 0.5
+    //     ));
+
+    //     joystick.y().whileTrue(new SpinFuelCommand(spindexer, 10));
+    }
+
+
+    public Command getAutonomousCommand() {
+         /* Run the path selected from the auto chooser */
+        return auto;
+        // /* Run the path selected from the auto chooser */
+        //return Commands.print("No autonomous command configured");
+    }
 }
