@@ -17,7 +17,7 @@ import frc.robot.Constants.ElevatorConstants;
 public class ElevatorHook extends SubsystemBase {
     
     // Define variables
-    private Motor motor;           // Motor to control the elevator hook position
+    public Motor motor;           // Motor to control the elevator hook position
     private CANcoder encoder;      // Encoder to control the position of the hook
     private double targetAngle;    // Target angle to set the hook position to
 

@@ -28,6 +28,11 @@ import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -53,18 +58,25 @@ import frc.robot.Actors.Subsystems.Shooter.Shooter;
 import frc.robot.Actors.Subsystems.Shooter.Turret;
 import frc.robot.Commands.Intake.AutoIntakeExtend;
 import frc.robot.Commands.Intake.AutoIntakeRetract;
+import frc.robot.Commands.Intake.ExpandHopperCommand;
 // Import Custom Commands
 import frc.robot.Commands.Intake.IntakeSequence;
 import frc.robot.Commands.Spindexer.AutoStartIndexCommand;
 import frc.robot.Commands.Spindexer.AutoStopIndexCommand;
+import frc.robot.Commands.Spindexer.ClearTransferCommand;
 import frc.robot.Commands.Spindexer.SpinAndFeedCommand;
 import frc.robot.Commands.Turret.JoystickAimCommand;
 import frc.robot.Commands.Turret.Zero;
 import frc.robot.Commands.Elevator.ClimbSequenceL1;
 import frc.robot.Commands.Elevator.ClimbSequenceL3;
+import frc.robot.Commands.Elevator.ExtendLiftCommand;
 import frc.robot.Commands.Elevator.HookCommand;
 import frc.robot.Commands.Elevator.LiftCommand;
+import frc.robot.Commands.Elevator.RetractLiftCommand;
+import frc.robot.Commands.Shooter.AimAndShootCommand;
 import frc.robot.Commands.Shooter.AimAtHubCommand;
+import frc.robot.Commands.Shooter.SimpleAimAndShootCommand;
+import frc.robot.Commands.Shooter.SimpleShootCommand;
 import frc.robot.Commands.Shooter.TestShooterCommand;
 
 
@@ -72,7 +84,7 @@ import frc.robot.Commands.Shooter.TestShooterCommand;
 public class RobotContainer {
     // TODO: Set max speed back to normal
     // private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
-    private double MaxSpeed = 1.0; // kSpeedAt12Volts desired top speed
+    private double MaxSpeed = (Robot.test) ? 1.0:TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed //?
 
     // TODO: Set max rotation back to normal
     // private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
@@ -99,7 +111,7 @@ public class RobotContainer {
     public final Intake intake = new Intake();
     public final IntakeExtension intakeExtension = new IntakeExtension();
     private final ElevatorLift elevatorLift = new ElevatorLift();
-    private final ElevatorHook elevatorHook = new ElevatorHook();
+    //private final ElevatorHook elevatorHook = new ElevatorHook();
     private final Shooter shooter = new Shooter(); 
     private final Turret turret = new Turret();
 
@@ -112,10 +124,10 @@ public class RobotContainer {
     private final Consumer<Command> autoChosen = (Command newAuto) -> {this.auto = newAuto;};
     
     public RobotContainer() {
-        dashboard = new Dashboard(drivetrain, elevatorHook, elevatorLift, shooter, spindexer, transfer, turret, intake, intakeExtension, pdh, autoChosen);
+        dashboard = new Dashboard(drivetrain, elevatorLift, shooter, spindexer, transfer, turret, intake, intakeExtension, pdh, autoChosen);
 
         //TODO: Make sure values for Commands are correct
-         // Register Named Commands within Pathplanner
+         //Register Named Commands within Pathplanner
         NamedCommands.registerCommand("Shoot",
             new AutoStartIndexCommand(
                 transfer, spindexer
@@ -124,14 +136,42 @@ public class RobotContainer {
             new AutoStopIndexCommand(
                 transfer, spindexer
             ).alongWith(Commands.print("Shooting Stop (Named)")));
-        //NamedCommands.registerCommand("Intake", new IntakeSequence(intake, intakeExtension).alongWith(Commands.print("Intaking (Named)")));
+        NamedCommands.registerCommand("Intake", new IntakeSequence(intake, intakeExtension).alongWith(Commands.print("Intaking (Named)")));
+        
         NamedCommands.registerCommand("L1Climb", new ClimbSequenceL1(elevatorLift).alongWith(Commands.print("Climbing")));
         NamedCommands.registerCommand("Intake", new AutoIntakeExtend(intake, intakeExtension));
-
-
-        auto = new PathPlannerAuto("Simple L no climb");
+        NamedCommands.registerCommand("AutoAim", new AimAtHubCommand(shooter, turret, drivetrain::getPose, () -> {
+            var state = drivetrain.getState();
+            return ChassisSpeeds.fromRobotRelativeSpeeds(
+                state.Speeds,
+                state.Pose.getRotation()
+            );
+        }));
+        NamedCommands.registerCommand("AimAndShoot", new AimAndShootCommand(drivetrain::getPose, () -> { //?
+            var state = drivetrain.getState();
+            return ChassisSpeeds.fromRobotRelativeSpeeds(
+                state.Speeds,
+                state.Pose.getRotation()
+            );
+        }, spindexer, transfer, shooter, turret));
+        auto = new WaitCommand(5.0); //?
 
         // Register Event Triggers within Pathplanner
+        new EventTrigger("ExpandHopper").onTrue( new ExpandHopperCommand(intake, intakeExtension));
+        new EventTrigger("AutoAim").onTrue( new AimAtHubCommand(shooter, turret, drivetrain::getPose, () -> {
+            var state = drivetrain.getState();
+            return ChassisSpeeds.fromRobotRelativeSpeeds(
+                state.Speeds,
+                state.Pose.getRotation()
+            );
+        }));
+        new EventTrigger("AimAndShoot").onTrue(new AimAndShootCommand(drivetrain::getPose, () -> { //?
+            var state = drivetrain.getState();
+            return ChassisSpeeds.fromRobotRelativeSpeeds(
+                state.Speeds,
+                state.Pose.getRotation()
+            );
+        }, spindexer, transfer, shooter, turret));
         new EventTrigger("Intake").onTrue(new AutoIntakeExtend(intake, intakeExtension));
         new EventTrigger("IntakeRetract").onTrue(new AutoIntakeRetract(intake, intakeExtension));
         //new EventTrigger("Intake").onTrue(Commands.print("Intaking (Trigger)"));
@@ -165,11 +205,12 @@ public class RobotContainer {
                     xVelAvg = (xVelAvg+(inputX*0.1))/1.1;
                     yVelAvg = (yVelAvg+(inputY*0.1))/1.1;
                     hVelAvg = (hVelAvg+(inputH*0.1))/1.1;
-                    if (drivetrain.getPose().getX() < 4.25 && joystick.getRightTriggerAxis() > 0.4 && dashboard.shotSmoothing) {
+                    /*if (drivetrain.getPose().getX() < 4.25 && joystick.getRightTriggerAxis() > 0.4 && dashboard.shotSmoothing) {
                         inputX = xVelAvg;
                         inputY = yVelAvg;
                         inputH = hVelAvg;
-                    }
+                        System.out.println("shot smoothing active");
+                    }*/
                     return drive.withVelocityX(-JoystickScaler.scaleStrafe(inputX) * MaxSpeed) // Drive forward with negative Y (forward)
                     .withVelocityY(-JoystickScaler.scaleStrafe(inputY) * MaxSpeed) // Drive left with negative X (left)
                     .withRotationalRate(-JoystickScaler.scaleRotate(inputH) * MaxAngularRate); // Drive counterclockwise with negative X (left)
@@ -184,9 +225,9 @@ public class RobotContainer {
             hVelAvg = joystick.getRightX();
         }));
 
-        joystick.a().whileTrue(new Zero(turret));
+        //joystick.a().whileTrue(new Zero(turret));
 
-        /*shooter.setDefaultCommand(new AimAtHubCommand(shooter, turret, drivetrain::getPose, () -> {
+        /*joystick.rightBumper().whileTrue(new AimAtHubCommand(shooter, turret, drivetrain::getPose, () -> { //?
             var state = drivetrain.getState();
             return ChassisSpeeds.fromRobotRelativeSpeeds(
                 state.Speeds,
@@ -224,25 +265,41 @@ public class RobotContainer {
         
         joystick.leftBumper().toggleOnTrue(new IntakeSequence(intake, intakeExtension));
 
-        joystick.rightBumper().whileTrue(new TestShooterCommand(shooter));
-
         joystick.rightTrigger(0.4).onTrue(Commands.runOnce(() -> {
             Robot.shooterEnabled = true;
         }));
         joystick.rightTrigger(0.4).onFalse(Commands.runOnce(() -> {
             Robot.shooterEnabled = false;
         }));
-        joystick.rightTrigger(0.4).whileTrue(new SpinAndFeedCommand(transfer, spindexer, SpindexerConstants.transferRPS, SpindexerConstants.spindexerRPS));  
+        joystick.rightTrigger(0.4).whileTrue(new AimAndShootCommand(drivetrain::getPose, () -> { //?
+            var state = drivetrain.getState();
+            return ChassisSpeeds.fromRobotRelativeSpeeds(
+                state.Speeds,
+                state.Pose.getRotation()
+            );
+        }, spindexer, transfer, shooter, turret));  
 
-
-        // Descend from Auto L1 + Retract Lift down
-        /*joystick.x().whileTrue(new ClimbSequenceL3(elevatorLift, elevatorHook));
-        joystick.y().whileTrue(new LiftCommand(elevatorLift, joystick));
-        joystick.a().whileTrue(new HookCommand(elevatorHook, joystick));
+        joystick.rightBumper().whileTrue(new SimpleAimAndShootCommand(drivetrain::getPose, () -> { //?
+            var state = drivetrain.getState();
+            return ChassisSpeeds.fromRobotRelativeSpeeds(
+                state.Speeds,
+                state.Pose.getRotation()
+            );
+        }, spindexer, transfer, shooter, turret));
         
-        joystick.b().toggleOnTrue(new ClimbSequenceL1(elevatorLift));*/
+        joystick.y().whileTrue(new ClearTransferCommand(transfer, spindexer)); //?
+        /*joystick.rightTrigger(0.4).whileFalse(new ParallelRaceGroup( //?
+            new ClearTransferCommand(transfer, spindexer),
+            new WaitCommand(0.5)
+        ));*/
 
-        turret.setDefaultCommand(new JoystickAimCommand(turret, joystick));
+        //Descend from Auto L1 + Retract Lift down
+        joystick.x().whileTrue(new ExtendLiftCommand(elevatorLift));
+        joystick.a().whileTrue(new RetractLiftCommand(elevatorLift, false));
+        
+        joystick.b().toggleOnTrue(new ClimbSequenceL1(elevatorLift));
+
+        //turret.setDefaultCommand(new JoystickAimCommand(turret, joystick));
        
         /*************************************************
          * Commands for Spindexer Testing
@@ -258,8 +315,8 @@ public class RobotContainer {
 
     public Command getAutonomousCommand() {
          /* Run the path selected from the auto chooser */
-        //return auto;
+        return auto;
         // /* Run the path selected from the auto chooser */
-        return Commands.print("No autonomous command configured");
+        //return Commands.print("No autonomous command configured");
     }
 }

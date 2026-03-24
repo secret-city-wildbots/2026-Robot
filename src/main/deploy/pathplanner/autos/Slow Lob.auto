@@ -1,0 +1,25 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "L Trench Slow Lob"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "L Trench over Bump"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "Simple",
+  "choreoAuto": false
+}

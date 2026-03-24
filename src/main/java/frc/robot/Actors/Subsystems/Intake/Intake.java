@@ -12,7 +12,7 @@ import frc.robot.Constants.IntakeConstants;
 public class Intake extends SubsystemBase {
 
     // Define variables
-    private Motor motor; // Motor to control the intake position
+    public Motor motor; // Motor to control the intake position
 
     public Intake() {
         // Configure the intake motor

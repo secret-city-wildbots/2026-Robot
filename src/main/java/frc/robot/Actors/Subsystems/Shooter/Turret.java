@@ -25,9 +25,9 @@ public class Turret extends SubsystemBase {
     public Turret() {
         // Configure the turret motor
         this.motor = new Motor(TurretConstants.turretMotorID, MotorType.TFX);
-        this.motor.motorConfig.direction = RotationDir.CounterClockwise;
-        this.motor.motorConfig.peakForwardDC = 0.25;
-        this.motor.motorConfig.peakReverseDC = -0.25;
+        this.motor.motorConfig.direction = RotationDir.Clockwise;
+        this.motor.motorConfig.peakForwardDC = 1;
+        this.motor.motorConfig.peakReverseDC = -1;
 
         this.motor.configTFX.HardwareLimitSwitch.ForwardLimitSource = ForwardLimitSourceValue.RemoteCANifier;
         this.motor.configTFX.HardwareLimitSwitch.ForwardLimitRemoteSensorID = 51;
@@ -36,17 +36,12 @@ public class Turret extends SubsystemBase {
 
         // TODO: DELETE THIS?
         // this.motor.configTFX.ClosedLoopGeneral.ContinuousWrap = true;
-        // this.motor.configTFX.Feedback.FeedbackRemoteSensorID =
-        // TurretConstants.encoderID;
-        // this.motor.configTFX.Feedback.FeedbackSensorSource =
-        // FeedbackSensorSourceValue.RemoteCANcoder;
-        // this.motor.configTFX.Feedback.RotorToSensorRatio =
-        // TurretConstants.turretGearRatio;
         // this.motor.configTFX.Feedback.SensorToMechanismRatio =
         // TurretConstants.turretGearRatio;
 
         this.motor.applyConfig();
-        this.motor.motionMagic(1.0, 0.0, 0.0, 0.05, 0.0, 4, 6.0);
+        this.motor.motionMagic(0.3, 0.0, 0.0, 0.05/5.0, 0.0, 30.0*5.0, 30.0*5.0);//?
+        //this.motor.motionMagic(0.0, 0.0, 0.0, 0.00/5.0, 0.0, 30.0*5.0, 30.0*5.0);//?
     }
 
     /**
@@ -93,7 +88,7 @@ public class Turret extends SubsystemBase {
      * @return the turret position in degrees
      */
     public double getTurretDegrees() {
-        return this.motor.pos() * TurretConstants.turretGearRatio * 360.0; // Convert rotations to degrees
+        return this.motor.pos() / TurretConstants.turretGearRatio * 360.0; // Convert rotations to degrees
     }
 
     /**
@@ -118,7 +113,43 @@ public class Turret extends SubsystemBase {
         //                 / 100.0)
         //         + " : " +
         //         (Math.round(motor.motorTFX.getClosedLoopOutput().getValueAsDouble() * 100) / 100.0));
-        this.motor.posMM(angle.getRotations() * TurretConstants.turretGearRatio);
+        double current = this.motor.pos()/TurretConstants.turretGearRatio*360;
+
+        double desired_deg = angle.getDegrees()%360;
+        if (desired_deg < 0) desired_deg+=360;
+
+        double[] goals = new double[] {
+            desired_deg-360,
+            desired_deg,
+            desired_deg+360
+        };
+
+        if (Math.abs(goals[0]-current) <= 180 && goals[0] > -185) {
+            desired_deg = goals[0];
+        } else if (Math.abs(goals[2]-current) <= 180 && goals[2] < 450) {
+            desired_deg = goals[2];
+        } else {
+            desired_deg = goals[1];
+        }
+        
+        double desired_mRot = desired_deg/360*TurretConstants.turretGearRatio;
+
+        /*if (Math.abs(current - (desiredOld)) > 180) {
+            desired+= Math.signum(current - (desiredOld)) * TurretConstants.turretGearRatio;
+        }*/
+
+        System.out.println(Math.round(current) + " : "+Math.round(desired_deg));
+
+        /*while (desired_mRot > TurretConstants.posExtension) {
+            desired_mRot-=TurretConstants.turretGearRatio;
+        }
+        while (desired_mRot < TurretConstants.negExtension) {
+            desired_mRot+=TurretConstants.turretGearRatio;
+        }*/
+
+        this.motor.posMM(desired_mRot);
+
+
         SmartDashboard.putNumber("diff", Math.abs((angle.minus(new Rotation2d(
             motor.motorTFX.getPosition().getValueAsDouble() * 2 * Math.PI / TurretConstants.turretGearRatio)))
             .getDegrees()));
@@ -126,6 +157,6 @@ public class Turret extends SubsystemBase {
 
     @Override
     public void periodic() {
-        //System.out.println(this.beambreakActive());
+        //System.out.println("turret: "+this.getTurretDegrees());
     }
 }

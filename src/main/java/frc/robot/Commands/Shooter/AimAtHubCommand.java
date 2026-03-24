@@ -3,6 +3,7 @@ package frc.robot.Commands.Shooter;
 
 // Import WPILib Libraries
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -52,18 +53,33 @@ public class AimAtHubCommand extends Command {
     @Override
     public void execute() {
         Shot shot = ShotPredictor.predict(this.robotPoseSupplier, this.robotVelSupplier);
+        double x = this.robotPoseSupplier.get().getX();
+        double y = this.robotPoseSupplier.get().getY();
+        //System.out.println("Shooter Hood Angle (degrees): " + shot.tilt.getDegrees());
+        //System.out.println("Shooter Speed (mPs): " + shot.velocity_mPs / (ShooterConstants.wheelRadius_m * Math.PI * 2));
+        //System.out.println("Turret Angle (?): " + shot.yaw);
+        //System.out.println("Turret Angle (?): " + shot.yaw.getDegrees());
+        //System.out.println("Turret Motor (?): " + shot.yaw.getRotations());
 
-        this.shooter.setHoodAngle(shot.tilt.getDegrees());
-        this.shooter.setRPS(shot.velocity_mPs / (ShooterConstants.wheelRadius_m * Math.PI * 2));
-        this.turret.setTargetAngle(shot.yaw);
+        // trench auto-stow //?
+        // if (((x > 3.7 && x < 5.5) || //?
+        // (x > 16-3.7 && x < 16-5.5)) &&
+        // (y > 6.8 || y < 1.2)) {
+        //     this.shooter.setHoodAngle(0);
+        //     this.shooter.setRPS(0);
+        // } else {
+            this.shooter.setHoodAngle(shot.tilt.getDegrees());
+            this.shooter.setRPS(shot.velocity_rPs*2);
+            this.turret.setTargetAngle(shot.yaw);
+       // }
         // Only use execute if we have dynamically changing speeds. This is called each loop (~20ms).
         // So if we have just a constant speed, use initialize to avoid spamming the canbus network.
     }
 
     @Override
     public void end(boolean interrupted) {
-        // When the command is interrupted or cancelled, we will stop the spindexer
-        // subsystem
+        this.shooter.setHoodAngle(0);
+        this.shooter.setRPS(0);
     }
 
     @Override

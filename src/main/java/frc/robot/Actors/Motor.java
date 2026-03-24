@@ -21,7 +21,9 @@ import com.revrobotics.ResetMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.SparkMax;
+import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 
+import frc.robot.Robot;
 // Import Actors, Utils & Constants
 import frc.robot.Utils.MotorType;
 import frc.robot.Utils.RotationDir;
@@ -39,6 +41,8 @@ public class Motor {
     public int CanID;
     public double desiredSpeed_rPs;
     public double actualSpeed_rPs;
+    private boolean powersave = false;
+    public boolean important = false;
 
     public Motor(int CanID, MotorType type) {
         this.CanID = CanID;
@@ -54,6 +58,11 @@ public class Motor {
                 this.configTFX = new TalonFXConfiguration();
                 this.slot0TFX = new Slot0Configs();
                 this.motorTFX.getConfigurator().setPosition(0);
+                CurrentLimitsConfigs curlim = new CurrentLimitsConfigs();
+                curlim.SupplyCurrentLimit = (Robot.defense) ? 10:30;
+                curlim.SupplyCurrentLimitEnable = true;
+                this.motorTFX.getConfigurator().apply(curlim);
+                this.limitBandwidth();
                 break;
             case None:
                 System.err.println("Motor initialized with None type with CanID " + this.CanID);
@@ -77,6 +86,11 @@ public class Motor {
                 this.configTFX = new TalonFXConfiguration();
                 this.slot0TFX = new Slot0Configs();
                 this.motorTFX.getConfigurator().setPosition(0);
+                CurrentLimitsConfigs curlim = new CurrentLimitsConfigs();
+                curlim.SupplyCurrentLimit = (Robot.defense) ? 10:30;
+                curlim.SupplyCurrentLimitEnable = true;
+                this.motorTFX.getConfigurator().apply(curlim);
+                this.limitBandwidth();
                 break;
             case None:
                 System.err.println("Motor initialized with None type with CanID " + this.CanID);
@@ -84,6 +98,59 @@ public class Motor {
 
         this.motorConfig = new MotorConfig();
         this.applyConfig();
+    }
+
+    public Motor(int CanID, MotorType type, String canbus, boolean important) {
+        this.CanID = CanID;
+        this.type = type;
+
+        switch (type) {
+            case SPX:
+                this.motorSPX = new SparkMax(CanID, com.revrobotics.spark.SparkLowLevel.MotorType.kBrushless);
+                this.configSPX = new SparkMaxConfig();
+                break;
+            case TFX:
+                this.motorTFX = new TalonFX(CanID, canbus);
+                this.configTFX = new TalonFXConfiguration();
+                this.slot0TFX = new Slot0Configs();
+                this.motorTFX.getConfigurator().setPosition(0);
+                if (important) {
+                    CurrentLimitsConfigs curlim = new CurrentLimitsConfigs();
+                    curlim.SupplyCurrentLimit = 60;
+                    curlim.SupplyCurrentLimitEnable = true;
+                    this.motorTFX.getConfigurator().apply(curlim);
+                }
+                this.limitBandwidth();
+                break;
+            case None:
+                System.err.println("Motor initialized with None type with CanID " + this.CanID);
+        }
+        this.important = important;
+
+        this.motorConfig = new MotorConfig();
+        this.applyConfig();
+    }
+
+    private void limitBandwidth() {
+        this.motorTFX.getDeviceTemp().setUpdateFrequency(0.1);
+        this.motorTFX.getAncillaryDeviceTemp().setUpdateFrequency(0.1);
+        this.motorTFX.getProcessorTemp().setUpdateFrequency(0.1);
+    }
+
+    public void powersave() {
+        CurrentLimitsConfigs curlim = new CurrentLimitsConfigs();
+        if (powersave) {
+            if (important) {
+                curlim.SupplyCurrentLimit = 60;
+            } else {
+                curlim.SupplyCurrentLimit = (Robot.defense) ? 10:30;
+            }
+        } else {
+            curlim.SupplyCurrentLimit = 0;
+        }
+        powersave=!powersave;
+        curlim.SupplyCurrentLimitEnable = true;
+        this.motorTFX.getConfigurator().apply(curlim);
     }
 
     // public Motor(int CanID, MotorType type, String actuatorName) {

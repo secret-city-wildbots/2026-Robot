@@ -39,7 +39,6 @@ public class Dashboard {
     private Turret turret;
     private Intake intake;
     private IntakeExtension intakeExtension;
-    private ElevatorHook elevatorHook;
     private ElevatorLift elevatorLift;
     private PowerDistribution pdh;
 
@@ -60,7 +59,7 @@ public class Dashboard {
 
     private Consumer<Command> autoChosen;
 
-    public Dashboard(CommandSwerveDrivetrain drivetrain, ElevatorHook elevatorHook, ElevatorLift elevatorLift, Shooter shooter, Spindexer spindexer, Transfer transfer, Turret turret, Intake intake, IntakeExtension intakeExtension, PowerDistribution pdh, Consumer<Command> autoChoosen) {
+    public Dashboard(CommandSwerveDrivetrain drivetrain, ElevatorLift elevatorLift, Shooter shooter, Spindexer spindexer, Transfer transfer, Turret turret, Intake intake, IntakeExtension intakeExtension, PowerDistribution pdh, Consumer<Command> autoChoosen) {
         this.drivetrain = drivetrain;
         this.shooter = shooter;
         this.spindexer = spindexer;
@@ -68,7 +67,6 @@ public class Dashboard {
         this.turret = turret;
         this.intake = intake;
         this.intakeExtension = intakeExtension;
-        this.elevatorHook = elevatorHook;
         this.elevatorLift = elevatorLift;
         this.pdh = pdh;
         this.autoChosen = autoChoosen;
@@ -88,15 +86,15 @@ public class Dashboard {
                         WBfieldMap))
                 .addChild(new Col(6).addChild(
                         new Row().addChild(
-                                new CameraFeed(5800)).addChild(
-                                        new CameraFeed(5801)))
+                                new CameraFeed(11)).addChild(
+                                        new CameraFeed(12)))
                         .addChild(
                                 new Row().addChild(
-                                        new CameraFeed(5802)).addChild(
-                                                new CameraFeed(5803))))
+                                        new CameraFeed(13)).addChild(
+                                                new CameraFeed(14))))
                 .addChild(new Col(4).addChild(
                     // TODO: Add autos into Dashboard
-                        new AutoChooser(new String[] { "Awesome", "Simple Left" }).onChange((String choice) -> {
+                        new AutoChooser(new String[] { "Nothing", "Fast Away", "SMR 1", "EventTest", "Shoot 8", "R Trench to Bump", "Slow Lob", "SMR 5", "Shoot 8 + Climb" }).onChange((String choice) -> {
                             System.out.println("Auto Chosen: "+choice);
                             autoChosen.accept(new PathPlannerAuto(choice));
                         })).addChild(
@@ -236,7 +234,7 @@ public class Dashboard {
             shooter.getHoodTemp() > maxHeat || shooter.getLeadTemp() > maxHeat ||
             shooter.getFollowTemp() > maxHeat || turret.getTemp() > maxHeat ||
             intake.getTemp() > maxHeat || intakeExtension.getTemp() > maxHeat ||
-            elevatorHook.getTemp() > maxHeat || elevatorLift.getTemp() > maxHeat ||
+            elevatorLift.getTemp() > maxHeat ||
             spindexer.getTemp() > maxHeat || transfer.getTemp() > maxHeat
         ) {
             WBalarms.triggerAlarm(1);

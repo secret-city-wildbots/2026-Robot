@@ -29,7 +29,8 @@ public final class Constants {
 
   public static class VisionConstants {
     // Limelight Names
-    public static final String[] limelightNames = {"limelight-front", "limelight-back", "limelight-left", "limelight-right"};
+    //public static final String[] limelightNames = {"limelight-front", "limelight-back", "limelight-left", "limelight-right"};
+    public static final String[] limelightNames = {"limelight-front", "limelight-left"}; //?
   }
 
   public static class IntakeConstants {
@@ -73,8 +74,8 @@ public final class Constants {
     public static final int transferMotorID = 43;
 
     // Properties
-    public static final int transferRPS = 60;
-    public static final int spindexerRPS = 40;
+    public static final int transferRPS = 70; //?
+    public static final int spindexerRPS = 10;
     public static final double spinupTime = 0.1;
   }
 
@@ -89,7 +90,7 @@ public final class Constants {
 
     // Hood Ranges
     public static final double minDegree = 5.0;
-    public static final double maxDegree = 75.0;
+    public static final double maxDegree = 55.0;
 
     public static final double wheelRadius_m = 0.05; //abt 2 in
   }
@@ -100,8 +101,11 @@ public final class Constants {
     //public static final int encoderID = 44;
     public static final double turretBaseAirtime_s = 0.0;
     public static final double turretDistAirtime_sPm = 0.0; // Additional airtime per meter of distance to target
-    public static final double turretGearRatio = 102.0/10.0;
-    public static final Translation2d turretPos = new Translation2d(0.5,0.5);
+    public static final double turretGearRatio = (114.0/11.0)*5.0; //??
+    public static final double posExtension = 480/360*turretGearRatio; //??
+    public static final double negExtension = -185/360*turretGearRatio; //??
+
+    public static final Translation2d turretPos = new Translation2d(-0.133,-0.02413);
   }
   
   public static class DrivetrainConstants {

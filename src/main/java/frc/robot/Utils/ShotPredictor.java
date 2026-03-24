@@ -6,15 +6,17 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.RobotController;
 import frc.robot.Constants.TurretConstants;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
 public class ShotPredictor {
 
-    private static final Translation2d hubPosition = new Translation2d(4.625594, 4.02336);
-    private static final Translation2d bumpLeft = new Translation2d(4.35, 5.8);
-    private static final Translation2d bumpRight = new Translation2d(4.35, 8-5.8);
-
-    private static final double g = 9.81;
+    private static final double targetX = (DriverStation.getAlliance().get() == Alliance.Blue) ? 4.63:11.9; //?
+    private static final Translation2d hubPosition = new Translation2d(targetX, 4.035);
+    private static final Translation2d bumpLeft = new Translation2d(targetX, 6);
+    private static final Translation2d bumpRight = new Translation2d(targetX, 8-6);
 
     /**
      * Output of ShotPredictor: contains desired angle, velocity and speed.
@@ -23,7 +25,7 @@ public class ShotPredictor {
 
         public Rotation2d yaw;
         public Rotation2d tilt;
-        public double velocity_mPs;
+        public double velocity_rPs;
         public double airtime_s;
     }
 
@@ -46,7 +48,7 @@ public class ShotPredictor {
 
         Translation2d targetPos;
 
-        if (robotPos.getX() < 4.25) {
+        if ((DriverStation.getAlliance().get() == Alliance.Blue) ? (robotPos.getX() < targetX):(robotPos.getX() > targetX)) { //?
             targetPos = hubPosition;
         } else if (robotPos.getY() > 4.0) {
             targetPos = bumpLeft;
@@ -56,7 +58,6 @@ public class ShotPredictor {
 
         Translation2d turretPos = robotPos.plus(TurretConstants.turretPos.rotateBy(robotRot));
 
-        // tuned airtime model (need to tune this function, maybe make non-linear?)
         double distance = targetPos.getDistance(turretPos);
         double airtime = getAirtime(distance);
 
@@ -77,7 +78,7 @@ public class ShotPredictor {
         // horizontal distance (adjusted by airtime)
         double futureDist = delta.getNorm();
 
-        shot.velocity_mPs = getVelocity(futureDist);
+        shot.velocity_rPs = getVelocity(futureDist);
         shot.tilt = getTilt(futureDist);
 
         return shot;
@@ -89,7 +90,7 @@ public class ShotPredictor {
     }
 
     public static Rotation2d getTilt(double dist) {
-        return new Rotation2d(90-HubShooterTrajectoryCalc.lookupCache(dist).elevation_deg);
+        return new Rotation2d((90-HubShooterTrajectoryCalc.lookupCache(dist).elevation_deg)/180*Math.PI);
         //return new Rotation2d();
     }
 

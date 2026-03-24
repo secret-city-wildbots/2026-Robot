@@ -12,7 +12,7 @@
         "y": 7.925665361682784
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "End of L Trench"
     },
     {
       "anchor": {
@@ -38,14 +38,8 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "ShootStop",
+      "name": "ExpandHopper",
       "waypointRelativePos": 0,
-      "endWaypointRelativePos": null,
-      "command": null
-    },
-    {
-      "name": "IntakeRetract",
-      "waypointRelativePos": 0.4516129032258091,
       "endWaypointRelativePos": null,
       "command": null
     }

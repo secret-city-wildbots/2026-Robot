@@ -17,7 +17,7 @@ import frc.robot.Constants.ElevatorConstants;
 public class ElevatorLift extends SubsystemBase {
     
     // Define variables
-    private Motor motor;                                // Motor to control the elevator lift position
+    public Motor motor;                                // Motor to control the elevator lift position
     private DigitalInput lowerLimitMagneticSwitch;      // Lower limit magnetic switch for the elevator lift
     // private DigitalInput handoffLimitMagneticSwitch; // Handoff limit magnetic switch for the elevator lift
     private CANifier handoffLimitSwitch;                // Handoff limit magnetic switch for the elevator lift
@@ -33,8 +33,10 @@ public class ElevatorLift extends SubsystemBase {
         this.motor.motorConfig.direction = RotationDir.CounterClockwise;
         this.motor.applyConfig();
 
+        this.motor.powersave();
+
         // Configure the elevator magnetic switches
-        this.lowerLimitMagneticSwitch = new DigitalInput(ElevatorConstants.lowerLimitMagneticSensorPort);
+        //this.lowerLimitMagneticSwitch = new CANifier(find the ID);
         // this.handoffLimitMagneticSwitch = new DigitalInput(ElevatorConstants.handoffMagneticSensorPort);
         this.handoffLimitSwitch = new CANifier(50);
         this.topLimitMagneticSwitch = new DigitalInput(ElevatorConstants.topLimitMagneticSensorPort);
@@ -79,11 +81,11 @@ public class ElevatorLift extends SubsystemBase {
         }
 
         // check to make sure the elevator is safe to move down
-        if (percent > 0.0 && lowerLimitActive() && handoffLimitActive()) {
-            // if it is not safe, dont allow the motor to move
-            motor.dc(0.0);
-            return;
-        }
+        // if (percent > 0.0 && lowerLimitActive() && handoffLimitActive()) {
+        //     // if it is not safe, dont allow the motor to move
+        //     motor.dc(0.0);
+        //     return;
+        // }
 
         // Send the output to the motor
         motor.dc(percent);
@@ -98,7 +100,7 @@ public class ElevatorLift extends SubsystemBase {
      */
 
      public boolean lowerLimitActive() {
-        return  !this.handoffLimitSwitch.getGeneralInput(CANifier.GeneralPin.LIMF);
+        return  !this.handoffLimitSwitch.getGeneralInput(CANifier.GeneralPin.QUAD_B);
      }
 
      /**
@@ -109,7 +111,7 @@ public class ElevatorLift extends SubsystemBase {
 
      public boolean handoffLimitActive() {
         // return  this.handoffLimitMagneticSwitch.get();
-        return !this.handoffLimitSwitch.getGeneralInput(CANifier.GeneralPin.QUAD_B);
+        return !this.handoffLimitSwitch.getGeneralInput(CANifier.GeneralPin.LIMF);
      }
 
      /**
@@ -137,10 +139,10 @@ public class ElevatorLift extends SubsystemBase {
     @Override
     public void periodic() {
         // TODO: put logic to send position states to dashboard
-        // System.out.println("--------------------------------------------------");
-        /*System.out.println("Swith 0: " + lowerLimitActive());
+        System.out.println("--------------------------------------------------");
+        System.out.println("Swith 0: " + lowerLimitActive());
         System.out.println("Swith 1: " + handoffLimitActive());
-        System.out.println("Swith 2: " + topLimitActive());*/
+        System.out.println("Swith 2: " + topLimitActive());
         // System.out.println("Can I rotate (30+ no):" + Math.abs(Math.abs(this.motorRotationsSinceTopLimitSwitch) - Math.abs(this.initMotorRotations)));
     }
 }

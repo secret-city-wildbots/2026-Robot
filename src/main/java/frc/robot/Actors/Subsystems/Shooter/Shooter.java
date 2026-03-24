@@ -21,30 +21,29 @@ import frc.robot.Constants.ShooterConstants;
 public class Shooter extends SubsystemBase {
     
     // initiate motors
-    private Motor leadMotor;   // Motor to control the shooter (all commands come to this motor)
-    private Motor followMotor; // Motor to control the shooter (this motor will just copy the lead motor)
+    public Motor leadMotor;   // Motor to control the shooter (all commands come to this motor)
+    public Motor followMotor; // Motor to control the shooter (this motor will just copy the lead motor)
     private Motor hoodMotor;        // Motor to control the hood of the shooter (angle the ball exits)
 
 
     public Shooter() {
         // Initialize the motors
-        this.leadMotor = new Motor(ShooterConstants.leadMotorID, MotorType.TFX);
-        this.followMotor = new Motor(ShooterConstants.followMotorID, MotorType.TFX);
+        this.leadMotor = new Motor(ShooterConstants.leadMotorID, MotorType.TFX, "rio", true);
+        this.followMotor = new Motor(ShooterConstants.followMotorID, MotorType.TFX, "rio", true);
         this.hoodMotor = new Motor(ShooterConstants.hoodMotorID, MotorType.TFX);
 
         // Configure the lead motor
         this.leadMotor.motorConfig.direction = RotationDir.CounterClockwise;
-        this.leadMotor.motorConfig.dutyCycleClosedLoopRampPeriod = 0.3;
+        this.leadMotor.motorConfig.peakReverseDC = 0.0;
         this.leadMotor.motorConfig.brake = false;
         this.leadMotor.applyConfig();
-        this.leadMotor.pid(0.2, 0.0, 0.2); // Setup the Shooter PID
+        this.leadMotor.pid(0.5, 0.0, 0.05); // Setup the Shooter PID
 
         // Set the followMotor to follow the lead motor and make it opposed
         this.followMotor.motorTFX.setControl(new Follower(ShooterConstants.leadMotorID, MotorAlignmentValue.Opposed));
     
         this.hoodMotor.motorTFX.setPosition(0.02604);        // 5 degrees
         this.hoodMotor.motorConfig.direction = RotationDir.Clockwise;
-        this.hoodMotor.motorConfig.peakReverseDC = 0.0;
         this.hoodMotor.applyConfig();
         this.hoodMotor.slot0TFX.kG = 0.025;
         this.hoodMotor.slot0TFX.GravityType = GravityTypeValue.Elevator_Static;
@@ -128,11 +127,11 @@ public class Shooter extends SubsystemBase {
         return motorRotations * 360.0 / ShooterConstants.hoodGearRatio + ShooterConstants.minDegree;
     }
 
-    /*@Override
+    @Override
     public void periodic() {
-        if (!Robot.shooterEnabled && RobotState.isEnabled()) {
+        /*if (!Robot.shooterEnabled && RobotState.isEnabled()) {
             this.setRPS(0.0);
-        }
+        }*/
         //System.out.println("H: "+motorRotationsToDegrees(this.hoodMotor.pos()));
-    }*/
+    }
 }

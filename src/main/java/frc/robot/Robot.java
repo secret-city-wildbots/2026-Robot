@@ -21,9 +21,6 @@ import frc.robot.Constants.TurretConstants;
 // We can look to refactor in the future if people want :)
 import frc.robot.Actors.Subsystems.Vision;
 
-import com.ctre.phoenix.CANifier;
-import com.ctre.phoenix6.SignalLogger;
-
 /**
  * The methods in this class are called automatically corresponding to each
  * mode, as described in the TimedRobot documentation. If you change the name of
@@ -38,6 +35,8 @@ public class Robot extends TimedRobot {
   private final RobotContainer m_robotContainer;
   public static boolean shooterEnabled = false;
   private final Vision vision;
+  public static final boolean test = false; //?
+  public static final boolean defense = false;//?
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -78,16 +77,20 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
 
     // Get the best pose estimate from all of the cameras
-    LimelightHelpers.PoseEstimate bestPose = vision.getBestPose();
-    Vision.FusedVisionResult fusedPose = vision.fuseFourLimelights();
+    try {
+      LimelightHelpers.PoseEstimate bestPose = vision.getBestPose();
+      //Vision.FusedVisionResult fusedPose = vision.fuseFourLimelights();
 
-    // If bestPose is not null, add vision measurement to the drivetrain
-    // TODO: need to tune 0.7,0.7 values
-    if (bestPose != null) {
-      // TODO: Do we want to just only add or reset the whole pose?
-      m_robotContainer.drivetrain.addVisionMeasurement(bestPose.pose, bestPose.timestampSeconds, VecBuilder.fill(0.7,0.7,9999999));
-      //m_robotContainer.drivetrain.addVisionMeasurement(fusedPose.pose(), fusedPose.tiemstamp(), VecBuilder.fill(0.7,0.7,9999999));
-      //m_robotContainer.drivetrain.resetPose(bestPose.pose);
+      // If bestPose is not null, add vision measurement to the drivetrain
+      // TODO: need to tune 0.7,0.7 values
+      if (bestPose != null) {
+        // TODO: Do we want to just only add or reset the whole pose?
+        m_robotContainer.drivetrain.addVisionMeasurement(bestPose.pose, bestPose.timestampSeconds, VecBuilder.fill(0.7,0.7,9999999));
+        //m_robotContainer.drivetrain.addVisionMeasurement(fusedPose.pose(), fusedPose.tiemstamp(), VecBuilder.fill(0.7,0.7,9999999));
+        //m_robotContainer.drivetrain.resetPose(bestPose.pose);
+      }
+    } catch(Error err) {
+      System.out.println(err);
     }
     // TODO: Printing pose
     // System.out.println(m_robotContainer.drivetrain.getState().Pose);
@@ -97,8 +100,8 @@ public class Robot extends TimedRobot {
     Translation2d robotPos = m_robotContainer.drivetrain.getPose().getTranslation();
     Rotation2d robotRot = m_robotContainer.drivetrain.getPose().getRotation();
     Translation2d turretPos = robotPos.plus(TurretConstants.turretPos.rotateBy(robotRot));
-    double distance = new Translation2d(4.625594, 4.02336).getDistance(turretPos);
-    System.out.println(distance);
+    double distance = new Translation2d(11.9, 4.035).getDistance(robotPos);
+    //System.out.println("dist: "+distance);
   }
 
   @Override
