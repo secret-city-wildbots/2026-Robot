@@ -12,7 +12,7 @@
         "y": 0.6186333333333334
       },
       "isLocked": false,
-      "linkedName": "R Trench Start"
+      "linkedName": null
     },
     {
       "anchor": {
@@ -37,26 +37,43 @@
       },
       "prevControl": {
         "x": 7.715722222222222,
-        "y": 3.4504888888888834
+        "y": 3.45048888888888
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": "R Trench Plow End"
     }
   ],
-  "rotationTargets": [
+  "rotationTargets": [],
+  "constraintZones": [
     {
-      "waypointRelativePos": 0.4526315789473691,
-      "rotationDegrees": 0.0
-    },
-    {
-      "waypointRelativePos": 1.0210526315789479,
-      "rotationDegrees": 90.0
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 1.0918114143920548,
+      "maxWaypointRelativePos": 2.0,
+      "constraints": {
+        "maxVelocity": 1.5,
+        "maxAcceleration": 3.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
     }
   ],
-  "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "Intake",
+      "waypointRelativePos": 0.7444168734491354,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "Shoot"
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -72,8 +89,8 @@
   "reversed": false,
   "folder": "L + R Spread",
   "idealStartingState": {
-    "velocity": 1.0,
-    "rotation": 0.0
+    "velocity": 0.0,
+    "rotation": 90.0
   },
   "useDefaultConstraints": true
 }

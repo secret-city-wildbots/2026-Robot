@@ -3,49 +3,42 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.5536000000000003,
-        "y": 7.411055555555556
+        "x": 3.6,
+        "y": 7.4
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.4896588999963614,
-        "y": 6.270808431853275
+        "x": 2.5760555555555555,
+        "y": 5.466044444444444
       },
       "isLocked": false,
       "linkedName": "L Trench Start"
     },
     {
       "anchor": {
-        "x": 1.0686385542168677,
-        "y": 4.717981927710843
+        "x": 1.48054,
+        "y": 4.172424242430004
       },
       "prevControl": {
-        "x": 2.115121390950785,
-        "y": 5.860376493299025
+        "x": 1.972862222222222,
+        "y": 4.198902020207782
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Left Climb"
     }
   ],
   "rotationTargets": [],
-  "constraintZones": [
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [
     {
-      "name": "Constraints Zone",
-      "minWaypointRelativePos": 0.24615384615384345,
-      "maxWaypointRelativePos": 0.8446650124069456,
-      "constraints": {
-        "maxVelocity": 1.0,
-        "maxAcceleration": 3.0,
-        "maxAngularVelocity": 540.0,
-        "maxAngularAcceleration": 720.0,
-        "nominalVoltage": 12.0,
-        "unlimited": false
-      }
+      "name": "Shoot",
+      "waypointRelativePos": 0,
+      "endWaypointRelativePos": null,
+      "command": null
     }
   ],
-  "pointTowardsZones": [],
-  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -56,13 +49,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 90.0
+    "rotation": 0.0
   },
   "reversed": false,
   "folder": "Simple Left",
   "idealStartingState": {
-    "velocity": 3.0,
-    "rotation": 180.0
+    "velocity": 1.5,
+    "rotation": -90.0
   },
   "useDefaultConstraints": true
 }

@@ -31,9 +31,10 @@
 *.lib
 
 # Executables
-*.exe
 *.out
 *.app
+*.exe
+*.pkg
 
 ### Java ###
 # Compiled class file
