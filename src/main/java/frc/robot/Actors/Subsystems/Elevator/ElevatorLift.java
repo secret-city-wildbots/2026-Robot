@@ -139,10 +139,10 @@ public class ElevatorLift extends SubsystemBase {
     @Override
     public void periodic() {
         // TODO: put logic to send position states to dashboard
-        System.out.println("--------------------------------------------------");
+        /*System.out.println("--------------------------------------------------");
         System.out.println("Swith 0: " + lowerLimitActive());
         System.out.println("Swith 1: " + handoffLimitActive());
-        System.out.println("Swith 2: " + topLimitActive());
+        System.out.println("Swith 2: " + topLimitActive());*/
         // System.out.println("Can I rotate (30+ no):" + Math.abs(Math.abs(this.motorRotationsSinceTopLimitSwitch) - Math.abs(this.initMotorRotations)));
     }
 }
