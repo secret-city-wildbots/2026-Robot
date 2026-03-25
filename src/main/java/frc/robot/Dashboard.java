@@ -51,6 +51,7 @@ public class Dashboard {
     final SwerveModules WBswerveModules;
     final MasterAlarms WBalarms;
     final FieldMap WBfieldMap;
+    final NumberDisplay WBnumberDisplay;
 
     public double battAvg = 12.0;
     public double currAvg = 50.0;
@@ -122,6 +123,7 @@ public class Dashboard {
         WBintake = new SimpleSubsystem("Intake", true, "rps");
         WBtransfer = new VelocitySimpleSubsystem("Transfer");
         WBspindexer = new VelocitySimpleSubsystem("Spindexer");
+        WBnumberDisplay = new NumberDisplay("BPS: ");
 
         WBswerveModules = new SwerveModules();
         WBalarms = new MasterAlarms(
@@ -153,7 +155,8 @@ public class Dashboard {
                                         })))
                 .addChild(
                         new Col(3).addChild(
-                                new Placeholder("Climb", 20)))
+                            WBnumberDisplay
+                        ))
                 .addChild(
                         new Col(5).addChild(
                                 new Row().addChild(
@@ -264,6 +267,8 @@ public class Dashboard {
         if (battAvg < 10.0) {
             WBalarms.triggerAlarm(7);
         }
+
+        WBnumberDisplay.updateDisplay(String.valueOf(Math.round(Transfer.bps*10)/10.0));
 
         dashboard.update();
     }

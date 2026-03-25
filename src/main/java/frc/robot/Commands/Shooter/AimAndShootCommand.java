@@ -4,6 +4,7 @@ import java.util.function.Supplier;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -22,16 +23,16 @@ public class AimAndShootCommand extends ParallelCommandGroup {
         Supplier<Pose2d> robotPoseSupplier,
         Supplier<ChassisSpeeds> robotVelSupplier,Spindexer spindexer, Transfer transfer, Shooter shooter, Turret turret) {
         addCommands(
-            new AimAtHubCommand(shooter, turret, robotPoseSupplier, robotVelSupplier),
+            new AimAtHubCommand(shooter, turret, robotPoseSupplier, robotVelSupplier).andThen(Commands.waitSeconds(0.6)),
             
-            new SequentialCommandGroup(
-                new ParallelRaceGroup( //?
-                    new ClearTransferCommand(transfer, spindexer),
-                    new WaitCommand(0.6)
-                ),
+            // new SequentialCommandGroup(
+            //     new ParallelRaceGroup( //?                                   // Should not be need as we are letting it clear out rest of balls
+            //         new ClearTransferCommand(transfer, spindexer),
+            //         new WaitCommand(0.6)
+            // ),
+
                 new SpinAndFeedCommand(transfer, spindexer, SpindexerConstants.transferRPS, SpindexerConstants.spindexerRPS)
-            )
-        );
+            );
         addRequirements(shooter, turret);
     }
 }

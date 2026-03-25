@@ -73,6 +73,9 @@ public final class Constants {
     public static final int spinMotorID = 42;
     public static final int transferMotorID = 43;
 
+    //Sensor ID / Ports
+    public static final int bpsBeamBreakPort = 3; // TODO: Find which port it lives on
+
     // Properties
     public static final int transferRPS = 70; //?
     public static final int spindexerRPS = 10;

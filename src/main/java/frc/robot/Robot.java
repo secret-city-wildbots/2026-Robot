@@ -15,11 +15,8 @@ import edu.wpi.first.math.util.Units;
 import frc.robot.Utils.HubShooterTrajectoryCalc;
 // Import Limelight Utils
 import frc.robot.Utils.LimelightHelpers;
+import frc.robot.Actors.Vision;
 import frc.robot.Constants.TurretConstants;
-// Import Subsystems
-// Vision was put here for now so we can utilize the periodic loops
-// We can look to refactor in the future if people want :)
-import frc.robot.Actors.Subsystems.Vision;
 
 /**
  * The methods in this class are called automatically corresponding to each
