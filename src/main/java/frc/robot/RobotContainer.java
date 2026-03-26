@@ -110,7 +110,7 @@ public class RobotContainer {
 
     public final Intake intake = new Intake();
     public final IntakeExtension intakeExtension = new IntakeExtension();
-    private final ElevatorLift elevatorLift = new ElevatorLift();
+    //private final ElevatorLift elevatorLift = new ElevatorLift();
     //private final ElevatorHook elevatorHook = new ElevatorHook();
     private final Shooter shooter = new Shooter(); 
     private final Turret turret = new Turret();
@@ -124,7 +124,7 @@ public class RobotContainer {
     private final Consumer<Command> autoChosen = (Command newAuto) -> {this.auto = newAuto;};
     
     public RobotContainer() {
-        dashboard = new Dashboard(drivetrain, elevatorLift, shooter, spindexer, transfer, turret, intake, intakeExtension, pdh, autoChosen);
+        dashboard = new Dashboard(drivetrain, shooter, spindexer, transfer, turret, intake, intakeExtension, pdh, autoChosen);
 
         //TODO: Make sure values for Commands are correct
          //Register Named Commands within Pathplanner
@@ -138,7 +138,7 @@ public class RobotContainer {
             ).alongWith(Commands.print("Shooting Stop (Named)")));
         NamedCommands.registerCommand("Intake", new IntakeSequence(intake, intakeExtension).alongWith(Commands.print("Intaking (Named)")));
         
-        NamedCommands.registerCommand("L1Climb", new ClimbSequenceL1(elevatorLift).alongWith(Commands.print("Climbing")));
+        //NamedCommands.registerCommand("L1Climb", new ClimbSequenceL1(elevatorLift).alongWith(Commands.print("Climbing")));
         NamedCommands.registerCommand("Intake", new AutoIntakeExtend(intake, intakeExtension));
         NamedCommands.registerCommand("AutoAim", new AimAtHubCommand(shooter, turret, drivetrain::getPose, () -> {
             var state = drivetrain.getState();
@@ -294,10 +294,10 @@ public class RobotContainer {
         ));*/
 
         //Descend from Auto L1 + Retract Lift down
-        joystick.x().whileTrue(new ExtendLiftCommand(elevatorLift));
-        joystick.a().whileTrue(new RetractLiftCommand(elevatorLift, false));
+        //joystick.x().whileTrue(new ExtendLiftCommand(elevatorLift));
+        //joystick.a().whileTrue(new RetractLiftCommand(elevatorLift, false));
         
-        joystick.b().toggleOnTrue(new ClimbSequenceL1(elevatorLift));
+        //joystick.b().toggleOnTrue(new ClimbSequenceL1(elevatorLift));
 
         //turret.setDefaultCommand(new JoystickAimCommand(turret, joystick));
        

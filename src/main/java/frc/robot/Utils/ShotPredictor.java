@@ -59,6 +59,8 @@ public class ShotPredictor {
         Translation2d turretPos = robotPos.plus(TurretConstants.turretPos.rotateBy(robotRot));
 
         double distance = targetPos.getDistance(turretPos);
+
+        System.out.println(distance);
         double airtime = getAirtime(distance);
 
         shot.airtime_s = airtime;
@@ -81,6 +83,8 @@ public class ShotPredictor {
         shot.velocity_rPs = getVelocity(futureDist);
         shot.tilt = getTilt(futureDist);
 
+        System.out.println(shot.tilt);
+
         return shot;
     }
 
@@ -95,7 +99,8 @@ public class ShotPredictor {
     }
 
     public static double getAirtime(double dist) {
-        return HubShooterTrajectoryCalc.lookupCache(dist).airtime_s;
+        //return HubShooterTrajectoryCalc.lookupCache(dist).airtime_s;
+        return 0.0;
         //return TurretConstants.turretBaseAirtime_s
         //        + TurretConstants.turretDistAirtime_sPm * dist;
     }

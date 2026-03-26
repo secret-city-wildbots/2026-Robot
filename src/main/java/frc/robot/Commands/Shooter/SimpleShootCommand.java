@@ -66,9 +66,9 @@ public class SimpleShootCommand extends Command {
         //     this.shooter.setHoodAngle(0);
         //     this.shooter.setRPS(0);
         // } else {
-            this.shooter.setHoodAngle(15.0);
-            this.shooter.setRPS(30.0);
-            this.turret.setTargetAngle(new Rotation2d());
+            this.shooter.setHoodAngle(40.0);
+            this.shooter.setRPS(83.0);
+            this.turret.setTargetAngle(new Rotation2d(Math.PI));
        // }
         // Only use execute if we have dynamically changing speeds. This is called each loop (~20ms).
         // So if we have just a constant speed, use initialize to avoid spamming the canbus network.

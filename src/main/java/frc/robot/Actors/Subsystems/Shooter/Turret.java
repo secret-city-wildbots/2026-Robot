@@ -2,6 +2,9 @@ package frc.robot.Actors.Subsystems.Shooter;
 
 // Import WPILib Libraries
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -21,6 +24,7 @@ public class Turret extends SubsystemBase {
 
     // initiate motors
     private Motor motor;
+    private boolean lastBrake = true;
 
     public Turret() {
         // Configure the turret motor
@@ -138,7 +142,7 @@ public class Turret extends SubsystemBase {
             desired+= Math.signum(current - (desiredOld)) * TurretConstants.turretGearRatio;
         }*/
 
-        System.out.println(Math.round(current) + " : "+Math.round(desired_deg));
+        //System.out.println(Math.round(current) + " : "+Math.round(desired_deg));
 
         /*while (desired_mRot > TurretConstants.posExtension) {
             desired_mRot-=TurretConstants.turretGearRatio;
@@ -157,6 +161,15 @@ public class Turret extends SubsystemBase {
 
     @Override
     public void periodic() {
+        /*if (RobotState.isEnabled()) {
+            this.motor.motorConfig.brake = true;
+        } else {
+            this.motor.motorConfig.brake = false;
+        }
+        if (this.motor.motorConfig.brake != this.lastBrake) {
+            this.motor.applyConfig();
+            this.lastBrake = this.motor.motorConfig.brake;
+        }*/
         //System.out.println("turret: "+this.getTurretDegrees());
     }
 }

@@ -17,8 +17,6 @@ import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.VisionConstants;
 import frc.robot.Actors.Subsystems.CommandSwerveDrivetrain;
-import frc.robot.Actors.Subsystems.Elevator.ElevatorHook;
-import frc.robot.Actors.Subsystems.Elevator.ElevatorLift;
 import frc.robot.Actors.Subsystems.Intake.Intake;
 import frc.robot.Actors.Subsystems.Intake.IntakeExtension;
 import frc.robot.Actors.Subsystems.Shooter.Shooter;
@@ -39,7 +37,6 @@ public class Dashboard {
     private Turret turret;
     private Intake intake;
     private IntakeExtension intakeExtension;
-    private ElevatorLift elevatorLift;
     private PowerDistribution pdh;
 
     final VelocitySimpleSubsystem WBshooter;
@@ -59,7 +56,7 @@ public class Dashboard {
 
     private Consumer<Command> autoChosen;
 
-    public Dashboard(CommandSwerveDrivetrain drivetrain, ElevatorLift elevatorLift, Shooter shooter, Spindexer spindexer, Transfer transfer, Turret turret, Intake intake, IntakeExtension intakeExtension, PowerDistribution pdh, Consumer<Command> autoChoosen) {
+    public Dashboard(CommandSwerveDrivetrain drivetrain, Shooter shooter, Spindexer spindexer, Transfer transfer, Turret turret, Intake intake, IntakeExtension intakeExtension, PowerDistribution pdh, Consumer<Command> autoChoosen) {
         this.drivetrain = drivetrain;
         this.shooter = shooter;
         this.spindexer = spindexer;
@@ -67,7 +64,6 @@ public class Dashboard {
         this.turret = turret;
         this.intake = intake;
         this.intakeExtension = intakeExtension;
-        this.elevatorLift = elevatorLift;
         this.pdh = pdh;
         this.autoChosen = autoChoosen;
         dashboard = new WildBoard(5804);
@@ -234,7 +230,6 @@ public class Dashboard {
             shooter.getHoodTemp() > maxHeat || shooter.getLeadTemp() > maxHeat ||
             shooter.getFollowTemp() > maxHeat || turret.getTemp() > maxHeat ||
             intake.getTemp() > maxHeat || intakeExtension.getTemp() > maxHeat ||
-            elevatorLift.getTemp() > maxHeat ||
             spindexer.getTemp() > maxHeat || transfer.getTemp() > maxHeat
         ) {
             WBalarms.triggerAlarm(1);

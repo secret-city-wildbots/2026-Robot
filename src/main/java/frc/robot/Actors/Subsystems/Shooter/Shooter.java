@@ -34,10 +34,14 @@ public class Shooter extends SubsystemBase {
 
         // Configure the lead motor
         this.leadMotor.motorConfig.direction = RotationDir.CounterClockwise;
+        //this.leadMotor.motorTFX.getPosition().setUpdateFrequency(200.0);
+        this.leadMotor.motorTFX.getRotorVelocity().setUpdateFrequency(100.0);
+        this.leadMotor.motorTFX.getClosedLoopOutput().setUpdateFrequency(100.0);
         this.leadMotor.motorConfig.peakReverseDC = 0.0;
         this.leadMotor.motorConfig.brake = false;
         this.leadMotor.applyConfig();
-        this.leadMotor.pid(0.5, 0.0, 0.05); // Setup the Shooter PID
+        this.leadMotor.slot0TFX.kV = 0.0095;
+        this.leadMotor.pid(0.05, 0.0, 0.0); // Setup the Shooter PID
 
         // Set the followMotor to follow the lead motor and make it opposed
         this.followMotor.motorTFX.setControl(new Follower(ShooterConstants.leadMotorID, MotorAlignmentValue.Opposed));
@@ -45,9 +49,11 @@ public class Shooter extends SubsystemBase {
         this.hoodMotor.motorTFX.setPosition(0.02604);        // 5 degrees
         this.hoodMotor.motorConfig.direction = RotationDir.Clockwise;
         this.hoodMotor.applyConfig();
-        this.hoodMotor.slot0TFX.kG = 0.025;
+        //this.hoodMotor.slot0TFX.kG = 0.025;
+        this.hoodMotor.slot0TFX.kG = 0.07;
         this.hoodMotor.slot0TFX.GravityType = GravityTypeValue.Elevator_Static;
-        this.hoodMotor.pid(0.35, 0.0, 0.012);
+        //this.hoodMotor.pid(0.35, 0.0, 0.012);
+        this.hoodMotor.pid(0.6, 0.0, 0.012);
     }
 
     public void setBrake(boolean brake) {

@@ -52,6 +52,7 @@ public class Robot extends TimedRobot {
 
     // Reset the Pigeon2 on the drivetrain.
     // TODO: is this needed?
+    //m_robotContainer.drivetrain.getPigeon2().setYaw(-90);
     m_robotContainer.drivetrain.getPigeon2().reset();
 
     // Setup vision with the suppliers from the drivetrain (heading and rotation
