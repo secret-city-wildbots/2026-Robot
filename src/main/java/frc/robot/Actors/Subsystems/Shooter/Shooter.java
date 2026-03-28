@@ -53,7 +53,7 @@ public class Shooter extends SubsystemBase {
         this.hoodMotor.slot0TFX.kG = 0.07;
         this.hoodMotor.slot0TFX.GravityType = GravityTypeValue.Elevator_Static;
         //this.hoodMotor.pid(0.35, 0.0, 0.012);
-        this.hoodMotor.pid(0.6, 0.0, 0.012);
+        this.hoodMotor.pid(0.0, 0.0, 0.0);
     }
 
     public void setBrake(boolean brake) {

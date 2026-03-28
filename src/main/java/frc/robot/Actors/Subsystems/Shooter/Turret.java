@@ -44,7 +44,7 @@ public class Turret extends SubsystemBase {
         // TurretConstants.turretGearRatio;
 
         this.motor.applyConfig();
-        this.motor.motionMagic(0.3, 0.0, 0.0, 0.05/5.0, 0.0, 30.0*5.0, 30.0*5.0);//?
+        this.motor.motionMagic(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);//?
         //this.motor.motionMagic(0.0, 0.0, 0.0, 0.00/5.0, 0.0, 30.0*5.0, 30.0*5.0);//?
     }
 

@@ -41,15 +41,15 @@ public class TestShooterCommand extends Command {
 
     @Override
     public void execute() {
-        this.shooter.setHoodAngle(30);
-        this.shooter.setRPS(50);
+        this.shooter.setHoodAngle(0);
+        this.shooter.setRPS(20);
         // Only use execute if we have dynamically changing speeds. This is called each loop (~20ms).
         // So if we have just a constant speed, use initialize to avoid spamming the canbus network.
     }
 
     @Override
     public void end(boolean interrupted) {
-        this.shooter.setHoodAngle(7);
+        this.shooter.setHoodAngle(0);
         this.shooter.setRPS(0);
         // When the command is interrupted or cancelled, we will stop the spindexer
         // subsystem

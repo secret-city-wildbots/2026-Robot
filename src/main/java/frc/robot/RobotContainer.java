@@ -211,9 +211,9 @@ public class RobotContainer {
                         inputH = hVelAvg;
                         System.out.println("shot smoothing active");
                     }*/
-                    return drive.withVelocityX(-JoystickScaler.scaleStrafe(inputX) * MaxSpeed) // Drive forward with negative Y (forward)
-                    .withVelocityY(-JoystickScaler.scaleStrafe(inputY) * MaxSpeed) // Drive left with negative X (left)
-                    .withRotationalRate(-JoystickScaler.scaleRotate(inputH) * MaxAngularRate); // Drive counterclockwise with negative X (left)
+                    return drive.withVelocityX(-JoystickScaler.scaleStrafe(inputX) * 0) // Drive forward with negative Y (forward)
+                    .withVelocityY(-JoystickScaler.scaleStrafe(inputY) * 0) // Drive left with negative X (left)
+                    .withRotationalRate(-JoystickScaler.scaleRotate(inputH) * 0); // Drive counterclockwise with negative X (left)
 
                 }
             })
@@ -271,13 +271,14 @@ public class RobotContainer {
         joystick.rightTrigger(0.4).onFalse(Commands.runOnce(() -> {
             Robot.shooterEnabled = false;
         }));
-        joystick.rightTrigger(0.4).whileTrue(new AimAndShootCommand(drivetrain::getPose, () -> { //?
-            var state = drivetrain.getState();
-            return ChassisSpeeds.fromRobotRelativeSpeeds(
-                state.Speeds,
-                state.Pose.getRotation()
-            );
-        }, spindexer, transfer, shooter, turret));  
+        // joystick.rightTrigger(0.4).whileTrue(new AimAndShootCommand(drivetrain::getPose, () -> { //?
+        //     var state = drivetrain.getState();
+        //     return ChassisSpeeds.fromRobotRelativeSpeeds(
+        //         state.Speeds,
+        //         state.Pose.getRotation()
+        //     );
+        // }, spindexer, transfer, shooter, turret));
+        joystick.rightTrigger(0.4).whileTrue(new TestShooterCommand(shooter));   
 
         joystick.rightBumper().whileTrue(new SimpleAimAndShootCommand(drivetrain::getPose, () -> { //?
             var state = drivetrain.getState();
