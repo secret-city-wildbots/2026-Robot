@@ -50,7 +50,7 @@ public class Shooter extends SubsystemBase {
         this.hoodMotor.motorConfig.direction = RotationDir.Clockwise;
         this.hoodMotor.applyConfig();
         //this.hoodMotor.slot0TFX.kG = 0.025;
-        this.hoodMotor.slot0TFX.kG = 0.07;
+        this.hoodMotor.slot0TFX.kG = 0.0;
         this.hoodMotor.slot0TFX.GravityType = GravityTypeValue.Elevator_Static;
         //this.hoodMotor.pid(0.35, 0.0, 0.012);
         this.hoodMotor.pid(0.0, 0.0, 0.0);
