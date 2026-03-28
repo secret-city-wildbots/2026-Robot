@@ -1,44 +1,44 @@
-import { h, Fragment } from "C:/programming/2026-Robot/src/main/deploy/WildBoard/frontend/src/node_modules/preact";
-import { useMemo, useState } from "C:/programming/2026-Robot/src/main/deploy/WildBoard/frontend/src/node_modules/preact/hooks";
-import { CompModeContext } from "C:/programming/2026-Robot/src/main/deploy/WildBoard/frontend/src/ws/CompModeContext.tsx";
-import TabbedContainer from "C:/programming/2026-Robot/src/main/deploy/WildBoard/frontend/src/components/TabbedContainer.tsx";
-import Container from "C:/programming/2026-Robot/src/main/deploy/WildBoard/frontend/src/components/Container.tsx";
-import { WsEventBus } from "C:/programming/2026-Robot/src/main/deploy/WildBoard/frontend/src/ws/WSEventBus.ts";
-import Checklist from "C:/programming/2026-Robot/src/main/deploy/WildBoard/frontend/src/panels/Checklist.tsx";
+import { h, Fragment } from "C:/Users/wildr/Programming/Robotics/FRC-4265/2026-Robot/src/main/deploy/WildBoard/frontend/src/node_modules/preact";
+import { useMemo, useState } from "C:/Users/wildr/Programming/Robotics/FRC-4265/2026-Robot/src/main/deploy/WildBoard/frontend/src/node_modules/preact/hooks";
+import { CompModeContext } from "C:/Users/wildr/Programming/Robotics/FRC-4265/2026-Robot/src/main/deploy/WildBoard/frontend/src/ws/CompModeContext.tsx";
+import TabbedContainer from "C:/Users/wildr/Programming/Robotics/FRC-4265/2026-Robot/src/main/deploy/WildBoard/frontend/src/components/TabbedContainer.tsx";
+import Container from "C:/Users/wildr/Programming/Robotics/FRC-4265/2026-Robot/src/main/deploy/WildBoard/frontend/src/components/Container.tsx";
+import { WsEventBus } from "C:/Users/wildr/Programming/Robotics/FRC-4265/2026-Robot/src/main/deploy/WildBoard/frontend/src/ws/WSEventBus.ts";
+import Checklist from "C:/Users/wildr/Programming/Robotics/FRC-4265/2026-Robot/src/main/deploy/WildBoard/frontend/src/panels/Checklist.tsx";
 
-import FieldMap from "C:/programming/2026-Robot/src/main/deploy/WildBoard/frontend/src/panels/FieldMap.tsx";
+import FieldMap from "C:/Users/wildr/Programming/Robotics/FRC-4265/2026-Robot/src/main/deploy/WildBoard/frontend/src/panels/FieldMap.tsx";
 
-import CameraFeed from "C:/programming/2026-Robot/src/main/deploy/WildBoard/frontend/src/panels/CameraFeed.tsx";
-import CameraFeed from "C:/programming/2026-Robot/src/main/deploy/WildBoard/frontend/src/panels/CameraFeed.tsx";
-import DashboardSubRow from "C:/programming/2026-Robot/src/main/deploy/WildBoard/frontend/src/panels/DashboardSubRow.tsx";
-import CameraFeed from "C:/programming/2026-Robot/src/main/deploy/WildBoard/frontend/src/panels/CameraFeed.tsx";
-import CameraFeed from "C:/programming/2026-Robot/src/main/deploy/WildBoard/frontend/src/panels/CameraFeed.tsx";
-import DashboardSubRow from "C:/programming/2026-Robot/src/main/deploy/WildBoard/frontend/src/panels/DashboardSubRow.tsx";
+import CameraFeed from "C:/Users/wildr/Programming/Robotics/FRC-4265/2026-Robot/src/main/deploy/WildBoard/frontend/src/panels/CameraFeed.tsx";
+import CameraFeed from "C:/Users/wildr/Programming/Robotics/FRC-4265/2026-Robot/src/main/deploy/WildBoard/frontend/src/panels/CameraFeed.tsx";
+import DashboardSubRow from "C:/Users/wildr/Programming/Robotics/FRC-4265/2026-Robot/src/main/deploy/WildBoard/frontend/src/panels/DashboardSubRow.tsx";
+import CameraFeed from "C:/Users/wildr/Programming/Robotics/FRC-4265/2026-Robot/src/main/deploy/WildBoard/frontend/src/panels/CameraFeed.tsx";
+import CameraFeed from "C:/Users/wildr/Programming/Robotics/FRC-4265/2026-Robot/src/main/deploy/WildBoard/frontend/src/panels/CameraFeed.tsx";
+import DashboardSubRow from "C:/Users/wildr/Programming/Robotics/FRC-4265/2026-Robot/src/main/deploy/WildBoard/frontend/src/panels/DashboardSubRow.tsx";
 
-import AutoChooser from "C:/programming/2026-Robot/src/main/deploy/WildBoard/frontend/src/panels/AutoChooser.tsx";
-import Overrides from "C:/programming/2026-Robot/src/main/deploy/WildBoard/frontend/src/panels/Overrides.tsx";
-
-
-import SwerveModules from "C:/programming/2026-Robot/src/main/deploy/WildBoard/frontend/src/panels/SwerveModules.tsx";
-import SystemsCheck from "C:/programming/2026-Robot/src/main/deploy/WildBoard/frontend/src/panels/SystemsCheck.tsx";
-
-import Placeholder from "C:/programming/2026-Robot/src/main/deploy/WildBoard/frontend/src/panels/Placeholder.tsx";
-
-import SimpleSubsystem from "C:/programming/2026-Robot/src/main/deploy/WildBoard/frontend/src/panels/SimpleSubsystem.tsx";
-import SimpleSubsystem from "C:/programming/2026-Robot/src/main/deploy/WildBoard/frontend/src/panels/SimpleSubsystem.tsx";
-import DashboardSubRow from "C:/programming/2026-Robot/src/main/deploy/WildBoard/frontend/src/panels/DashboardSubRow.tsx";
-import SimpleSubsystem from "C:/programming/2026-Robot/src/main/deploy/WildBoard/frontend/src/panels/SimpleSubsystem.tsx";
-import SimpleSubsystem from "C:/programming/2026-Robot/src/main/deploy/WildBoard/frontend/src/panels/SimpleSubsystem.tsx";
-import DashboardSubRow from "C:/programming/2026-Robot/src/main/deploy/WildBoard/frontend/src/panels/DashboardSubRow.tsx";
-import SimpleSubsystem from "C:/programming/2026-Robot/src/main/deploy/WildBoard/frontend/src/panels/SimpleSubsystem.tsx";
-import SimpleSubsystem from "C:/programming/2026-Robot/src/main/deploy/WildBoard/frontend/src/panels/SimpleSubsystem.tsx";
-import DashboardSubRow from "C:/programming/2026-Robot/src/main/deploy/WildBoard/frontend/src/panels/DashboardSubRow.tsx";
+import AutoChooser from "C:/Users/wildr/Programming/Robotics/FRC-4265/2026-Robot/src/main/deploy/WildBoard/frontend/src/panels/AutoChooser.tsx";
+import Overrides from "C:/Users/wildr/Programming/Robotics/FRC-4265/2026-Robot/src/main/deploy/WildBoard/frontend/src/panels/Overrides.tsx";
 
 
-import LooptimeMonitor from "C:/programming/2026-Robot/src/main/deploy/WildBoard/frontend/src/panels/LooptimeMonitor.tsx";
-import PingMonitor from "C:/programming/2026-Robot/src/main/deploy/WildBoard/frontend/src/panels/PingMonitor.tsx";
-import FPSMonitor from "C:/programming/2026-Robot/src/main/deploy/WildBoard/frontend/src/panels/FPSMonitor.tsx";
-import MasterAlarms from "C:/programming/2026-Robot/src/main/deploy/WildBoard/frontend/src/panels/MasterAlarms.tsx";
+import SwerveModules from "C:/Users/wildr/Programming/Robotics/FRC-4265/2026-Robot/src/main/deploy/WildBoard/frontend/src/panels/SwerveModules.tsx";
+import SystemsCheck from "C:/Users/wildr/Programming/Robotics/FRC-4265/2026-Robot/src/main/deploy/WildBoard/frontend/src/panels/SystemsCheck.tsx";
+
+import NumberDisplay from "C:/Users/wildr/Programming/Robotics/FRC-4265/2026-Robot/src/main/deploy/WildBoard/frontend/src/panels/NumberDisplay.tsx";
+
+import SimpleSubsystem from "C:/Users/wildr/Programming/Robotics/FRC-4265/2026-Robot/src/main/deploy/WildBoard/frontend/src/panels/SimpleSubsystem.tsx";
+import SimpleSubsystem from "C:/Users/wildr/Programming/Robotics/FRC-4265/2026-Robot/src/main/deploy/WildBoard/frontend/src/panels/SimpleSubsystem.tsx";
+import DashboardSubRow from "C:/Users/wildr/Programming/Robotics/FRC-4265/2026-Robot/src/main/deploy/WildBoard/frontend/src/panels/DashboardSubRow.tsx";
+import SimpleSubsystem from "C:/Users/wildr/Programming/Robotics/FRC-4265/2026-Robot/src/main/deploy/WildBoard/frontend/src/panels/SimpleSubsystem.tsx";
+import SimpleSubsystem from "C:/Users/wildr/Programming/Robotics/FRC-4265/2026-Robot/src/main/deploy/WildBoard/frontend/src/panels/SimpleSubsystem.tsx";
+import DashboardSubRow from "C:/Users/wildr/Programming/Robotics/FRC-4265/2026-Robot/src/main/deploy/WildBoard/frontend/src/panels/DashboardSubRow.tsx";
+import SimpleSubsystem from "C:/Users/wildr/Programming/Robotics/FRC-4265/2026-Robot/src/main/deploy/WildBoard/frontend/src/panels/SimpleSubsystem.tsx";
+import SimpleSubsystem from "C:/Users/wildr/Programming/Robotics/FRC-4265/2026-Robot/src/main/deploy/WildBoard/frontend/src/panels/SimpleSubsystem.tsx";
+import DashboardSubRow from "C:/Users/wildr/Programming/Robotics/FRC-4265/2026-Robot/src/main/deploy/WildBoard/frontend/src/panels/DashboardSubRow.tsx";
+
+
+import LooptimeMonitor from "C:/Users/wildr/Programming/Robotics/FRC-4265/2026-Robot/src/main/deploy/WildBoard/frontend/src/panels/LooptimeMonitor.tsx";
+import PingMonitor from "C:/Users/wildr/Programming/Robotics/FRC-4265/2026-Robot/src/main/deploy/WildBoard/frontend/src/panels/PingMonitor.tsx";
+import FPSMonitor from "C:/Users/wildr/Programming/Robotics/FRC-4265/2026-Robot/src/main/deploy/WildBoard/frontend/src/panels/FPSMonitor.tsx";
+import MasterAlarms from "C:/Users/wildr/Programming/Robotics/FRC-4265/2026-Robot/src/main/deploy/WildBoard/frontend/src/panels/MasterAlarms.tsx";
 
 
 export default function () {
@@ -50,7 +50,7 @@ export default function () {
     const [compMode, setCompMode] = useState(false);
 
     // All tabs generated at compile time
-    const allTabs = useMemo(() => [{title: "Checklist",content: (<Container><div class="row"><Checklist ></Checklist></div></Container>)},{title: "TeleOp",content: (<Container><div class="row"><div class="col-2 column"><div class="column-item bubble"><FieldMap socket={socket} id={4} alliance ></FieldMap></div></div><div class="col-6 column"><DashboardSubRow><div class="bubble"><CameraFeed port={11} ></CameraFeed></div><div class="bubble"><CameraFeed port={12} ></CameraFeed></div></DashboardSubRow><DashboardSubRow><div class="bubble"><CameraFeed port={13} ></CameraFeed></div><div class="bubble"><CameraFeed port={14} ></CameraFeed></div></DashboardSubRow></div><div class="col-4 column"><div class="column-item bubble"><AutoChooser socket={socket} id={5} autos={["Nothing","Fast Away","SMR 1","EventTest","Shoot 8","R Trench to Bump","Slow Lob","SMR 5","Shoot 8 + Climb"]} ></AutoChooser></div><div class="column-item bubble"><Overrides socket={socket} columns={2} id={6} switches={[{ label: "Limelight PowerSaver"},{ label: "Disable Camera Feeds"},{ label: "CompMode"},{ label: "Disable Shot Smoothing"},{ label: "Always Aim at Hub"},{ label: "Disable Shoot Safeties"}]} ></Overrides></div></div></div></Container>)},{title: "Subsystems",content: (<Container><div class="row"><div class="col-4 column"><div class="column-item bubble"><SwerveModules socket={socket} id={7} ></SwerveModules></div><div class="column-item bubble"><SystemsCheck socket={socket} id={8} ></SystemsCheck></div></div><div class="col-3 column"><div class="column-item bubble"><Placeholder text={"Climb"} height={20} ></Placeholder></div></div><div class="col-5 column"><DashboardSubRow><div class="bubble"><SimpleSubsystem socket={socket} name={"Shooter"} id={9} velocity ></SimpleSubsystem></div><div class="bubble"><SimpleSubsystem socket={socket} name={"Intake"} unit={"rps"} id={10} absolute ></SimpleSubsystem></div></DashboardSubRow><DashboardSubRow><div class="bubble"><SimpleSubsystem socket={socket} name={"Transfer"} id={11} velocity ></SimpleSubsystem></div><div class="bubble"><SimpleSubsystem socket={socket} name={"Spindexer"} id={12} velocity ></SimpleSubsystem></div></DashboardSubRow><DashboardSubRow><div class="bubble"><SimpleSubsystem socket={socket} name={"Turret"} id={13} ></SimpleSubsystem></div><div class="bubble"><SimpleSubsystem socket={socket} name={"Turret Hood"} id={14} absolute ></SimpleSubsystem></div></DashboardSubRow></div></div></Container>)},], []);
+    const allTabs = useMemo(() => [{title: "Checklist",content: (<Container><div class="row"><Checklist ></Checklist></div></Container>)},{title: "TeleOp",content: (<Container><div class="row"><div class="col-2 column"><div class="column-item bubble"><FieldMap socket={socket} id={4} ></FieldMap></div></div><div class="col-6 column"><DashboardSubRow><div class="bubble"><CameraFeed port={11} ></CameraFeed></div><div class="bubble"><CameraFeed port={12} ></CameraFeed></div></DashboardSubRow><DashboardSubRow><div class="bubble"><CameraFeed port={13} ></CameraFeed></div><div class="bubble"><CameraFeed port={14} ></CameraFeed></div></DashboardSubRow></div><div class="col-4 column"><div class="column-item bubble"><AutoChooser socket={socket} id={5} autos={["Nothing","Fast Away","SMR 1","EventTest","Shoot 8","R Trench to Bump","Slow Lob","SMR 5","Shoot 8 + Climb","Awesome"]} ></AutoChooser></div><div class="column-item bubble"><Overrides socket={socket} columns={2} id={6} switches={[{ label: "Limelight PowerSaver"},{ label: "Disable Camera Feeds"},{ label: "CompMode"},{ label: "Disable Shot Smoothing"},{ label: "Always Aim at Hub"},{ label: "Disable Shoot Safeties"}]} ></Overrides></div></div></div></Container>)},{title: "Subsystems",content: (<Container><div class="row"><div class="col-4 column"><div class="column-item bubble"><SwerveModules socket={socket} id={7} ></SwerveModules></div><div class="column-item bubble"><SystemsCheck socket={socket} id={8} ></SystemsCheck></div></div><div class="col-3 column"><div class="column-item bubble"><NumberDisplay socket={socket} label={"BPS: "} id={9} ></NumberDisplay></div></div><div class="col-5 column"><DashboardSubRow><div class="bubble"><SimpleSubsystem socket={socket} name={"Shooter"} id={10} velocity ></SimpleSubsystem></div><div class="bubble"><SimpleSubsystem socket={socket} name={"Intake"} unit={"rps"} id={11} absolute ></SimpleSubsystem></div></DashboardSubRow><DashboardSubRow><div class="bubble"><SimpleSubsystem socket={socket} name={"Transfer"} id={12} velocity ></SimpleSubsystem></div><div class="bubble"><SimpleSubsystem socket={socket} name={"Spindexer"} id={13} velocity ></SimpleSubsystem></div></DashboardSubRow><DashboardSubRow><div class="bubble"><SimpleSubsystem socket={socket} name={"Turret"} id={14} ></SimpleSubsystem></div><div class="bubble"><SimpleSubsystem socket={socket} name={"Turret Hood"} id={15} absolute ></SimpleSubsystem></div></DashboardSubRow></div></div></Container>)},], []);
 
     // Separate TeleOp tab (preserve state)
     const teleOpTab = useMemo(
