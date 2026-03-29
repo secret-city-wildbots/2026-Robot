@@ -69,7 +69,7 @@ public class AimAtHubCommand extends Command {
         //     this.shooter.setRPS(0);
         // } else {
             this.shooter.setHoodAngle(shot.tilt.getDegrees());
-            this.shooter.setRPS(shot.velocity_rPs*2);
+            this.shooter.setRPS(shot.velocity_rPs);
             this.turret.setTargetAngle(shot.yaw);
        // }
         // Only use execute if we have dynamically changing speeds. This is called each loop (~20ms).
