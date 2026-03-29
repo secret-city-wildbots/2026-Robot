@@ -103,6 +103,7 @@ public class RobotContainer {
     private final Telemetry logger = new Telemetry(MaxSpeed);
 
     private final CommandXboxController joystick = new CommandXboxController(0);
+    private final CommandXboxController sadstick = new CommandXboxController(1);
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
     public final Spindexer spindexer = new Spindexer();
@@ -199,31 +200,31 @@ public class RobotContainer {
             // Drivetrain will execute this command periodically
             drivetrain.applyRequest(new Supplier<SwerveRequest>() {
                 public SwerveRequest get() {
-                    double inputX = joystick.getLeftY();
-                    double inputY = joystick.getLeftX();
-                    double inputH = joystick.getRightX();
-                    xVelAvg = (xVelAvg+(inputX*0.1))/1.1;
+                    CommandXboxController stick = (Robot.sad) ? sadstick:joystick;
+                    double inputX = stick.getLeftY();
+                    double inputY = stick.getLeftX();
+                    double inputH = stick.getRightX();
+                    /*xVelAvg = (xVelAvg+(inputX*0.1))/1.1;
                     yVelAvg = (yVelAvg+(inputY*0.1))/1.1;
                     hVelAvg = (hVelAvg+(inputH*0.1))/1.1;
-                    /*if (drivetrain.getPose().getX() < 4.25 && joystick.getRightTriggerAxis() > 0.4 && dashboard.shotSmoothing) {
+                    if (drivetrain.getPose().getX() < 4.25 && joystick.getRightTriggerAxis() > 0.4 && dashboard.shotSmoothing) {
                         inputX = xVelAvg;
                         inputY = yVelAvg;
                         inputH = hVelAvg;
                         System.out.println("shot smoothing active");
                     }*/
-                    return drive.withVelocityX(-JoystickScaler.scaleStrafe(inputX) * MaxSpeed) // Drive forward with negative Y (forward)
-                    .withVelocityY(-JoystickScaler.scaleStrafe(inputY) * MaxSpeed) // Drive left with negative X (left)
-                    .withRotationalRate(-JoystickScaler.scaleRotate(inputH) * MaxAngularRate); // Drive counterclockwise with negative X (left)
-
+                    return drive.withVelocityX(-JoystickScaler.scaleStrafe(inputX) * ((Robot.sad) ? 1.0:MaxSpeed)) // Drive forward with negative Y (forward)
+                    .withVelocityY(-JoystickScaler.scaleStrafe(inputY) * ((Robot.sad) ? 1.0:MaxSpeed)) // Drive left with negative X (left)
+                    .withRotationalRate(-JoystickScaler.scaleRotate(inputH) * ((Robot.sad) ? 2.0:MaxAngularRate)); // Drive counterclockwise with negative X (left)
                 }
             })
         );
 
-        joystick.rightTrigger(0.4).onTrue(Commands.runOnce(() -> {
+        /*joystick.rightTrigger(0.4).onTrue(Commands.runOnce(() -> {
             xVelAvg = joystick.getLeftY();
             yVelAvg = joystick.getLeftX();
             hVelAvg = joystick.getRightX();
-        }));
+        }));*/
 
         //joystick.a().whileTrue(new Zero(turret));
 

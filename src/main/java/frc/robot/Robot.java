@@ -37,6 +37,7 @@ public class Robot extends TimedRobot {
   private final Vision vision;
   public static final boolean test = false; //?
   public static final boolean defense = false;//?
+  public static final boolean sad = false;//?
 
   /**
    * This function is run when the robot is first started up and should be used
