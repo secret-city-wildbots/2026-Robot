@@ -1,3 +1,4 @@
+
 package frc.robot.Actors.Subsystems;
 
 import static edu.wpi.first.units.Units.*;
@@ -198,46 +199,20 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         configureAutoBuilder();
     }
 
-    // PathPlanner paths treat the front as the intake side, but physically the intake
-    // is on the right side of the robot. This 90° offset rotates the robot in auto
-    // so the right side faces where PathPlanner expects the front to be.
-    private static final Rotation2d kAutoIntakeOffset = Rotation2d.fromDegrees(90);
-
     private void configureAutoBuilder() {
         // TODO: TUNE AUTO PID HERE
         try {
             var config = RobotConfig.fromGUISettings();
             AutoBuilder.configure(
-                () -> {
-                    var state = getState();
-                    return new Pose2d(state.Pose.getTranslation(), state.Pose.getRotation().minus(kAutoIntakeOffset));
-                },
-                (pose) -> resetPose(new Pose2d(pose.getTranslation(), pose.getRotation().plus(kAutoIntakeOffset))),
-                () -> {
-                    var s = getState().Speeds;
-                    double cos = kAutoIntakeOffset.getCos();
-                    double sin = kAutoIntakeOffset.getSin();
-                    // Rotate actual robot-relative speeds into the fake (offset) frame: R(+θ)
-                    return new ChassisSpeeds(
-                        s.vxMetersPerSecond * cos - s.vyMetersPerSecond * sin,
-                        s.vxMetersPerSecond * sin + s.vyMetersPerSecond * cos,
-                        s.omegaRadiansPerSecond
-                    );
-                },
-                (speeds, feedforwards) -> {
-                    double cos = kAutoIntakeOffset.getCos();
-                    double sin = kAutoIntakeOffset.getSin();
-                    // Rotate PathPlanner's fake-frame speeds back to actual robot frame: R(-θ)
-                    setControl(
-                        m_pathApplyRobotSpeeds.withSpeeds(ChassisSpeeds.discretize(new ChassisSpeeds(
-                            speeds.vxMetersPerSecond * cos + speeds.vyMetersPerSecond * sin,
-                            -speeds.vxMetersPerSecond * sin + speeds.vyMetersPerSecond * cos,
-                            speeds.omegaRadiansPerSecond
-                        ), 0.020))
-                            .withWheelForceFeedforwardsX(feedforwards.robotRelativeForcesXNewtons())
-                            .withWheelForceFeedforwardsY(feedforwards.robotRelativeForcesYNewtons())
-                    );
-                },
+                () -> getState().Pose,   // Supplier of current robot pose
+                this::resetPose,         // Consumer for seeding pose against auto
+                () -> getState().Speeds, // Supplier of current robot speeds
+                // Consumer of ChassisSpeeds and feedforwards to drive the robot
+                (speeds, feedforwards) -> setControl(
+                    m_pathApplyRobotSpeeds.withSpeeds(ChassisSpeeds.discretize(speeds, 0.020))
+                        .withWheelForceFeedforwardsX(feedforwards.robotRelativeForcesXNewtons())
+                        .withWheelForceFeedforwardsY(feedforwards.robotRelativeForcesYNewtons())
+                ),
                 new PPHolonomicDriveController(
                     // PID constants for translation
                     new PIDConstants(15, 2, 0),
