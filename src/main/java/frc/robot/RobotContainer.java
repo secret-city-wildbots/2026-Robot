@@ -211,8 +211,8 @@ public class RobotContainer {
                         inputH = hVelAvg;
                         System.out.println("shot smoothing active");
                     }*/
-                    return drive.withVelocityX(-JoystickScaler.scaleStrafe(inputX) * MaxSpeed) // Drive forward with negative Y (forward)
-                    .withVelocityY(-JoystickScaler.scaleStrafe(inputY) * MaxSpeed) // Drive left with negative X (left)
+                    return drive.withVelocityX(JoystickScaler.scaleStrafe(inputX) * MaxSpeed) // Drive forward with negative Y (forward)
+                    .withVelocityY(JoystickScaler.scaleStrafe(inputY) * MaxSpeed) // Drive left with negative X (left)
                     .withRotationalRate(-JoystickScaler.scaleRotate(inputH) * MaxAngularRate); // Drive counterclockwise with negative X (left)
 
                 }
