@@ -140,6 +140,10 @@ $RECYCLE.BIN/
 .gradle
 /build/
 
+### Launcher build artifacts ###
+Launcher/build/
+Launcher/dist/
+
 # Ignore Gradle GUI config
 gradle-app.setting
 

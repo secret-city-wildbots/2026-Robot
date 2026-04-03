@@ -5,12 +5,6 @@
     "data": {
       "commands": [
         {
-          "type": "path",
-          "data": {
-            "pathName": "Full L Bump Plow"
-          }
-        },
-        {
           "type": "named",
           "data": {
             "name": "Shoot"
@@ -19,13 +13,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "R Bump into Outpost"
+            "pathName": "L Bump Plow P.1"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Outpost+Preclimb"
+            "pathName": "L Bump Plow P.2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "R Bump into Outpost"
           }
         }
       ]

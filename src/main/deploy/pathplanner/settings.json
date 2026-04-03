@@ -43,13 +43,11 @@
   "bumperOffsetX": 0.0,
   "bumperOffsetY": 0.0,
   "robotFeatures": [
-    "{\"name\":\"Climb\",\"type\":\"rounded_rect\",\"data\":{\"center\":{\"x\":-0.23,\"y\":0.0},\"size\":{\"width\":0.35,\"length\":0.2},\"borderRadius\":0.05,\"strokeWidth\":0.01,\"filled\":false}}",
     "{\"name\":\"Front\",\"type\":\"line\",\"data\":{\"start\":{\"x\":0.343,\"y\":0.3429},\"end\":{\"x\":0.343,\"y\":-0.343},\"strokeWidth\":0.005}}",
     "{\"name\":\"Left\",\"type\":\"line\",\"data\":{\"start\":{\"x\":0.343,\"y\":0.3429},\"end\":{\"x\":-0.3429,\"y\":0.3429},\"strokeWidth\":0.005}}",
     "{\"name\":\"Back\",\"type\":\"line\",\"data\":{\"start\":{\"x\":-0.3429,\"y\":-0.3429},\"end\":{\"x\":-0.3429,\"y\":0.3429},\"strokeWidth\":0.005}}",
     "{\"name\":\"Right\",\"type\":\"line\",\"data\":{\"start\":{\"x\":-0.3429,\"y\":-0.3429},\"end\":{\"x\":0.3429,\"y\":-0.3429},\"strokeWidth\":0.005}}",
     "{\"name\":\"Intake\",\"type\":\"line\",\"data\":{\"start\":{\"x\":0.445,\"y\":0.0},\"end\":{\"x\":0.623,\"y\":0.0},\"strokeWidth\":0.02}}",
-    "{\"name\":\"Turret\",\"type\":\"circle\",\"data\":{\"center\":{\"x\":0.0,\"y\":0.2},\"radius\":0.09,\"strokeWidth\":0.02,\"filled\":false}}",
-    "{\"name\":\"Line\",\"type\":\"line\",\"data\":{\"start\":{\"x\":-0.4,\"y\":-0.041275},\"end\":{\"x\":-0.4,\"y\":0.041275},\"strokeWidth\":0.1}}"
+    "{\"name\":\"Turret\",\"type\":\"circle\",\"data\":{\"center\":{\"x\":0.0,\"y\":0.2},\"radius\":0.09,\"strokeWidth\":0.02,\"filled\":false}}"
   ]
 }
