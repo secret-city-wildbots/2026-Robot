@@ -45,32 +45,11 @@ public final class Constants {
     public static final double minDegree = 0.0;
     public static final double maxDegree = 86.0;
   }
-  public static class ElevatorConstants {
-    // Elevator motor CANBus IDs
-    public static final int liftMotorID = 48;
-    public static final int hookMotorID = 49;
-    public static final double maxSpeedPercentage = 0.1;
 
-    // Sensor ID / Ports
-    public static final int lowerLimitMagneticSensorPort = 0;
-    public static final int handoffMagneticSensorPort = 1;
-    public static final int topLimitMagneticSensorPort = 2;
-
-    // Hook Cancoder CANBus IDs
-    public static final int hookMotorCancoderID = 34;
-    public static final double hookEncoderOffset = 0.0794921875;
-
-    // Hook motor positions
-    public static final double hookSafePosition = 0.0;
-    public static final double hookGuideDeployedPosition = 0.1;
-    public static final double hookDeployedPosition = 0.18;
-    public static final double hookPosForTopRungClearance = 43.56;
-    public static final double angleTolerance = 2.0; 
-  }
-
-  public static class SpindexerConstants {
+  public static class IndexerConstants {
     // CANBus IDs
     public static final int spinMotorID = 42;
+    public static final int rollerMotorID = 48;
     public static final int transferMotorID = 43;
 
     //Sensor ID / Ports
@@ -78,7 +57,8 @@ public final class Constants {
 
     // Properties
     public static final int transferRPS = 70; //?
-    public static final int spindexerRPS = 10;
+    public static final int rollerRPS = 40;
+    public static final int indexerRPS = 10;
     public static final double spinupTime = 0.1;
   }
 

@@ -13,19 +13,19 @@ import frc.robot.Actors.Subsystems.Intake.Intake;
 import frc.robot.Actors.Subsystems.Intake.IntakeExtension;
 import frc.robot.Actors.Subsystems.Shooter.Shooter;
 import frc.robot.Actors.Subsystems.Shooter.Turret;
-import frc.robot.Actors.Subsystems.Spindexer.Spindexer;
-import frc.robot.Actors.Subsystems.Spindexer.Transfer;
+import frc.robot.Actors.Subsystems.Indexer.Indexer;
+import frc.robot.Actors.Subsystems.Indexer.Transfer;
 import frc.robot.Commands.Intake.ExtensionCommand;
 import frc.robot.Commands.Intake.IntakeCommand;
 import frc.robot.Commands.Intake.IntakeSequence;
 import frc.robot.Commands.Shooter.TestShooterCommand;
-import frc.robot.Commands.Spindexer.SpinFuelCommand;
-import frc.robot.Commands.Spindexer.TransferFuelCommand;
+import frc.robot.Commands.Indexer.SpinFuelCommand;
+import frc.robot.Commands.Indexer.TransferFuelCommand;
 import frc.robot.Commands.Turret.Zero;
 
 public class SysCheckSequence extends SequentialCommandGroup {
 
-    public SysCheckSequence(Intake intake, Transfer transfer, Spindexer spindexer, IntakeExtension extender, Turret turret, Shooter shooter) {
+    public SysCheckSequence(Intake intake, Transfer transfer, Indexer indexer, IntakeExtension extender, Turret turret, Shooter shooter) {
 
         addCommands(
             // Drive in Square
@@ -62,9 +62,9 @@ public class SysCheckSequence extends SequentialCommandGroup {
                 new WaitCommand(2.0)
             ),
 
-            // Spin Spindexer
+            // Spin Indexer
             new ParallelRaceGroup( 
-                new SpinFuelCommand(spindexer, 10),
+                new SpinFuelCommand(indexer, 10, 10),
                 new WaitCommand(2.0)
             )
         );

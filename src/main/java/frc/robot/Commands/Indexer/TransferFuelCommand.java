@@ -1,33 +1,33 @@
-package frc.robot.Commands.Spindexer;
+package frc.robot.Commands.Indexer;
 
 // Import WPILib Libraries
 import edu.wpi.first.wpilibj2.command.Command;
 
 // Import Actors, Utils & Constants
-import frc.robot.Actors.Subsystems.Spindexer.Spindexer;
+import frc.robot.Actors.Subsystems.Indexer.Transfer;
 
-public class SpinFuelCommand extends Command {
+public class TransferFuelCommand extends Command {
     // Real Variables
-    private final Spindexer spindexer;
+    private final Transfer indexerTransfer;
     private final double motorRPS;
 
     /**
-     * Creates and sets up the SpinFuelCommand
+     * Creates and sets up the TransferFuelCommand
      * 
-     * @param spindexer The subsystem to be controlled by the command ({@link Spindexer})
-     * @param motorRPS The rps for the spindexer
+     * @param indexerTransfer The subsystem to be controlled by the command ({@link Transfer})
+     * @param motorRPS The rps for the transfer
      */
-    public SpinFuelCommand(Spindexer spindexer, double motorRPS) {
+    public TransferFuelCommand(Transfer indexerTransfer, double motorRPS) {
         // Assign the variables and add the subsystem as a requirement to the command
-        this.spindexer = spindexer;
+        this.indexerTransfer = indexerTransfer;
         this.motorRPS = motorRPS;
-        addRequirements(spindexer);
+        addRequirements(indexerTransfer);
     }
 
     @Override
     public void initialize() {
-        // Call the spindexer subsystem start function
-        spindexer.setRPS(this.motorRPS);
+        // Call the indexerTransfer subsystem start function
+        indexerTransfer.setRPS(this.motorRPS);
     }
 
     @Override
@@ -38,8 +38,8 @@ public class SpinFuelCommand extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        // When the command is interrupted or cancelled, we will stop the spindexer subsystem
-        spindexer.setRPS(0.0);
+        // When the command is interrupted or cancelled, we will stop the indexerTransfer subsystem
+        indexerTransfer.setRPS(0.0);
     }
 
     @Override
