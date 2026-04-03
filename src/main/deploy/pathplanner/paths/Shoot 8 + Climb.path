@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 1.48054,
-        "y": 4.172
+        "x": 1.9613111111111108,
+        "y": 4.821066666666667
       },
       "prevControl": {
-        "x": 2.4805399999999995,
-        "y": 4.172
+        "x": 2.961311111111111,
+        "y": 4.821066666666667
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,10 +42,10 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": -90.0
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Hot Paths",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 0.0

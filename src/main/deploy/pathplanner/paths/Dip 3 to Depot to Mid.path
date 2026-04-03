@@ -32,12 +32,12 @@
     },
     {
       "anchor": {
-        "x": 1.6,
-        "y": 4.2
+        "x": 2.172944444444444,
+        "y": 4.055155555555555
       },
       "prevControl": {
-        "x": 1.8202222222222222,
-        "y": 5.1435555555555545
+        "x": 2.393166666666666,
+        "y": 4.99871111111111
       },
       "nextControl": null,
       "isLocked": false,
@@ -90,7 +90,7 @@
   },
   "goalEndState": {
     "velocity": 0.0,
-    "rotation": 90.0
+    "rotation": -90.0
   },
   "reversed": false,
   "folder": "Dippy Doo",

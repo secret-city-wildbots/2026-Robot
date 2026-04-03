@@ -43,7 +43,7 @@ public class HubShooterTrajectoryCalc {
     private static final double TARGET_TOLERANCE_M = 0.1524;    // 6" tolerance for landing
     
     // ========== BALL PHYSICS ==========
-    private static final double BALL_DIAMETER_M = 0.127;        // 5" ball (not 6")
+    private static final double BALL_DIAMETER_M = 0.150;        // 5.91" ball (not 6")
     private static final double BALL_RADIUS_M = BALL_DIAMETER_M / 2;
     private static final double BALL_MASS_KG = 0.215;
     private static final double BALL_AREA_M2 = Math.PI * BALL_RADIUS_M * BALL_RADIUS_M;
@@ -52,11 +52,11 @@ public class HubShooterTrajectoryCalc {
     private static final double GRAVITY_MPS2 = 9.81;
     
     // ========== CLEARANCE ==========
-    private static final double LIP_FUDGE_M = 0.1524;  // 1" extra clearance
+    private static final double LIP_FUDGE_M = 0.3048;  // 12" extra clearance
     private static final double LIP_CLEARANCE_HEIGHT_M = HUB_LIP_HEIGHT_M + BALL_RADIUS_M + LIP_FUDGE_M;
     
     // ========== SHOOTER CONSTANTS ==========
-    private static final double ROLLER_DIAMETER_M = 0.0889;  // 3.5" effective
+    private static final double ROLLER_DIAMETER_M = 0.05715;  // 2.25" effective
     
     // ========== SIMULATION PARAMETERS ==========
     private static final double DT_S = 0.0005;       // 0.5ms timestep
@@ -65,7 +65,7 @@ public class HubShooterTrajectoryCalc {
     // ========== CACHE PARAMETERS ==========
     private static final double CACHE_MIN_DISTANCE_M = 1.0;
     private static final double CACHE_MAX_DISTANCE_M = 8.0;
-    private static final int CACHE_SIZE = 20;
+    private static final int CACHE_SIZE = 50;
     private static final double CACHE_STEP_M = (CACHE_MAX_DISTANCE_M - CACHE_MIN_DISTANCE_M) / (CACHE_SIZE - 1);
     private static final String CACHE_FILE = System.getProperty("user.home", "/home/lvuser") + "/trajectory_cache.json";
     
@@ -77,7 +77,7 @@ public class HubShooterTrajectoryCalc {
     // ========== INPUTS ==========
     private double shooterHeight_m = 0.533;   // 21"
     private double hubDistance_m = 3.0;
-    private double slipFactor = 1.0;
+    private double slipFactor = 0.9;
     private double maxElevation_deg = 85.0;
     private double minElevation_deg = 40.0;
     

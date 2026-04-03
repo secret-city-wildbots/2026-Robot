@@ -92,7 +92,7 @@ public class Robot extends TimedRobot {
     // TODO: Printing pose
     // System.out.println(m_robotContainer.drivetrain.getState().Pose);
 
-    m_robotContainer.dashboard.update();
+    //m_robotContainer.dashboard.update();
 
     Translation2d robotPos = m_robotContainer.drivetrain.getPose().getTranslation();
     Rotation2d robotRot = m_robotContainer.drivetrain.getPose().getRotation();

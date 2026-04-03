@@ -39,6 +39,6 @@
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "Hot Autos",
   "choreoAuto": false
 }

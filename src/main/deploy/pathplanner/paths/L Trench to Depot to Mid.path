@@ -48,12 +48,12 @@
     },
     {
       "anchor": {
-        "x": 1.48054,
-        "y": 4.172
+        "x": 1.9613111111111108,
+        "y": 4.821066666666667
       },
       "prevControl": {
-        "x": 1.8216955555555554,
-        "y": 4.208555555555555
+        "x": 2.302466666666666,
+        "y": 4.857622222222222
       },
       "nextControl": null,
       "isLocked": false,
@@ -105,7 +105,7 @@
   },
   "goalEndState": {
     "velocity": 0.0,
-    "rotation": 0.0
+    "rotation": -90.0
   },
   "reversed": false,
   "folder": "Simple Left",
