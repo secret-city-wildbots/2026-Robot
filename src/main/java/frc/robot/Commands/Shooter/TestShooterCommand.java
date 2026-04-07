@@ -51,7 +51,7 @@ public class TestShooterCommand extends Command {
     public void end(boolean interrupted) {
         this.shooter.setHoodAngle(7);
         this.shooter.setRPS(0);
-        // When the command is interrupted or cancelled, we will stop the spindexer
+        // When the command is interrupted or cancelled, we will stop the indexer
         // subsystem
     }
 

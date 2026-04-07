@@ -25,35 +25,24 @@ import java.util.function.Supplier;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.PowerDistribution;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-import edu.wpi.first.math.filter.SlewRateLimiter;
 
 // Import Custom TunerConstants
 import frc.robot.generated.TunerConstants;
-import frc.robot.Constants.SpindexerConstants;
+import frc.robot.Constants.IndexerConstants;
 import frc.robot.Utils.JoystickScaler;
 import frc.robot.WildBoard.Panels.AutoChooser;
 // Import subystems
 import frc.robot.Actors.Subsystems.CommandSwerveDrivetrain;
 import frc.robot.Actors.Subsystems.Intake.Intake;
 import frc.robot.Actors.Subsystems.Intake.IntakeExtension;
-import frc.robot.Actors.Subsystems.Elevator.ElevatorLift;
-import frc.robot.Actors.Subsystems.Elevator.ElevatorHook;
-import frc.robot.Actors.Subsystems.Spindexer.Spindexer;
-import frc.robot.Actors.Subsystems.Spindexer.Transfer;
+import frc.robot.Actors.Subsystems.Indexer.Indexer;
+import frc.robot.Actors.Subsystems.Indexer.Transfer;
 import frc.robot.Actors.Subsystems.Shooter.Shooter;
 import frc.robot.Actors.Subsystems.Shooter.Turret;
 import frc.robot.Commands.Intake.AutoIntakeExtend;
@@ -61,10 +50,10 @@ import frc.robot.Commands.Intake.AutoIntakeRetract;
 import frc.robot.Commands.Intake.ExpandHopperCommand;
 // Import Custom Commands
 import frc.robot.Commands.Intake.IntakeSequence;
-import frc.robot.Commands.Spindexer.AutoStartIndexCommand;
-import frc.robot.Commands.Spindexer.AutoStopIndexCommand;
-import frc.robot.Commands.Spindexer.ClearTransferCommand;
-import frc.robot.Commands.Spindexer.SpinAndFeedCommand;
+import frc.robot.Commands.Indexer.AutoStartIndexCommand;
+import frc.robot.Commands.Indexer.AutoStopIndexCommand;
+import frc.robot.Commands.Indexer.ClearTransferCommand;
+import frc.robot.Commands.Indexer.SpinAndFeedCommand;
 import frc.robot.Commands.Turret.JoystickAimCommand;
 import frc.robot.Commands.Turret.Zero;
 import frc.robot.Commands.PlayMusicCommand;
@@ -106,13 +95,11 @@ public class RobotContainer {
     private final CommandXboxController joystick = new CommandXboxController(0);
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
-    public final Spindexer spindexer = new Spindexer();
+    public final Indexer indexer = new Indexer();
     public final Transfer transfer = new Transfer();
 
     public final Intake intake = new Intake();
     public final IntakeExtension intakeExtension = new IntakeExtension();
-    //private final ElevatorLift elevatorLift = new ElevatorLift();
-    //private final ElevatorHook elevatorHook = new ElevatorHook();
     private final Shooter shooter = new Shooter(); 
     private final Turret turret = new Turret();
 
@@ -125,21 +112,20 @@ public class RobotContainer {
     private final Consumer<Command> autoChosen = (Command newAuto) -> {this.auto = newAuto;};
     
     public RobotContainer() {
-        //dashboard = new Dashboard(drivetrain, shooter, spindexer, transfer, turret, intake, intakeExtension, pdh, autoChosen);
+        dashboard = new Dashboard(drivetrain, shooter, indexer, transfer, turret, intake, intakeExtension, pdh, autoChosen);
 
         //TODO: Make sure values for Commands are correct
          //Register Named Commands within Pathplanner
         NamedCommands.registerCommand("Shoot",
             new AutoStartIndexCommand(
-                transfer, spindexer
+                transfer, indexer
             ).alongWith(Commands.print("Shooting Start (Named)")));
         NamedCommands.registerCommand("ShootStop",
             new AutoStopIndexCommand(
-                transfer, spindexer
+                transfer, indexer
             ).alongWith(Commands.print("Shooting Stop (Named)")));
         NamedCommands.registerCommand("Intake", new IntakeSequence(intake, intakeExtension).alongWith(Commands.print("Intaking (Named)")));
         
-        //NamedCommands.registerCommand("L1Climb", new ClimbSequenceL1(elevatorLift).alongWith(Commands.print("Climbing")));
         NamedCommands.registerCommand("Intake", new AutoIntakeExtend(intake, intakeExtension));
         NamedCommands.registerCommand("AutoAim", new AimAtHubCommand(shooter, turret, drivetrain::getPose, () -> {
             var state = drivetrain.getState();
@@ -154,7 +140,7 @@ public class RobotContainer {
                 state.Speeds,
                 state.Pose.getRotation()
             );
-        }, spindexer, transfer, shooter, turret));
+        }, indexer, transfer, shooter, turret));
         auto = new WaitCommand(5.0); //?
 
         // Register Event Triggers within Pathplanner
@@ -172,15 +158,15 @@ public class RobotContainer {
                 state.Speeds,
                 state.Pose.getRotation()
             );
-        }, spindexer, transfer, shooter, turret));
+        }, indexer, transfer, shooter, turret));
         new EventTrigger("Intake").onTrue(new AutoIntakeExtend(intake, intakeExtension));
         new EventTrigger("IntakeRetract").onTrue(new AutoIntakeRetract(intake, intakeExtension));
         //new EventTrigger("Intake").onTrue(Commands.print("Intaking (Trigger)"));
         new EventTrigger("Shoot").onTrue(
-        new AutoStartIndexCommand(transfer, spindexer).alongWith(
+        new AutoStartIndexCommand(transfer, indexer).alongWith(
         Commands.print("Shooting Start (Trigger)")));
         new EventTrigger("ShootStop").onTrue(
-        new AutoStopIndexCommand(transfer, spindexer).alongWith(
+        new AutoStopIndexCommand(transfer, indexer).alongWith(
         Commands.print("Shooting Stop (Trigger)")));
 
         configureBindings();
@@ -203,19 +189,19 @@ public class RobotContainer {
                     double inputX = joystick.getLeftY();
                     double inputY = joystick.getLeftX();
                     double inputH = joystick.getRightX();
-                    xVelAvg = (xVelAvg+(inputX*0.1))/1.1;
-                    yVelAvg = (yVelAvg+(inputY*0.1))/1.1;
-                    hVelAvg = (hVelAvg+(inputH*0.1))/1.1;
-                    /*if (drivetrain.getPose().getX() < 4.25 && joystick.getRightTriggerAxis() > 0.4 && dashboard.shotSmoothing) {
-                        inputX = xVelAvg;
-                        inputY = yVelAvg;
-                        inputH = hVelAvg;
+                    xVelAvg = (xVelAvg+(inputX*0.2))/1.2;
+                    yVelAvg = (yVelAvg+(inputY*0.2))/1.2;
+                    hVelAvg = (hVelAvg+(inputH*0.2))/1.2;
+                    if (joystick.getRightTriggerAxis() > 0.4 && dashboard.shotSmoothing) {
                         System.out.println("shot smoothing active");
-                    }*/
-                    return drive.withVelocityX(-JoystickScaler.scaleStrafe(inputX) * MaxSpeed) // Drive forward with negative Y (forward)
-                    .withVelocityY(-JoystickScaler.scaleStrafe(inputY) * MaxSpeed) // Drive left with negative X (left)
-                    .withRotationalRate(-JoystickScaler.scaleRotate(inputH) * MaxAngularRate); // Drive counterclockwise with negative X (left)
-
+                        return drive.withVelocityX(-JoystickScaler.scaleStrafe(xVelAvg) * MaxSpeed * 0.5) // Drive forward with negative Y (forward)
+                        .withVelocityY(-JoystickScaler.scaleStrafe(yVelAvg) * MaxSpeed * 0.5) // Drive left with negative X (left)
+                        .withRotationalRate(-JoystickScaler.scaleRotate(hVelAvg) * MaxAngularRate * 0.5); // Drive counterclockwise with negative X (left)
+                    } else {
+                        return drive.withVelocityX(-JoystickScaler.scaleStrafe(inputX) * MaxSpeed) // Drive forward with negative Y (forward)
+                        .withVelocityY(-JoystickScaler.scaleStrafe(inputY) * MaxSpeed) // Drive left with negative X (left)
+                        .withRotationalRate(-JoystickScaler.scaleRotate(inputH) * MaxAngularRate); // Drive counterclockwise with negative X (left)
+                    }
                 }
             })
         );
@@ -278,7 +264,7 @@ public class RobotContainer {
                 state.Speeds,
                 state.Pose.getRotation()
             );
-        }, spindexer, transfer, shooter, turret));  
+        }, indexer, transfer, shooter, turret));  
 
         joystick.rightBumper().whileTrue(new SimpleAimAndShootCommand(drivetrain::getPose, () -> { //?
             var state = drivetrain.getState();
@@ -286,13 +272,11 @@ public class RobotContainer {
                 state.Speeds,
                 state.Pose.getRotation()
             );
-        }, spindexer, transfer, shooter, turret));
+        }, indexer, transfer, shooter, turret));
         
-        joystick.y().whileTrue(new ClearTransferCommand(transfer, spindexer)); //?
-
-        joystick.povRight().whileTrue(new PlayMusicCommand(drivetrain).alongWith(Commands.print("Command Called")));
+        joystick.y().whileTrue(new ClearTransferCommand(transfer, indexer)); //?
         /*joystick.rightTrigger(0.4).whileFalse(new ParallelRaceGroup( //?
-            new ClearTransferCommand(transfer, spindexer),
+            new ClearTransferCommand(transfer, indexer),
             new WaitCommand(0.5)
         ));*/
 
@@ -305,14 +289,14 @@ public class RobotContainer {
         //turret.setDefaultCommand(new JoystickAimCommand(turret, joystick));
        
         /*************************************************
-         * Commands for Spindexer Testing
+         * Commands for Indexer Testing
          *************************************************/
 
     //     joystick.x().whileTrue(new SpinAndFeedCommand(
-    //         transfer, spindexer, 30, 10, 0.5
+    //         transfer, indexer, 30, 10, 0.5
     //     ));
 
-    //     joystick.y().whileTrue(new SpinFuelCommand(spindexer, 10));
+    //     joystick.y().whileTrue(new SpinFuelCommand(indexer, 10));
     }
 
 

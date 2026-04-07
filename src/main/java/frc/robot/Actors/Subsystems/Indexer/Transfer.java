@@ -1,4 +1,4 @@
-package frc.robot.Actors.Subsystems.Spindexer;
+package frc.robot.Actors.Subsystems.Indexer;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 // Import WPILib Libraries
@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Actors.Motor;
 import frc.robot.Utils.MotorType;
 import frc.robot.Utils.RotationDir;
-import frc.robot.Constants.SpindexerConstants;
+import frc.robot.Constants.IndexerConstants;
 import edu.wpi.first.wpilibj.Timer;
 
 public class Transfer extends SubsystemBase {
@@ -33,7 +33,7 @@ public class Transfer extends SubsystemBase {
      */
     public Transfer() {
         // Configure the transfer motor
-        this.motor = new Motor(SpindexerConstants.transferMotorID, MotorType.TFX, "rio");
+        this.motor = new Motor(IndexerConstants.transferMotorID, MotorType.TFX, "rio");
         this.motor.motorConfig.direction = RotationDir.CounterClockwise;
         this.motor.motorConfig.dutyCycleClosedLoopRampPeriod = 0.3;
         this.motor.motorConfig.peakReverseDC = -0.3; //?
@@ -41,7 +41,7 @@ public class Transfer extends SubsystemBase {
         this.motor.pid(0.3, 0.0, 0.0); // Setup the transfer PID
 
         // Beam break setup
-        this.bpsBeamBreak = new DigitalInput(SpindexerConstants.bpsBeamBreakPort);
+        this.bpsBeamBreak = new DigitalInput(IndexerConstants.bpsBeamBreakPort);
         this.lastBeamState = this.bpsBeamBreak.get();
 
         // BPS tracking
@@ -61,7 +61,7 @@ public class Transfer extends SubsystemBase {
     // Motor Controls
 
     /**
-     * Sets spindexer motor output (-1.0 to 1.0)
+     * Sets indexer motor output (-1.0 to 1.0)
      * @param percent
      */
     public void set(double percent) {

@@ -1,54 +1,55 @@
-package frc.robot.Commands.Spindexer;
+package frc.robot.Commands.Indexer;
 
 // Import WPILib Commands
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 
 // Import Actors, Utils & Constants
-import frc.robot.Actors.Subsystems.Spindexer.Spindexer;
-import frc.robot.Actors.Subsystems.Spindexer.Transfer;
+import frc.robot.Actors.Subsystems.Indexer.Indexer;
+import frc.robot.Actors.Subsystems.Indexer.Transfer;
+import frc.robot.Constants.IndexerConstants;
 
 public class SpinAndFeedCommand extends Command {
 
     // Initialize the subsystems
     private final Transfer transfer;
-    private final Spindexer spindexer;
+    private final Indexer indexer;
 
     // Initialize the speeds
     private final double transferRPS;
-    private final double spindexerRPS;
+    private final double indexerRPS;
 
     /**
      * Creates and sets up the SpinFuelCommand
      * 
      * @param transfer The subsystem to be controlled by the command ({@link Transfer})
-     * @param spindexer The subsystem to be controlled by the command ({@link Spindexer})
+     * @param indexer The subsystem to be controlled by the command ({@link Indexer})
      * @param transferRPS The rps for the transfer
-     * @param spindexerRPS The rps for the spindexer
+     * @param indexerRPS The rps for the indexer and roller bed
      */
     public SpinAndFeedCommand(
         Transfer transfer,
-        Spindexer spindexer,
+        Indexer indexer,
         double transferRPS,
-        double spindexerRPS
+        double indexerRPS
         ) {
         // Set the subystems
         this.transfer = transfer;
-        this.spindexer = spindexer;
+        this.indexer = indexer;
 
         // Set the speeds
         this.transferRPS = transferRPS;
-        this.spindexerRPS = spindexerRPS;
+        this.indexerRPS = indexerRPS;
 
         // Add subsystem requirements
-        addRequirements(transfer, spindexer);
+        addRequirements(transfer, indexer);
     }
 
     @Override
     public void initialize() {
         // Start the transfer motor and reset the timer
         transfer.setRPS(transferRPS);
-        spindexer.setRPS(spindexerRPS);
+        indexer.setRPS(indexerRPS, IndexerConstants.rollerRPS);
     }
 
     @Override
@@ -59,7 +60,7 @@ public class SpinAndFeedCommand extends Command {
     public void end(boolean interrupted) {
         // Turn off all motors
         transfer.setRPS(0.0);
-        spindexer.setRPS(0.0);
+        indexer.setRPS(0.0, 0.0);
     }
 
     @Override

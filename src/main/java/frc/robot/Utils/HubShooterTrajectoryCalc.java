@@ -56,7 +56,7 @@ public class HubShooterTrajectoryCalc {
     private static final double LIP_CLEARANCE_HEIGHT_M = HUB_LIP_HEIGHT_M + BALL_RADIUS_M + LIP_FUDGE_M;
     
     // ========== SHOOTER CONSTANTS ==========
-    private static final double ROLLER_DIAMETER_M = 0.05715;  // 2.25" effective
+    private static final double ROLLER_DIAMETER_M = 0.0508;  // 2.25" effective
     
     // ========== SIMULATION PARAMETERS ==========
     private static final double DT_S = 0.0005;       // 0.5ms timestep
@@ -77,7 +77,7 @@ public class HubShooterTrajectoryCalc {
     // ========== INPUTS ==========
     private double shooterHeight_m = 0.533;   // 21"
     private double hubDistance_m = 3.0;
-    private double slipFactor = 0.9;
+    private double slipFactor = 0.8;
     private double maxElevation_deg = 85.0;
     private double minElevation_deg = 40.0;
     
