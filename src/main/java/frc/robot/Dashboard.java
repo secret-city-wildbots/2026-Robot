@@ -17,14 +17,12 @@ import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.VisionConstants;
 import frc.robot.Actors.Subsystems.CommandSwerveDrivetrain;
-import frc.robot.Actors.Subsystems.Elevator.ElevatorHook;
-import frc.robot.Actors.Subsystems.Elevator.ElevatorLift;
 import frc.robot.Actors.Subsystems.Intake.Intake;
 import frc.robot.Actors.Subsystems.Intake.IntakeExtension;
 import frc.robot.Actors.Subsystems.Shooter.Shooter;
 import frc.robot.Actors.Subsystems.Shooter.Turret;
-import frc.robot.Actors.Subsystems.Spindexer.Spindexer;
-import frc.robot.Actors.Subsystems.Spindexer.Transfer;
+import frc.robot.Actors.Subsystems.Indexer.Indexer;
+import frc.robot.Actors.Subsystems.Indexer.Transfer;
 import frc.robot.WildBoard.WildBoard;
 import frc.robot.WildBoard.Panels.*;
 
@@ -34,23 +32,23 @@ public class Dashboard {
 
     private CommandSwerveDrivetrain drivetrain;
     private Shooter shooter;
-    private Spindexer spindexer;
+    private Indexer indexer;
     private Transfer transfer;
     private Turret turret;
     private Intake intake;
     private IntakeExtension intakeExtension;
-    private ElevatorLift elevatorLift;
     private PowerDistribution pdh;
 
     final VelocitySimpleSubsystem WBshooter;
     final SimpleSubsystem WBintake;
-    final VelocitySimpleSubsystem WBspindexer;
+    final VelocitySimpleSubsystem WBindexer;
     final VelocitySimpleSubsystem WBtransfer;
     final SimpleSubsystem WBturret;
     final SimpleSubsystem WBhood;
     final SwerveModules WBswerveModules;
     final MasterAlarms WBalarms;
     final FieldMap WBfieldMap;
+    final NumberDisplay WBnumberDisplay;
 
     public double battAvg = 12.0;
     public double currAvg = 50.0;
@@ -59,15 +57,14 @@ public class Dashboard {
 
     private Consumer<Command> autoChosen;
 
-    public Dashboard(CommandSwerveDrivetrain drivetrain, ElevatorLift elevatorLift, Shooter shooter, Spindexer spindexer, Transfer transfer, Turret turret, Intake intake, IntakeExtension intakeExtension, PowerDistribution pdh, Consumer<Command> autoChoosen) {
+    public Dashboard(CommandSwerveDrivetrain drivetrain, Shooter shooter, Indexer indexer, Transfer transfer, Turret turret, Intake intake, IntakeExtension intakeExtension, PowerDistribution pdh, Consumer<Command> autoChoosen) {
         this.drivetrain = drivetrain;
         this.shooter = shooter;
-        this.spindexer = spindexer;
+        this.indexer = indexer;
         this.transfer = transfer;
         this.turret = turret;
         this.intake = intake;
         this.intakeExtension = intakeExtension;
-        this.elevatorLift = elevatorLift;
         this.pdh = pdh;
         this.autoChosen = autoChoosen;
         dashboard = new WildBoard(5804);
@@ -121,7 +118,8 @@ public class Dashboard {
         WBhood = new SimpleSubsystem("Turret Hood", true);
         WBintake = new SimpleSubsystem("Intake", true, "rps");
         WBtransfer = new VelocitySimpleSubsystem("Transfer");
-        WBspindexer = new VelocitySimpleSubsystem("Spindexer");
+        WBindexer = new VelocitySimpleSubsystem("Indexer");
+        WBnumberDisplay = new NumberDisplay("BPS: ");
 
         WBswerveModules = new SwerveModules();
         WBalarms = new MasterAlarms(
@@ -148,12 +146,13 @@ public class Dashboard {
                                             // aim hood to 0
                                             // spin up shooter
                                             // spin up transfer
-                                            // spin spindexer to shoot
+                                            // spin indexer to shoot
                                             System.out.println("blah");
                                         })))
                 .addChild(
                         new Col(3).addChild(
-                                new Placeholder("Climb", 20)))
+                            WBnumberDisplay
+                        ))
                 .addChild(
                         new Col(5).addChild(
                                 new Row().addChild(
@@ -162,7 +161,7 @@ public class Dashboard {
                                 .addChild(
                                         new Row().addChild(
                                                 WBtransfer).addChild(
-                                                        WBspindexer))
+                                                        WBindexer))
                                 .addChild(
                                         new Row().addChild(
                                                 WBturret).addChild(
@@ -204,7 +203,8 @@ public class Dashboard {
         WBturret.updateVals(turret.getTurretDegrees(), turret.getTemp());
         WBhood.updateVals(shooter.getPos(), shooter.getHoodTemp());
         WBintake.updateVals(intake.getVel(), intake.getTemp());
-        WBspindexer.updateVals(spindexer.getRPS(), spindexer.getTemp());
+        WBindexer.updateVals(indexer.getRPS1(), indexer.getTemp1());
+        WBindexer.updateVals(indexer.getRPS2(), indexer.getTemp2());
         WBtransfer.updateVals(transfer.getRPS(), transfer.getTemp());
 
         double[] swerveAngles = new double[4];
@@ -234,8 +234,8 @@ public class Dashboard {
             shooter.getHoodTemp() > maxHeat || shooter.getLeadTemp() > maxHeat ||
             shooter.getFollowTemp() > maxHeat || turret.getTemp() > maxHeat ||
             intake.getTemp() > maxHeat || intakeExtension.getTemp() > maxHeat ||
-            elevatorLift.getTemp() > maxHeat ||
-            spindexer.getTemp() > maxHeat || transfer.getTemp() > maxHeat
+            indexer.getTemp1() > maxHeat || indexer.getTemp2() > maxHeat || transfer.getTemp() > maxHeat
+
         ) {
             WBalarms.triggerAlarm(1);
         }
@@ -264,6 +264,8 @@ public class Dashboard {
         if (battAvg < 10.0) {
             WBalarms.triggerAlarm(7);
         }
+
+        WBnumberDisplay.updateDisplay(String.valueOf(Math.round(Transfer.bps*10)/10.0));
 
         dashboard.update();
     }
