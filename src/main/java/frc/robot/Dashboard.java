@@ -15,12 +15,14 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants.VisionConstants;
 import frc.robot.Actors.Subsystems.CommandSwerveDrivetrain;
 import frc.robot.Actors.Subsystems.Intake.Intake;
 import frc.robot.Actors.Subsystems.Intake.IntakeExtension;
 import frc.robot.Actors.Subsystems.Shooter.Shooter;
 import frc.robot.Actors.Subsystems.Shooter.Turret;
+import frc.robot.Commands.SysCheckSequence;
 import frc.robot.Actors.Subsystems.Indexer.Indexer;
 import frc.robot.Actors.Subsystems.Indexer.Transfer;
 import frc.robot.WildBoard.WildBoard;
@@ -134,20 +136,8 @@ public class Dashboard {
                         new Col(4).addChild(
                                 WBswerveModules).addChild(
                                         new SystemsCheck().onTest(() -> {
-                                            //TODO
-                                            // drive in square
-
-                                            // full climber squence
-
-                                            // deploy intake
-                                            // intake
-                                            // retract intake
-                                            // aim turret to 0
-                                            // aim hood to 0
-                                            // spin up shooter
-                                            // spin up transfer
-                                            // spin indexer to shoot
-                                            System.out.println("blah");
+                                            System.out.println("running SysCheck");
+                                            CommandScheduler.getInstance().schedule(new SysCheckSequence(intake, transfer, indexer, intakeExtension, turret, shooter));
                                         })))
                 .addChild(
                         new Col(3).addChild(

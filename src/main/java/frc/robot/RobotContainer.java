@@ -53,21 +53,9 @@ import frc.robot.Commands.Intake.IntakeSequence;
 import frc.robot.Commands.Indexer.AutoStartIndexCommand;
 import frc.robot.Commands.Indexer.AutoStopIndexCommand;
 import frc.robot.Commands.Indexer.ClearTransferCommand;
-import frc.robot.Commands.Indexer.SpinAndFeedCommand;
-import frc.robot.Commands.Turret.JoystickAimCommand;
-import frc.robot.Commands.Turret.Zero;
-import frc.robot.Commands.PlayMusicCommand;
-import frc.robot.Commands.Elevator.ClimbSequenceL1;
-import frc.robot.Commands.Elevator.ClimbSequenceL3;
-import frc.robot.Commands.Elevator.ExtendLiftCommand;
-import frc.robot.Commands.Elevator.HookCommand;
-import frc.robot.Commands.Elevator.LiftCommand;
-import frc.robot.Commands.Elevator.RetractLiftCommand;
 import frc.robot.Commands.Shooter.AimAndShootCommand;
 import frc.robot.Commands.Shooter.AimAtHubCommand;
 import frc.robot.Commands.Shooter.SimpleAimAndShootCommand;
-import frc.robot.Commands.Shooter.SimpleShootCommand;
-import frc.robot.Commands.Shooter.TestShooterCommand;
 
 
 
@@ -105,7 +93,7 @@ public class RobotContainer {
 
     private final PowerDistribution pdh = new PowerDistribution();
 
-    //public final Dashboard dashboard;
+    public final Dashboard dashboard;
 
       /* Path follower */
     private Command auto;
@@ -279,12 +267,6 @@ public class RobotContainer {
             new ClearTransferCommand(transfer, indexer),
             new WaitCommand(0.5)
         ));*/
-
-        // //Descend from Auto L1 + Retract Lift down
-        // joystick.x().whileTrue(new ExtendLiftCommand(elevatorLift));
-        // joystick.a().whileTrue(new RetractLiftCommand(elevatorLift, false));
-        
-        // joystick.b().toggleOnTrue(new ClimbSequenceL1(elevatorLift));
 
         //turret.setDefaultCommand(new JoystickAimCommand(turret, joystick));
        

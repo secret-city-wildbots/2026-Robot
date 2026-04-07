@@ -40,8 +40,6 @@ public class Robot extends TimedRobot {
    * for any initialization code.
    */
   public Robot() {
-    HubShooterTrajectoryCalc.initializeCache();
-
     // Instantiate our RobotContainer. This will perform all our button bindings,
     // and put our
     // autonomous chooser on the dashboard.
