@@ -202,19 +202,19 @@ public class RobotContainer {
                     double inputX = joystick.getLeftY();
                     double inputY = joystick.getLeftX();
                     double inputH = joystick.getRightX();
-                    xVelAvg = (xVelAvg+(inputX*0.1))/1.1;
-                    yVelAvg = (yVelAvg+(inputY*0.1))/1.1;
-                    hVelAvg = (hVelAvg+(inputH*0.1))/1.1;
-                    /*if (drivetrain.getPose().getX() < 4.25 && joystick.getRightTriggerAxis() > 0.4 && dashboard.shotSmoothing) {
-                        inputX = xVelAvg;
-                        inputY = yVelAvg;
-                        inputH = hVelAvg;
+                    xVelAvg = (xVelAvg+(inputX*0.2))/1.2;
+                    yVelAvg = (yVelAvg+(inputY*0.2))/1.2;
+                    hVelAvg = (hVelAvg+(inputH*0.2))/1.2;
+                    if (joystick.getRightTriggerAxis() > 0.4 && dashboard.shotSmoothing) {
                         System.out.println("shot smoothing active");
-                    }*/
-                    return drive.withVelocityX(-JoystickScaler.scaleStrafe(inputX) * MaxSpeed) // Drive forward with negative Y (forward)
-                    .withVelocityY(-JoystickScaler.scaleStrafe(inputY) * MaxSpeed) // Drive left with negative X (left)
-                    .withRotationalRate(-JoystickScaler.scaleRotate(inputH) * MaxAngularRate); // Drive counterclockwise with negative X (left)
-
+                        return drive.withVelocityX(-JoystickScaler.scaleStrafe(xVelAvg) * MaxSpeed * 0.5) // Drive forward with negative Y (forward)
+                        .withVelocityY(-JoystickScaler.scaleStrafe(yVelAvg) * MaxSpeed * 0.5) // Drive left with negative X (left)
+                        .withRotationalRate(-JoystickScaler.scaleRotate(hVelAvg) * MaxAngularRate * 0.5); // Drive counterclockwise with negative X (left)
+                    } else {
+                        return drive.withVelocityX(-JoystickScaler.scaleStrafe(inputX) * MaxSpeed) // Drive forward with negative Y (forward)
+                        .withVelocityY(-JoystickScaler.scaleStrafe(inputY) * MaxSpeed) // Drive left with negative X (left)
+                        .withRotationalRate(-JoystickScaler.scaleRotate(inputH) * MaxAngularRate); // Drive counterclockwise with negative X (left)
+                    }
                 }
             })
         );

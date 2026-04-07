@@ -77,8 +77,8 @@ public final class Constants {
     public static final int bpsBeamBreakPort = 3; // TODO: Find which port it lives on
 
     // Properties
-    public static final int transferRPS = 70; //?
-    public static final int spindexerRPS = 10;
+    public static final int transferRPS = 50; //?
+    public static final int spindexerRPS = 15;
     public static final double spinupTime = 0.1;
   }
 
@@ -89,11 +89,11 @@ public final class Constants {
     public static final int hoodMotorID = 44;
 
     // Gear Ratios
-    public static final double hoodGearRatio = 23.5714;
+    public static final double hoodGearRatio = 110.0;
 
     // Hood Ranges
-    public static final double minDegree = 5.0;
-    public static final double maxDegree = 55.0;
+    public static final double minDegree = 6.0;
+    public static final double maxDegree = 40.0;
 
     public static final double wheelRadius_m = 0.05; //abt 2 in
   }

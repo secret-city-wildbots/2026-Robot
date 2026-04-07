@@ -27,6 +27,9 @@ public class ShotPredictor {
         public Rotation2d tilt;
         public double velocity_rPs;
         public double airtime_s;
+        public Translation2d robotPos;
+        public Rotation2d robotRot;
+        public ChassisSpeeds robotVel;
     }
 
     /**
@@ -59,6 +62,7 @@ public class ShotPredictor {
         Translation2d turretPos = robotPos.plus(TurretConstants.turretPos.rotateBy(robotRot));
 
         double distance = targetPos.getDistance(turretPos);
+        System.out.println(distance);
         double airtime = getAirtime(distance);
 
         shot.airtime_s = airtime;
@@ -83,9 +87,56 @@ public class ShotPredictor {
 
         return shot;
     }
+    
+    /*public static Shot leadShot(Shot shot) {
+        Rotation2d robotRot = shot.robotRot;
+        Translation2d robotPos = shot.robotPos;
+        ChassisSpeeds robotVel = shot.robotVel;
+
+        Translation2d targetPos;
+
+        if ((DriverStation.getAlliance().get() == Alliance.Blue) ? (robotPos.getX() < targetX):(robotPos.getX() > targetX)) { //?
+            targetPos = hubPosition;
+        } else if (robotPos.getY() > 4.0) {
+            targetPos = bumpLeft;
+        } else {
+            targetPos = bumpRight;
+        }
+
+        Translation2d turretPos = robotPos.plus(TurretConstants.turretPos.rotateBy(robotRot));
+
+        double distance = targetPos.getDistance(turretPos);
+        System.out.println(distance);
+        double airtime = getAirtime(distance);
+
+        shot.airtime_s = airtime;
+
+        // predict robot future pos during flight (accounts for movement, allowing empirical calculations where there would otherwise be too many variables)
+        Translation2d futureRobotPos = robotPos.plus(
+                new Translation2d(robotVel.vxMetersPerSecond, robotVel.vyMetersPerSecond).times(airtime));
+        Rotation2d futureRobotRot = robotRot.plus(
+                new Rotation2d(robotVel.omegaRadiansPerSecond).times(airtime));
+        Translation2d futureTurretPos = futureRobotPos.plus(TurretConstants.turretPos.rotateBy(futureRobotRot));
+
+        // yaw calculation
+        Translation2d delta = targetPos.minus(futureTurretPos);
+        Rotation2d fieldAngleToTarget = delta.getAngle();
+        shot.yaw = fieldAngleToTarget.minus(futureRobotRot);
+
+        // horizontal distance (adjusted by airtime)
+        double futureDist = delta.getNorm();
+
+        shot.velocity_rPs = getVelocity(futureDist);
+        shot.tilt = getTilt(futureDist);
+        shot.robotPos = futureRobotPos;
+        shot.robotRot = futureRobotRot;
+        shot.robotVel = robotVel;
+
+        return shot;
+    }*/
 
     public static double getVelocity(double dist) {
-        return HubShooterTrajectoryCalc.lookupCache(dist).speed_rps;
+        return 5.22068*dist + 36.08701;//HubShooterTrajectoryCalc.lookupCache(dist).speed_rps;
         //return 1.0;
     }
 
@@ -95,7 +146,8 @@ public class ShotPredictor {
     }
 
     public static double getAirtime(double dist) {
-        return HubShooterTrajectoryCalc.lookupCache(dist).airtime_s;
+        return 0.177067*dist + 0.546781;
+        //return 0.0;//HubShooterTrajectoryCalc.lookupCache(dist).airtime_s;
         //return TurretConstants.turretBaseAirtime_s
         //        + TurretConstants.turretDistAirtime_sPm * dist;
     }
