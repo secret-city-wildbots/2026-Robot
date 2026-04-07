@@ -66,8 +66,8 @@ public class SimpleShootCommand extends Command {
         //     this.shooter.setHoodAngle(0);
         //     this.shooter.setRPS(0);
         // } else {
-            this.shooter.setHoodAngle(15.0);
-            this.shooter.setRPS(30.0);
+            this.shooter.setHoodAngle(30.0);
+            this.shooter.setRPS(60.0);
             this.turret.setTargetAngle(new Rotation2d());
        // }
         // Only use execute if we have dynamically changing speeds. This is called each loop (~20ms).

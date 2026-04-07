@@ -69,11 +69,11 @@ public final class Constants {
     public static final int hoodMotorID = 44;
 
     // Gear Ratios
-    public static final double hoodGearRatio = 23.5714;
+    public static final double hoodGearRatio = 110.0;
 
     // Hood Ranges
-    public static final double minDegree = 5.0;
-    public static final double maxDegree = 55.0;
+    public static final double minDegree = 6.0;
+    public static final double maxDegree = 40.0;
 
     public static final double wheelRadius_m = 0.05; //abt 2 in
   }

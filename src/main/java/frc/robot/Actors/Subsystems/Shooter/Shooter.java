@@ -37,7 +37,13 @@ public class Shooter extends SubsystemBase {
         this.leadMotor.motorConfig.peakReverseDC = 0.0;
         this.leadMotor.motorConfig.brake = false;
         this.leadMotor.applyConfig();
-        this.leadMotor.pid(0.5, 0.0, 0.05); // Setup the Shooter PID
+        this.leadMotor.slot0TFX.kV = 0.011;
+        this.leadMotor.pid(0.04, 0.0, 0.0); // Setup the Shooter PID
+        /*this.leadMotor.slot0TFX.kV = 0.0;
+        this.leadMotor.pid(0.0, 0.0, 0.0); // Setup the Shooter PID*/
+
+        this.leadMotor.motorTFX.getVelocity().setUpdateFrequency(1000.0);
+        //this.leadMotor.motorTFX.getClosedLoopOutput().setUpdateFrequency(100.0);
 
         // Set the followMotor to follow the lead motor and make it opposed
         this.followMotor.motorTFX.setControl(new Follower(ShooterConstants.leadMotorID, MotorAlignmentValue.Opposed));
