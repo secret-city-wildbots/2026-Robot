@@ -7,7 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Full R Bump Plow"
+            "pathName": "R Bump Plow P.1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "R Bump Plow P.2"
           }
         },
         {

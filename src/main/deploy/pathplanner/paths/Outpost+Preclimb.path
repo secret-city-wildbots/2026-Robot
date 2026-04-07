@@ -8,7 +8,7 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 0.6874085483146268,
+        "x": 0.6874085483146269,
         "y": 0.7783401633081107
       },
       "isLocked": false,
@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 1.560385542168675,
-        "y": 3.319234939759036
+        "x": 2.334188888888889,
+        "y": 1.5961777777777773
       },
       "prevControl": {
-        "x": 2.205120481927711,
-        "y": 3.335626506024097
+        "x": 2.978923828647925,
+        "y": 1.612569344042838
       },
       "nextControl": null,
       "isLocked": false,
@@ -76,7 +76,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": -90.0
   },
   "reversed": false,
   "folder": "Simple Right + Outpost",
