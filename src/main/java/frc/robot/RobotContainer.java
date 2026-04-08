@@ -44,7 +44,7 @@ import frc.robot.Actors.Subsystems.Shooter.Shooter;
 import frc.robot.Actors.Subsystems.Shooter.Turret;
 import frc.robot.Commands.Intake.AutoIntakeExtend;
 import frc.robot.Commands.Intake.AutoIntakeRetract;
-import frc.robot.Commands.Intake.ExpandHopperCommand;
+import frc.robot.Commands.Intake.AutoIntakeStop;
 // Import Custom Commands
 import frc.robot.Commands.Intake.IntakeSequence;
 import frc.robot.Commands.Indexer.AutoStartIndexCommand;
@@ -137,7 +137,7 @@ public class RobotContainer {
         auto = new WaitCommand(5.0); //?
 
         // Register Event Triggers within Pathplanner
-        new EventTrigger("ExpandHopper").onTrue( new ExpandHopperCommand(intake, intakeExtension));
+        new EventTrigger("StopIntake").onTrue( new AutoIntakeStop(intake));
         new EventTrigger("AutoAim").onTrue( new AimAtHubCommand(shooter, drivetrain::getPose, () -> {
             var state = drivetrain.getState();
             return ChassisSpeeds.fromRobotRelativeSpeeds(
@@ -145,7 +145,7 @@ public class RobotContainer {
                 state.Pose.getRotation()
             );
         }));
-        new EventTrigger("AimAndShoot").onTrue(new AimAndShootCommand(drivetrain::getPose, () -> { //?
+        new EventTrigger("AimAndShoot").toggleOnTrue(new AimAndShootCommand(drivetrain::getPose, () -> { //?
             var state = drivetrain.getState();
             return ChassisSpeeds.fromRobotRelativeSpeeds(
                 state.Speeds,

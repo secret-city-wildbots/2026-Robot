@@ -9,18 +9,18 @@
       "prevControl": null,
       "nextControl": {
         "x": 7.834823232323233,
-        "y": 2.2671969696969696
+        "y": 2.26719696969697
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.116590909090909,
+        "x": 3.0,
         "y": 2.5004292929292933
       },
       "prevControl": {
-        "x": 4.090012626262626,
+        "x": 3.973421717171717,
         "y": 2.523333333333334
       },
       "nextControl": null,
@@ -31,7 +31,7 @@
   "rotationTargets": [
     {
       "waypointRelativePos": 0.692640692640695,
-      "rotationDegrees": 45.0
+      "rotationDegrees": 135.0
     }
   ],
   "constraintZones": [
@@ -52,16 +52,15 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "Shoot",
-      "waypointRelativePos": 0.8006962576153186,
-      "endWaypointRelativePos": null,
-      "command": null
-    },
-    {
       "name": "AimAndShoot",
-      "waypointRelativePos": 0.9538729329852011,
+      "waypointRelativePos": 0.8017718715393132,
       "endWaypointRelativePos": null,
-      "command": null
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "ShootStop"
+        }
+      }
     }
   ],
   "globalConstraints": {
@@ -73,13 +72,13 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0,
-    "rotation": 0.0
+    "velocity": 0.0,
+    "rotation": 160.0
   },
   "reversed": false,
   "folder": "Simple Right + Outpost",
   "idealStartingState": {
-    "velocity": 0,
+    "velocity": 1.0,
     "rotation": 90.0
   },
   "useDefaultConstraints": true

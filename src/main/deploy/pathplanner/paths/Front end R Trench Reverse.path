@@ -42,8 +42,8 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "ExpandHopper",
-      "waypointRelativePos": 0.0,
+      "name": "",
+      "waypointRelativePos": 0,
       "endWaypointRelativePos": null,
       "command": null
     }

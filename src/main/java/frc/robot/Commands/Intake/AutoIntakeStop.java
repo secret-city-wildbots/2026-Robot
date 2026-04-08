@@ -6,29 +6,24 @@ import frc.robot.Actors.Subsystems.Intake.Intake;
 // Import Actors, Utils & Constants
 import frc.robot.Actors.Subsystems.Intake.IntakeExtension;
 
-public class ExpandHopperCommand extends Command {
+public class AutoIntakeStop extends Command {
     // Real Variables
-    private final IntakeExtension intakeExtension;
     private final Intake intake;
 
     /**
      * Creates and sets up the ExtensionCommand
      * 
      * @param intakeExtension The subsystem to be controlled by the command ({@link IntakeExtension})
-     * @param intakeExtensionPos The pos for the motor
      */
-    public ExpandHopperCommand(Intake intake, IntakeExtension intakeExtension) {
+    public AutoIntakeStop(Intake intake) {
         // Assign the variables and add the subsystem as a requirement to the command
-        this.intakeExtension = intakeExtension;
         this.intake = intake;
-        addRequirements(intakeExtension);
         addRequirements(intake);
     }
 
     @Override
     public void initialize() {
         // Call the intakeExtension subsystem setIntakePos function
-        intakeExtension.setIntakePos(30);
         intake.set(0);
     }
 

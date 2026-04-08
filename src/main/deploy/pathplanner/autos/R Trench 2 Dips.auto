@@ -13,19 +13,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Front end R Trench Reverse"
+            "pathName": "R Trench Reverse (over bump)"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Outpost + Shoot"
+            "pathName": "R Bump to Outpost"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Outpost to Mid"
+            "pathName": "Outpost to Mid Dip"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "R Trench Reverse (over bump)"
           }
         }
       ]
