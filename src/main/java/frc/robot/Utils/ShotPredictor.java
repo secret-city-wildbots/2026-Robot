@@ -90,12 +90,12 @@ public class ShotPredictor {
     }
 
     public static double getVelocity(double dist) {
-        return 4.32922*dist + 41.01092;//HubShooterTrajectoryCalc.lookupCache(dist).speed_rps;
+        return 5.22068*dist + 37;
         //return 1.0;
     }
 
     public static Rotation2d getTilt(double dist) {
-        return new Rotation2d((90-(Math.pow(0.67651, dist-9.21472)+54.52477))/180*Math.PI);
+        return new Rotation2d((90-(Math.pow(0.475086, dist-4.67884)+66.21959+(-1.37205*dist)))/180*Math.PI);
         //return new Rotation2d();
     }
 

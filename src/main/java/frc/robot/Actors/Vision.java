@@ -221,6 +221,19 @@ public class Vision extends SubsystemBase {
         }
     }*/
 
+    public double getStdDev(LimelightHelpers.PoseEstimate pose) {
+        if (pose.tagCount == 0) return 99999.9;
+        var scored = score(pose);
+
+        // Weight = 1 / variance = 1 / (k * distance)²
+        double dist = scored.lowestDist;
+        double weight = dist * 0.25;
+
+        weight = Math.pow(2, weight-1.0);
+
+        return weight;
+    }
+
     /*
      * Get the meanPose from all of the cameras
      */

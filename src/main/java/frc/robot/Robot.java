@@ -90,6 +90,10 @@ public class Robot extends TimedRobot {
 
       // If bestPose is not null, add vision measurement to the drivetrain
       // TODO: need to tune 0.7,0.7 values
+      /*LimelightHelpers.PoseEstimate[] poses = vision.getPoses();
+      for (LimelightHelpers.PoseEstimate pose: poses) {
+        m_robotContainer.drivetrain.addVisionMeasurement(pose.pose, pose.timestampSeconds, VecBuilder.fill(vision.getStdDev(pose),vision.getStdDev(pose),9999999));
+      }*/
       if (bestPose != null) {
         // TODO: Do we want to just only add or reset the whole pose?
         m_robotContainer.drivetrain.addVisionMeasurement(bestPose.pose, bestPose.timestampSeconds, VecBuilder.fill(0.7,0.7,9999999));
@@ -103,11 +107,6 @@ public class Robot extends TimedRobot {
     // System.out.println(m_robotContainer.drivetrain.getState().Pose);
 
     //m_robotContainer.dashboard.update();
-
-    Translation2d robotPos = m_robotContainer.drivetrain.getPose().getTranslation();
-    Rotation2d robotRot = m_robotContainer.drivetrain.getPose().getRotation();
-    Translation2d turretPos = robotPos.plus(TurretConstants.turretPos.rotateBy(robotRot));
-    double distance = new Translation2d(11.9, 4.035).getDistance(robotPos);
     //System.out.println("dist: "+distance);
   }
 
