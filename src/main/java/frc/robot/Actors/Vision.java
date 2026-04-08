@@ -57,7 +57,7 @@ public class Vision extends SubsystemBase {
     */
     private static final VisionZone[] StructureZones = new VisionZone[] {
         // // Right Trench Zone:
-        new VisionZone(3.0, 6.0, 0.0, 1.25, new int[] {17, 28}, new int[] {12, 1}),
+        new VisionZone(2.5, 7.0, 0.0, 1.25, new int[] {17, 28}, new int[] {12, 1}),
 
         // // Left Trench Zone:
         new VisionZone(3.0, 6.0, 6.75, 8.0, new int[] {22, 23}, new int[] {7, 6}),
@@ -66,7 +66,7 @@ public class Vision extends SubsystemBase {
         // new VisionZone(0.0, 2.0, 2.5, 5.0, new int[] {31, 32}, new int[] {15, 16}),
 
         //Outpost Zone: 
-         new VisionZone(0.0, 1.2, 0.0, 1.05, new int[] {29, 30}, new int[] {14, 13})
+        new VisionZone(0.0, 1.2, 0.0, 1.05, new int[] {29, 30}, new int[] {14, 13})
     };
 
     /*

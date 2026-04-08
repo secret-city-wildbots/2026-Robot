@@ -7,19 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "R Trench"
+            "pathName": "X1"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "R Trench Reverse"
+            "pathName": "X2"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Outpost + Shoot"
+            "pathName": "x3"
           }
         }
       ]

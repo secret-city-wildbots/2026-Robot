@@ -182,9 +182,9 @@ public class RobotContainer {
                     hVelAvg = (hVelAvg+(inputH*0.2))/1.2;
                     if (joystick.getRightTriggerAxis() > 0.4 && dashboard.shotSmoothing) {
                         System.out.println("shot smoothing active");
-                        return drive.withVelocityX(-JoystickScaler.scaleStrafe(xVelAvg) * MaxSpeed * 0.5) // Drive forward with negative Y (forward)
-                        .withVelocityY(-JoystickScaler.scaleStrafe(yVelAvg) * MaxSpeed * 0.5) // Drive left with negative X (left)
-                        .withRotationalRate(-JoystickScaler.scaleRotate(hVelAvg) * MaxAngularRate * 0.5); // Drive counterclockwise with negative X (left)
+                        return drive.withVelocityX(-JoystickScaler.scaleStrafe(xVelAvg) * MaxSpeed * 0.3) // Drive forward with negative Y (forward)
+                        .withVelocityY(-JoystickScaler.scaleStrafe(yVelAvg) * MaxSpeed * 0.3) // Drive left with negative X (left)
+                        .withRotationalRate(-JoystickScaler.scaleRotate(hVelAvg) * MaxAngularRate * 0.3); // Drive counterclockwise with negative X (left)
                     } else {
                         return drive.withVelocityX(-JoystickScaler.scaleStrafe(inputX) * MaxSpeed) // Drive forward with negative Y (forward)
                         .withVelocityY(-JoystickScaler.scaleStrafe(inputY) * MaxSpeed) // Drive left with negative X (left)
@@ -283,6 +283,7 @@ public class RobotContainer {
 
 
     public Command getAutonomousCommand() {
+        auto = AutoBuilder.buildAutoChooser("Xing").getSelected();
          /* Run the path selected from the auto chooser */
         return auto;
         // /* Run the path selected from the auto chooser */

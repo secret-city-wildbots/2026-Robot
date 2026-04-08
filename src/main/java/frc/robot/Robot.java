@@ -12,7 +12,6 @@ import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
-import frc.robot.Utils.HubShooterTrajectoryCalc;
 // Import Limelight Utils
 import frc.robot.Utils.LimelightHelpers;
 import frc.robot.Actors.Vision;

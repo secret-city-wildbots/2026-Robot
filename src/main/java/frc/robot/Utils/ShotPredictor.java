@@ -13,8 +13,9 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
 public class ShotPredictor {
 
-    private static final double targetX = (DriverStation.getAlliance().get() == Alliance.Blue) ? 4.63:11.9; //?
-    private static final Translation2d hubPosition = new Translation2d(targetX, 4.035);
+    private static final double targetX = (DriverStation.getAlliance().get() == Alliance.Blue) ? (4.63-4.0):(11.9+4.0); //?
+    private static final double hubX = (DriverStation.getAlliance().get() == Alliance.Blue) ? (4.63):(11.9);
+    private static final Translation2d hubPosition = new Translation2d(hubX, 4.035);
     private static final Translation2d bumpLeft = new Translation2d(targetX, 6);
     private static final Translation2d bumpRight = new Translation2d(targetX, 8-6);
 
@@ -51,7 +52,7 @@ public class ShotPredictor {
 
         Translation2d targetPos;
 
-        if ((DriverStation.getAlliance().get() == Alliance.Blue) ? (robotPos.getX() < targetX):(robotPos.getX() > targetX)) { //?
+        if ((DriverStation.getAlliance().get() == Alliance.Blue) ? (robotPos.getX() < hubX):(robotPos.getX() > hubX)) { //?
             targetPos = hubPosition;
         } else if (robotPos.getY() > 4.0) {
             targetPos = bumpLeft;
@@ -89,7 +90,7 @@ public class ShotPredictor {
     }
 
     public static double getVelocity(double dist) {
-        return 5.22068*dist + 36.08701;//HubShooterTrajectoryCalc.lookupCache(dist).speed_rps;
+        return 4.32922*dist + 41.01092;//HubShooterTrajectoryCalc.lookupCache(dist).speed_rps;
         //return 1.0;
     }
 

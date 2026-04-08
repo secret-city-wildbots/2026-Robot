@@ -33,6 +33,6 @@ public class AimAndShootCommand extends ParallelCommandGroup {
 
                 new SpinAndFeedCommand(transfer, indexer, IndexerConstants.transferRPS, IndexerConstants.indexerRPS)
             );
-        addRequirements(shooter, turret);
+        addRequirements(shooter, turret, transfer, indexer);
     }
 }
