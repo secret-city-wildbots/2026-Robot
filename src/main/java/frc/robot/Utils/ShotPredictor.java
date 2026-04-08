@@ -47,7 +47,7 @@ public class ShotPredictor {
 
         Pose2d robotPose = robotPoseSupplier.get();
         Translation2d robotPos = robotPose.getTranslation();
-        Rotation2d robotRot = robotPose.getRotation();
+        Rotation2d robotRot = robotPose.getRotation().plus((DriverStation.getAlliance().get() == Alliance.Blue) ? new Rotation2d(Math.PI):new Rotation2d()); //?
         ChassisSpeeds robotVel = robotVelSupplier.get();
 
         Translation2d targetPos;

@@ -88,7 +88,7 @@ public final class Constants {
     public static final double posExtension = 480/360*turretGearRatio; //??
     public static final double negExtension = -185/360*turretGearRatio; //??
 
-    public static final Translation2d turretPos = new Translation2d(-0.133,-0.02413);
+    public static final Translation2d turretPos = new Translation2d(0.133,-0.133);
   }
   
   public static class DrivetrainConstants {
