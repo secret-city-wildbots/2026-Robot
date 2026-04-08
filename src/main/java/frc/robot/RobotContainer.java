@@ -22,6 +22,7 @@ import static edu.wpi.first.units.Units.*;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.PowerDistribution;
@@ -96,6 +97,10 @@ public class RobotContainer {
 
     public final Dashboard dashboard;
 
+    public SlewRateLimiter shotSmoothingx;
+    public SlewRateLimiter shotSmoothingy;
+    public SlewRateLimiter shotSmoothingh;
+
       /* Path follower */
     private Command auto;
     private final Consumer<Command> autoChosen = (Command newAuto) -> {this.auto = newAuto;};
@@ -103,6 +108,9 @@ public class RobotContainer {
     public RobotContainer() {
         dashboard = new Dashboard(drivetrain, shooter, indexer, transfer, turret, intake, intakeExtension, pdh, autoChosen);
 
+        shotSmoothingx = new SlewRateLimiter(1.0);
+        shotSmoothingy = new SlewRateLimiter(1.0);
+        shotSmoothingh = new SlewRateLimiter(1.0);
         //TODO: Make sure values for Commands are correct
          //Register Named Commands within Pathplanner
         NamedCommands.registerCommand("Shoot",
@@ -178,14 +186,11 @@ public class RobotContainer {
                     double inputX = joystick.getLeftY();
                     double inputY = joystick.getLeftX();
                     double inputH = joystick.getRightX();
-                    xVelAvg = (xVelAvg+(inputX*0.2))/1.2;
-                    yVelAvg = (yVelAvg+(inputY*0.2))/1.2;
-                    hVelAvg = (hVelAvg+(inputH*0.2))/1.2;
                     if (joystick.getRightTriggerAxis() > 0.4 && dashboard.shotSmoothing) {
                         System.out.println("shot smoothing active");
-                        return drive.withVelocityX(-JoystickScaler.scaleStrafe(xVelAvg) * MaxSpeed * 0.3) // Drive forward with negative Y (forward)
-                        .withVelocityY(-JoystickScaler.scaleStrafe(yVelAvg) * MaxSpeed * 0.3) // Drive left with negative X (left)
-                        .withRotationalRate(-JoystickScaler.scaleRotate(hVelAvg) * MaxAngularRate * 0.3); // Drive counterclockwise with negative X (left)
+                        return drive.withVelocityX(shotSmoothingx.calculate(-JoystickScaler.scaleStrafe(inputX) * MaxSpeed * 0.3)) // Drive forward with negative Y (forward)
+                        .withVelocityY(shotSmoothingy.calculate(-JoystickScaler.scaleStrafe(inputY) * MaxSpeed * 0.3)) // Drive left with negative X (left)
+                        .withRotationalRate(shotSmoothingh.calculate(-JoystickScaler.scaleStrafe(inputH) * MaxAngularRate * 0.3)); // Drive counterclockwise with negative X (left)
                     } else {
                         return drive.withVelocityX(-JoystickScaler.scaleStrafe(inputX) * MaxSpeed) // Drive forward with negative Y (forward)
                         .withVelocityY(-JoystickScaler.scaleStrafe(inputY) * MaxSpeed) // Drive left with negative X (left)
@@ -195,11 +200,11 @@ public class RobotContainer {
             })
         );
 
-        joystick.rightTrigger(0.4).onTrue(Commands.runOnce(() -> {
-            xVelAvg = joystick.getLeftY();
-            yVelAvg = joystick.getLeftX();
-            hVelAvg = joystick.getRightX();
-        }));
+        // joystick.rightTrigger(0.4).onTrue(Commands.runOnce(() -> {
+        //     xVelAvg = joystick.getLeftY();
+        //     yVelAvg = joystick.getLeftX();
+        //     hVelAvg = joystick.getRightX();
+        // }));
 
         //joystick.a().whileTrue(new Zero(turret));
 
