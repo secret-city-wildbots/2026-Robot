@@ -3,35 +3,51 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.5055303030303036,
-        "y": 0.7826262626262621
+        "x": 7.8,
+        "y": 3.3
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.505530303030305,
-        "y": 0.7826262626262621
+        "x": 7.756033333333333,
+        "y": 0.5895666666666655
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 6.758333333333334,
-        "y": 1.3552272727272736
+        "x": 3.6,
+        "y": 0.7
       },
       "prevControl": {
-        "x": 5.758333333333334,
-        "y": 1.3552272727272738
+        "x": 7.786266666666666,
+        "y": 0.6387888888888893
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.1385964912280694,
+      "rotationDegrees": 90.0
+    },
+    {
+      "waypointRelativePos": 0.7842105263157922,
+      "rotationDegrees": 180.0
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "ExpandHopper",
+      "waypointRelativePos": 0.0,
+      "endWaypointRelativePos": null,
+      "command": null
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -41,14 +57,14 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0,
-    "rotation": 0.0
+    "velocity": 1.5,
+    "rotation": 180.0
   },
   "reversed": false,
-  "folder": "Simple Left",
+  "folder": "Simple Right + Outpost",
   "idealStartingState": {
-    "velocity": 0,
-    "rotation": 0.0
+    "velocity": 1.0,
+    "rotation": 90.0
   },
   "useDefaultConstraints": true
 }

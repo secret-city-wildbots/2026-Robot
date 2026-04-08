@@ -1,7 +1,6 @@
 package frc.robot.Commands.Indexer;
 
 // Import WPILib Commands
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 
 // Import Actors, Utils & Constants

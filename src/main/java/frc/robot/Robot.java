@@ -11,9 +11,12 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.util.Units;
 // Import Limelight Utils
 import frc.robot.Utils.LimelightHelpers;
+import frc.robot.Utils.ShotPredictor;
+import frc.robot.Utils.ShotPredictor.Shot;
 import frc.robot.Actors.Vision;
 import frc.robot.Constants.TurretConstants;
 
@@ -33,6 +36,7 @@ public class Robot extends TimedRobot {
   private final Vision vision;
   public static final boolean test = false; //?
   public static final boolean defense = false;//?
+  public static Shot shot;
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -69,6 +73,15 @@ public class Robot extends TimedRobot {
     // robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+
+    
+    shot = ShotPredictor.predict(m_robotContainer.drivetrain::getPose, () -> { //?
+          var state = m_robotContainer.drivetrain.getState();
+          return ChassisSpeeds.fromRobotRelativeSpeeds(
+              state.Speeds,
+              state.Pose.getRotation()
+          );
+      });
 
     // Get the best pose estimate from all of the cameras
     try {

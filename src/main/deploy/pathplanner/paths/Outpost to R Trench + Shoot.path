@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.4678555555555568,
-        "y": 0.7806222222222221
+        "x": 1.5481222222222222,
+        "y": 0.7093333333333327
       },
       "isLocked": false,
       "linkedName": "Outpost"
@@ -20,8 +20,8 @@
         "y": 0.6
       },
       "prevControl": {
-        "x": 2.5458222222222218,
-        "y": 0.7395666666666659
+        "x": 2.5055111111111112,
+        "y": 0.6186333333333331
       },
       "nextControl": null,
       "isLocked": false,
@@ -48,7 +48,7 @@
   "folder": "Simple Right + Outpost",
   "idealStartingState": {
     "velocity": 2.0,
-    "rotation": 0.0
+    "rotation": 90.0
   },
   "useDefaultConstraints": false
 }

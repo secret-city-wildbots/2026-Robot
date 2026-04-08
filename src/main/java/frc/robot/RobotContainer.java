@@ -56,6 +56,7 @@ import frc.robot.Commands.Indexer.ClearTransferCommand;
 import frc.robot.Commands.Shooter.AimAndShootCommand;
 import frc.robot.Commands.Shooter.AimAtHubCommand;
 import frc.robot.Commands.Shooter.SimpleAimAndShootCommand;
+import frc.robot.Commands.Turret.AimAtHubTurret;
 
 
 
@@ -115,7 +116,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("Intake", new IntakeSequence(intake, intakeExtension).alongWith(Commands.print("Intaking (Named)")));
         
         NamedCommands.registerCommand("Intake", new AutoIntakeExtend(intake, intakeExtension));
-        NamedCommands.registerCommand("AutoAim", new AimAtHubCommand(shooter, turret, drivetrain::getPose, () -> {
+        NamedCommands.registerCommand("AutoAim", new AimAtHubCommand(shooter, drivetrain::getPose, () -> {
             var state = drivetrain.getState();
             return ChassisSpeeds.fromRobotRelativeSpeeds(
                 state.Speeds,
@@ -128,12 +129,12 @@ public class RobotContainer {
                 state.Speeds,
                 state.Pose.getRotation()
             );
-        }, indexer, transfer, shooter, turret));
+        }, indexer, transfer, shooter));
         auto = new WaitCommand(5.0); //?
 
         // Register Event Triggers within Pathplanner
         new EventTrigger("ExpandHopper").onTrue( new ExpandHopperCommand(intake, intakeExtension));
-        new EventTrigger("AutoAim").onTrue( new AimAtHubCommand(shooter, turret, drivetrain::getPose, () -> {
+        new EventTrigger("AutoAim").onTrue( new AimAtHubCommand(shooter, drivetrain::getPose, () -> {
             var state = drivetrain.getState();
             return ChassisSpeeds.fromRobotRelativeSpeeds(
                 state.Speeds,
@@ -146,7 +147,7 @@ public class RobotContainer {
                 state.Speeds,
                 state.Pose.getRotation()
             );
-        }, indexer, transfer, shooter, turret));
+        }, indexer, transfer, shooter));
         new EventTrigger("Intake").onTrue(new AutoIntakeExtend(intake, intakeExtension));
         new EventTrigger("IntakeRetract").onTrue(new AutoIntakeRetract(intake, intakeExtension));
         //new EventTrigger("Intake").onTrue(Commands.print("Intaking (Trigger)"));
@@ -252,17 +253,19 @@ public class RobotContainer {
                 state.Speeds,
                 state.Pose.getRotation()
             );
-        }, indexer, transfer, shooter, turret));  
+        }, indexer, transfer, shooter));  
 
-        joystick.rightBumper().whileTrue(new SimpleAimAndShootCommand(drivetrain::getPose, () -> { //?
+        /*joystick.rightBumper().whileTrue(new SimpleAimAndShootCommand(drivetrain::getPose, () -> { //?
             var state = drivetrain.getState();
             return ChassisSpeeds.fromRobotRelativeSpeeds(
                 state.Speeds,
                 state.Pose.getRotation()
             );
-        }, indexer, transfer, shooter, turret));
+        }, indexer, transfer, shooter, turret));*/
         
         joystick.y().whileTrue(new ClearTransferCommand(transfer, indexer)); //?
+
+        turret.setDefaultCommand(new AimAtHubTurret(turret));
         /*joystick.rightTrigger(0.4).whileFalse(new ParallelRaceGroup( //?
             new ClearTransferCommand(transfer, indexer),
             new WaitCommand(0.5)
@@ -279,11 +282,11 @@ public class RobotContainer {
     //     ));
 
     //     joystick.y().whileTrue(new SpinFuelCommand(indexer, 10));
+        //auto = AutoBuilder.buildAutoChooser("Xing").getSelected(); //?
     }
 
 
     public Command getAutonomousCommand() {
-        auto = AutoBuilder.buildAutoChooser("Xing").getSelected();
          /* Run the path selected from the auto chooser */
         return auto;
         // /* Run the path selected from the auto chooser */

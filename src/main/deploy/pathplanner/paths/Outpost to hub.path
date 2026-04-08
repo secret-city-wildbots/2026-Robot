@@ -16,16 +16,16 @@
     },
     {
       "anchor": {
-        "x": 2.334188888888889,
-        "y": 1.5961777777777773
+        "x": 2.122555555555556,
+        "y": 2.382244444444443
       },
       "prevControl": {
-        "x": 2.978923828647925,
-        "y": 1.612569344042838
+        "x": 1.3969555555555555,
+        "y": 1.656644444444444
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Right Climb"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
@@ -58,14 +58,7 @@
     }
   ],
   "pointTowardsZones": [],
-  "eventMarkers": [
-    {
-      "name": "L1Climb",
-      "waypointRelativePos": 1.0,
-      "endWaypointRelativePos": null,
-      "command": null
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 1.5,
@@ -76,13 +69,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -90.0
+    "rotation": 180.0
   },
   "reversed": false,
   "folder": "Simple Right + Outpost",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 90.0
   },
   "useDefaultConstraints": false
 }

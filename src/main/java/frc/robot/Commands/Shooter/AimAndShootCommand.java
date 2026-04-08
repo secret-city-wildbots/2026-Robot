@@ -21,9 +21,9 @@ import frc.robot.Commands.Indexer.SpinAndFeedCommand;
 public class AimAndShootCommand extends ParallelCommandGroup {
     public AimAndShootCommand(
         Supplier<Pose2d> robotPoseSupplier,
-        Supplier<ChassisSpeeds> robotVelSupplier,Indexer indexer, Transfer transfer, Shooter shooter, Turret turret) {
+        Supplier<ChassisSpeeds> robotVelSupplier,Indexer indexer, Transfer transfer, Shooter shooter) {
         addCommands(
-            new AimAtHubCommand(shooter, turret, robotPoseSupplier, robotVelSupplier).andThen(Commands.waitSeconds(0.6)),
+            new AimAtHubCommand(shooter, robotPoseSupplier, robotVelSupplier),
             
             // new SequentialCommandGroup(
             //     new ParallelRaceGroup( //?                                   // Should not be need as we are letting it clear out rest of balls
@@ -31,8 +31,8 @@ public class AimAndShootCommand extends ParallelCommandGroup {
             //         new WaitCommand(0.6)
             // ),
 
-                new SpinAndFeedCommand(transfer, indexer, IndexerConstants.transferRPS, IndexerConstants.indexerRPS)
-            );
-        addRequirements(shooter, turret, transfer, indexer);
+            new WaitCommand(0.6).andThen(new SpinAndFeedCommand(transfer, indexer, IndexerConstants.transferRPS, IndexerConstants.indexerRPS))
+        );
+        addRequirements(shooter, transfer, indexer);
     }
 }

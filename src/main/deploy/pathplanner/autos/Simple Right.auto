@@ -13,13 +13,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "R Trench Reverse"
+            "pathName": "Front end R Trench Reverse"
           }
         },
         {
           "type": "path",
           "data": {
             "pathName": "Outpost + Shoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Outpost Sweep"
           }
         }
       ]

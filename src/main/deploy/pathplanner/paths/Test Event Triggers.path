@@ -57,12 +57,6 @@
       "command": null
     },
     {
-      "name": "L1Climb",
-      "waypointRelativePos": 0.6068660022148352,
-      "endWaypointRelativePos": null,
-      "command": null
-    },
-    {
       "name": "AutoAim",
       "waypointRelativePos": 0.7693646649260224,
       "endWaypointRelativePos": null,
