@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 // Import Actors, Utils & Constants
 import frc.robot.Actors.Subsystems.Indexer.Indexer;
 import frc.robot.Actors.Subsystems.Indexer.Transfer;
+import frc.robot.Actors.Subsystems.Shooter.Turret;
 import frc.robot.Constants.IndexerConstants;
 
 public class SpinAndFeedCommand extends Command {
@@ -48,12 +49,17 @@ public class SpinAndFeedCommand extends Command {
     @Override
     public void initialize() {
         // Start the transfer motor and reset the timer
-        transfer.setRPS(transferRPS);
-        indexer.setRPS(indexerRPS, IndexerConstants.rollerRPS);
     }
 
     @Override
     public void execute() {
+        if (Turret.isLocked) {
+            transfer.setRPS(transferRPS);
+            indexer.setRPS(indexerRPS, IndexerConstants.rollerRPS);
+        } else {
+            transfer.setRPS(0.0);
+            indexer.setRPS(0.0, 0.0);
+        }
     }
 
     @Override

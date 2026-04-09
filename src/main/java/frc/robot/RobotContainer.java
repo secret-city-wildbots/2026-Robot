@@ -8,7 +8,7 @@ package frc.robot;
 // Import Phoenix6 Libraries
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
-
+import com.pathplanner.lib.auto.AutoBuilder;
 // Import Path Planner Libraries
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.FollowPathCommand;
@@ -109,42 +109,28 @@ public class RobotContainer {
         shotSmoothingh = new SlewRateLimiter(2.0);
         //TODO: Make sure values for Commands are correct
          //Register Named Commands within Pathplanner
-        NamedCommands.registerCommand("Shoot",
-            new AutoStartIndexCommand(
-                transfer, indexer
-            ).alongWith(Commands.print("Shooting Start (Named)")));
-        NamedCommands.registerCommand("ShootStop",
-            new AutoStopIndexCommand(
-                transfer, indexer
-            ).alongWith(Commands.print("Shooting Stop (Named)")));
-        NamedCommands.registerCommand("Intake", new IntakeSequence(intake, intakeExtension).alongWith(Commands.print("Intaking (Named)")));
+        // NamedCommands.registerCommand("Shoot",
+        //     new AutoStartIndexCommand(
+        //         transfer, indexer
+        //     ).alongWith(Commands.print("Shooting Start (Named)")));
+        // NamedCommands.registerCommand("ShootStop",
+        //     new AutoStopIndexCommand(
+        //         transfer, indexer
+        //     ).alongWith(Commands.print("Shooting Stop (Named)")));
+        // NamedCommands.registerCommand("Intake", new IntakeSequence(intake, intakeExtension).alongWith(Commands.print("Intaking (Named)")));
         
-        NamedCommands.registerCommand("Intake", new AutoIntakeExtend(intake, intakeExtension));
-        NamedCommands.registerCommand("AutoAim", new AimAtHubCommand(shooter, drivetrain::getPose, () -> {
-            var state = drivetrain.getState();
-            return ChassisSpeeds.fromRobotRelativeSpeeds(
-                state.Speeds,
-                state.Pose.getRotation()
-            );
-        }));
-        NamedCommands.registerCommand("AimAndShoot", new AimAndShootCommand(drivetrain::getPose, () -> { //?
-            var state = drivetrain.getState();
-            return ChassisSpeeds.fromRobotRelativeSpeeds(
-                state.Speeds,
-                state.Pose.getRotation()
-            );
-        }, indexer, transfer, shooter));
+        // NamedCommands.registerCommand("Intake", new AutoIntakeExtend(intake, intakeExtension));
+        // NamedCommands.registerCommand("NamedAimAndShoot", new AimAndShootCommand(drivetrain::getPose, () -> { //?
+        //     var state = drivetrain.getState();
+        //     return ChassisSpeeds.fromRobotRelativeSpeeds(
+        //         state.Speeds,
+        //         state.Pose.getRotation()
+        //     );
+        // }, indexer, transfer, shooter));
         auto = new WaitCommand(5.0); //?
 
         // Register Event Triggers within Pathplanner
         new EventTrigger("StopIntake").onTrue( new AutoIntakeStop(intake));
-        new EventTrigger("AutoAim").onTrue( new AimAtHubCommand(shooter, drivetrain::getPose, () -> {
-            var state = drivetrain.getState();
-            return ChassisSpeeds.fromRobotRelativeSpeeds(
-                state.Speeds,
-                state.Pose.getRotation()
-            );
-        }));
         new EventTrigger("AimAndShoot").toggleOnTrue(new AimAndShootCommand(drivetrain::getPose, () -> { //?
             var state = drivetrain.getState();
             return ChassisSpeeds.fromRobotRelativeSpeeds(
@@ -153,14 +139,14 @@ public class RobotContainer {
             );
         }, indexer, transfer, shooter));
         new EventTrigger("Intake").onTrue(new AutoIntakeExtend(intake, intakeExtension));
-        new EventTrigger("IntakeRetract").onTrue(new AutoIntakeRetract(intake, intakeExtension));
+        // new EventTrigger("IntakeRetract").onTrue(new AutoIntakeRetract(intake, intakeExtension));
         //new EventTrigger("Intake").onTrue(Commands.print("Intaking (Trigger)"));
-        new EventTrigger("Shoot").onTrue(
-        new AutoStartIndexCommand(transfer, indexer).alongWith(
-        Commands.print("Shooting Start (Trigger)")));
-        new EventTrigger("ShootStop").onTrue(
-        new AutoStopIndexCommand(transfer, indexer).alongWith(
-        Commands.print("Shooting Stop (Trigger)")));
+        // new EventTrigger("Shoot").onTrue(
+        // new AutoStartIndexCommand(transfer, indexer).alongWith(
+        // Commands.print("Shooting Start (Trigger)")));
+        // new EventTrigger("ShootStop").onTrue(
+        // new AutoStopIndexCommand(transfer, indexer).alongWith(
+        // Commands.print("Shooting Stop (Trigger)")));
 
         configureBindings();
 
@@ -266,7 +252,7 @@ public class RobotContainer {
             );
         }, indexer, transfer, shooter, turret));*/
         
-        joystick.a().whileTrue(new ClearTransferCommand(transfer, indexer)); //?
+        joystick.a().whileTrue(new ClearTransferCommand(transfer, indexer, intake)); //?
 
         turret.setDefaultCommand(new AimAtHubTurret(turret));
         /*joystick.rightTrigger(0.4).whileFalse(new ParallelRaceGroup( //?
@@ -285,7 +271,7 @@ public class RobotContainer {
     //     ));
 
     //     joystick.y().whileTrue(new SpinFuelCommand(indexer, 10));
-        //auto = AutoBuilder.buildAutoChooser("Xing").getSelected(); //?
+        auto = AutoBuilder.buildAutoChooser("L Trench 2 Dip").getSelected(); //?
     }
 
 

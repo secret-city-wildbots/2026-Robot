@@ -52,7 +52,7 @@ public class ShotPredictor {
 
         Translation2d targetPos;
 
-        if ((DriverStation.getAlliance().get() == Alliance.Blue) ? (robotPos.getX() < hubX):(robotPos.getX() > hubX)) { //?
+        if (((DriverStation.getAlliance().get() == Alliance.Blue) ? (robotPos.getX() < hubX):(robotPos.getX() > hubX))) { //?
             targetPos = hubPosition;
         } else if (robotPos.getY() > 4.0) {
             targetPos = bumpLeft;
@@ -90,7 +90,7 @@ public class ShotPredictor {
     }
 
     public static double getVelocity(double dist) {
-        return (4.41902*(dist-2.0) + 47.0 + ((dist > 3.0) ? 1.29244*(dist-3.0):0.0));
+        return (1.456*(dist-2.0) + 50.2 + ((dist > 3.0) ? 3.718*(dist-3.0):0.0));
         //return 1.0;
     }
 

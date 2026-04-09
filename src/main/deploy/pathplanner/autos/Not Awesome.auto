@@ -7,13 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "R Trench"
+            "pathName": "Testing"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "Dips",
+  "folder": "Testing",
   "choreoAuto": false
 }

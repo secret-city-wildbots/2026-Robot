@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.45,
-        "y": 0.7
+        "x": 0.6773106060606067,
+        "y": 0.6452020202020197
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.45,
-        "y": 0.7000000000000002
+        "x": 1.832879146919431,
+        "y": 0.8755450236966806
       },
       "isLocked": false,
       "linkedName": "Outpost"
@@ -20,12 +20,12 @@
         "y": 0.8705777777777768
       },
       "prevControl": {
-        "x": 6.164187804408839,
-        "y": 0.583527449837869
+        "x": 6.163696682464456,
+        "y": 0.31672985781990404
       },
       "nextControl": {
-        "x": 7.211833333333334,
-        "y": 1.193066666666666
+        "x": 7.084337492381786,
+        "y": 1.3492009247252603
       },
       "isLocked": false,
       "linkedName": null
@@ -61,11 +61,24 @@
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 0.9789590254706532,
-      "maxWaypointRelativePos": 2.0,
+      "minWaypointRelativePos": 0,
+      "maxWaypointRelativePos": 0.4757709251101327,
       "constraints": {
-        "maxVelocity": 1.5,
-        "maxAcceleration": 1.0,
+        "maxVelocity": 1.0,
+        "maxAcceleration": 3.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    },
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0.4511013215859018,
+      "maxWaypointRelativePos": 0.7330396475770946,
+      "constraints": {
+        "maxVelocity": 0.5,
+        "maxAcceleration": 3.0,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0,
         "nominalVoltage": 12.0,
@@ -77,7 +90,7 @@
   "eventMarkers": [
     {
       "name": "AimAndShoot",
-      "waypointRelativePos": 0.49612403100774316,
+      "waypointRelativePos": 0.4475770925110072,
       "endWaypointRelativePos": null,
       "command": null
     },
@@ -104,7 +117,7 @@
   "folder": "Simple Right + Outpost",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 90.0
+    "rotation": 180.0
   },
   "useDefaultConstraints": true
 }

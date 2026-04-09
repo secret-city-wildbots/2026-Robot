@@ -31,7 +31,9 @@ public class AimAndShootCommand extends ParallelCommandGroup {
             //         new WaitCommand(0.6)
             // ),
 
-            new WaitCommand(0.6).andThen(new SpinAndFeedCommand(transfer, indexer, IndexerConstants.transferRPS, IndexerConstants.indexerRPS))
+            new WaitCommand(0.2).andThen(Commands.waitUntil(() -> {
+                return Turret.isLocked;
+            })).andThen(new SpinAndFeedCommand(transfer, indexer, IndexerConstants.transferRPS, IndexerConstants.indexerRPS))
         );
         addRequirements(shooter, transfer, indexer);
     }

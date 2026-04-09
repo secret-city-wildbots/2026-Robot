@@ -2,6 +2,9 @@ package frc.robot.Actors.Subsystems.Indexer;
 
 import com.ctre.phoenix6.signals.GravityTypeValue;
 
+import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.RobotState;
+import edu.wpi.first.wpilibj.Timer;
 // Import WPILib Libraries
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -16,6 +19,8 @@ public class Indexer extends SubsystemBase {
     // Define variables
     public Motor motor; // Motor to control the indexer
     public Motor motor2; // Motor to control the roller bed
+    public Timer stallTimer;
+    public boolean isStalled = false;
 
     /**
      * Indexer Constructor
@@ -29,7 +34,7 @@ public class Indexer extends SubsystemBase {
         this.motor.motorConfig.dutyCycleClosedLoopRampPeriod = 0.3;
         this.motor2.motorConfig.dutyCycleClosedLoopRampPeriod = 0.3;
         this.motor.motorConfig.peakReverseDC = -0.1; //?
-        this.motor2.motorConfig.peakReverseDC = -0.1;
+        this.motor2.motorConfig.peakReverseDC = -1;
         this.motor.motorConfig.brake = false;
         this.motor2.motorConfig.brake = false;
         this.motor.applyConfig();
@@ -38,6 +43,8 @@ public class Indexer extends SubsystemBase {
         this.motor2.slot0TFX.kV = 0.011;
         this.motor.pid(0.1, 0.0, 0.0); // Setup the indexer PID
         this.motor2.pid(0.01, 0.0, 0.0); // Setup the roller bed PID
+
+        stallTimer = new Timer();
     }
 
     public double getTemp1() {
@@ -58,7 +65,9 @@ public class Indexer extends SubsystemBase {
     public void set(double indexerPercent, double rollerPercent) {
         // Send the output to the motor
         motor.dc(indexerPercent);
-        motor2.dc(rollerPercent);
+        if (!isStalled) {
+            motor2.dc(rollerPercent);
+        }
     }
 
     /**
@@ -68,7 +77,9 @@ public class Indexer extends SubsystemBase {
     public void setRPS(double indexerRPS, double rollerRPS) {
         // Send the output to the motor
         motor.vel(indexerRPS);
-        motor2.vel(rollerRPS);
+        if (!isStalled) {
+            motor2.vel(rollerRPS);
+        }
     }
 
     /**
@@ -94,5 +105,21 @@ public class Indexer extends SubsystemBase {
     public double getRPS2() {
         // Return the motor2 velocity in RPS
         return motor2.vel();
+    }
+
+    @Override public void periodic() { //stall detection
+        if (!((this.motor2.vel() < 1.0 && this.motor2.motorTFX.getDutyCycle().getValueAsDouble() > 0.9 && RobotState.isEnabled())||isStalled)) {
+            stallTimer.reset();
+        }
+        if (stallTimer.get() > 0.3) {
+            isStalled = true;
+        }
+        if (isStalled) {
+            this.motor2.vel(-20);
+        }
+        if (isStalled && stallTimer.get() > 0.5) {
+            stallTimer.reset();
+            isStalled = false;
+        }
     }
 }

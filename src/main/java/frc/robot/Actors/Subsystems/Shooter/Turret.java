@@ -21,6 +21,8 @@ public class Turret extends SubsystemBase {
 
     // initiate motors
     private Motor motor;
+    public static boolean isLocked = false;
+    public double desired_mRot = 0.0;
 
     public Turret() {
         // Configure the turret motor
@@ -133,6 +135,7 @@ public class Turret extends SubsystemBase {
         }
         
         double desired_mRot = desired_deg/360*TurretConstants.turretGearRatio;
+        this.desired_mRot = desired_mRot;
 
         /*if (Math.abs(current - (desiredOld)) > 180) {
             desired+= Math.signum(current - (desiredOld)) * TurretConstants.turretGearRatio;
@@ -157,6 +160,14 @@ public class Turret extends SubsystemBase {
 
     @Override
     public void periodic() {
+        double offAngle = (Math.abs(desired_mRot-this.motor.pos())/TurretConstants.turretGearRatio*360.0)%360;
+        while (offAngle < 0.0) {
+            offAngle+=360;
+        }
+        if (offAngle > 180.0) {
+            offAngle = 360.0-offAngle;
+        }
+        Turret.isLocked = true;//(offAngle < 10);
         //System.out.println("turret: "+this.getTurretDegrees());
     }
 }

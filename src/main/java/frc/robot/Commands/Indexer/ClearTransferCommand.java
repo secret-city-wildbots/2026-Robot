@@ -6,12 +6,14 @@ import edu.wpi.first.wpilibj2.command.Command;
 // Import Actors, Utils & Constants
 import frc.robot.Actors.Subsystems.Indexer.Indexer;
 import frc.robot.Actors.Subsystems.Indexer.Transfer;
+import frc.robot.Actors.Subsystems.Intake.Intake;
 
 public class ClearTransferCommand extends Command {
 
     // Initialize the subsystems
     private final Transfer transfer;
     private final Indexer indexer;
+    private final Intake intake;
 
     /**
      * Creates and sets up the SpinFuelCommand
@@ -23,14 +25,16 @@ public class ClearTransferCommand extends Command {
      */
     public ClearTransferCommand(
         Transfer transfer,
-        Indexer indexer
+        Indexer indexer,
+        Intake intake
         ) {
         // Set the subystems
         this.transfer = transfer;
         this.indexer = indexer;
+        this.intake = intake;
 
         // Add subsystem requirements
-        addRequirements(transfer, indexer);
+        addRequirements(transfer, indexer, intake);
     }
 
     @Override
@@ -39,7 +43,8 @@ public class ClearTransferCommand extends Command {
         //?
         transfer.motor.dc(-0.3);
         indexer.motor.dc(-0.1);
-        indexer.motor2.dc(-0.1);
+        indexer.motor2.dc(-0.6);
+        intake.set(-0.1);
     }
 
     @Override
@@ -50,6 +55,7 @@ public class ClearTransferCommand extends Command {
     public void end(boolean interrupted) {
         transfer.setRPS(0.0);
         indexer.setRPS(0.0, 0.0);
+        intake.stop();
     }
 
     @Override

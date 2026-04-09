@@ -39,6 +39,12 @@
       "command": null
     },
     {
+      "name": "AimAndShoot",
+      "waypointRelativePos": 0,
+      "endWaypointRelativePos": null,
+      "command": null
+    },
+    {
       "name": "IntakeRetract",
       "waypointRelativePos": 0.30121816168327814,
       "endWaypointRelativePos": null,
@@ -57,8 +63,8 @@
       "command": null
     },
     {
-      "name": "AutoAim",
-      "waypointRelativePos": 0.7693646649260224,
+      "name": "AimAndShoot",
+      "waypointRelativePos": 0.6684073107049601,
       "endWaypointRelativePos": null,
       "command": null
     }

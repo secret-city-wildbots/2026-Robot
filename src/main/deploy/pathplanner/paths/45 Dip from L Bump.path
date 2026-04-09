@@ -164,7 +164,7 @@
   "folder": "Defensive Paths",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -45.0
+    "rotation": 100.0
   },
   "useDefaultConstraints": true
 }

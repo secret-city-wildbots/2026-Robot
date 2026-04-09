@@ -5,27 +5,33 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "wait",
           "data": {
-            "pathName": "New New Path"
+            "waitTime": 3.0
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "New New New Path"
+            "pathName": "R Trench Quarter"
           }
         },
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "NamedAimAndShoot"
+            "pathName": "R Trench Quarter Reverse"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Outpost + Shoot"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "Testing",
+  "folder": "Simple",
   "choreoAuto": false
 }

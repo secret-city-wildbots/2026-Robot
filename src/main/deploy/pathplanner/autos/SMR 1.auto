@@ -21,12 +21,6 @@
           "data": {
             "pathName": "Outpost + Shoot"
           }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "AimAndShoot"
-          }
         }
       ]
     }
