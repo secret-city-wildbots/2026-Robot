@@ -106,7 +106,7 @@ public class RobotContainer {
 
         shotSmoothingx = new SlewRateLimiter(1.0);
         shotSmoothingy = new SlewRateLimiter(1.0);
-        shotSmoothingh = new SlewRateLimiter(1.0);
+        shotSmoothingh = new SlewRateLimiter(2.0);
         //TODO: Make sure values for Commands are correct
          //Register Named Commands within Pathplanner
         NamedCommands.registerCommand("Shoot",
@@ -237,7 +237,7 @@ public class RobotContainer {
         // reset the field-centric heading on left bumper press
         joystick.povLeft().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
-        joystick.rightBumper().whileTrue(Commands.runEnd(() -> {MaxSpeed/=2.0;}, () -> {MaxSpeed*=2.0;}));
+        joystick.rightBumper().whileTrue(Commands.startEnd(() -> {MaxSpeed/=2.0;}, () -> {MaxSpeed*=2.0;}));
 
         // TODO: Enable logger
         //drivetrain.registerTelemetry(logger::telemeterize);
@@ -266,7 +266,7 @@ public class RobotContainer {
             );
         }, indexer, transfer, shooter, turret));*/
         
-        joystick.y().whileTrue(new ClearTransferCommand(transfer, indexer)); //?
+        joystick.a().whileTrue(new ClearTransferCommand(transfer, indexer)); //?
 
         turret.setDefaultCommand(new AimAtHubTurret(turret));
         /*joystick.rightTrigger(0.4).whileFalse(new ParallelRaceGroup( //?

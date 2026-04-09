@@ -47,7 +47,7 @@ public class ShotPredictor {
 
         Pose2d robotPose = robotPoseSupplier.get();
         Translation2d robotPos = robotPose.getTranslation();
-        Rotation2d robotRot = robotPose.getRotation().plus((DriverStation.getAlliance().get() == Alliance.Blue) ? new Rotation2d(Math.PI):new Rotation2d()); //?
+        Rotation2d robotRot = robotPose.getRotation(); //?
         ChassisSpeeds robotVel = robotVelSupplier.get();
 
         Translation2d targetPos;
@@ -63,7 +63,7 @@ public class ShotPredictor {
         Translation2d turretPos = robotPos.plus(TurretConstants.turretPos.rotateBy(robotRot));
 
         double distance = targetPos.getDistance(turretPos);
-        //System.out.println(distance);
+        System.out.println(distance);
         double airtime = getAirtime(distance);
 
         shot.airtime_s = airtime;
@@ -90,12 +90,12 @@ public class ShotPredictor {
     }
 
     public static double getVelocity(double dist) {
-        return 4.41902*(dist-2.0) + 47.0 + ((dist > 3.0) ? 1.29244*(dist-3.0):0.0);
+        return (4.41902*(dist-2.0) + 47.0 + ((dist > 3.0) ? 1.29244*(dist-3.0):0.0));
         //return 1.0;
     }
 
     public static Rotation2d getTilt(double dist) {
-        return new Rotation2d((90-(Math.pow(0.475086, dist-4.67884)+66.21959+(-1.37205*dist)))/180*Math.PI);
+        return new Rotation2d((90-(Math.pow(0.475086, dist-4.67884)+63+(-1.37205*dist)))/180*Math.PI);
         //return new Rotation2d();
     }
 

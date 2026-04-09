@@ -24,8 +24,8 @@ public class IntakeExtension extends SubsystemBase {
         this.motor.motorConfig.direction = RotationDir.Clockwise;
         this.motor.motorConfig.brake = false;
         this.motor.applyConfig();
-        this.motor.pid(0.04, 0.01, 0.0);
-        //this.motor.pid(0.0, 0.0, 0.0);
+        //this.motor.pid(0.04, 0.01, 0.0);
+        this.motor.pid(0.0, 0.0, 0.0);
     }
 
     public double getTemp() {

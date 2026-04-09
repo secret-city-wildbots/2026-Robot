@@ -29,8 +29,7 @@ public final class Constants {
 
   public static class VisionConstants {
     // Limelight Names
-    //public static final String[] limelightNames = {"limelight-front", "limelight-back", "limelight-left", "limelight-right"};
-    public static final String[] limelightNames = {"limelight-front", "limelight-back", "limelight-left"}; //?
+    public static final String[] limelightNames = {"limelight-front", "limelight-back", "limelight-left", "limelight-right"};
   }
 
   public static class IntakeConstants {
@@ -86,7 +85,7 @@ public final class Constants {
     public static final double turretDistAirtime_sPm = 0.0; // Additional airtime per meter of distance to target
     public static final double turretGearRatio = (114.0/11.0)*5.0; //??
 
-    public static final Translation2d turretPos = new Translation2d(0.133,-0.133);
+    public static final Translation2d turretPos = new Translation2d(-0.133,-0.133);
   }
   
   public static class DrivetrainConstants {
