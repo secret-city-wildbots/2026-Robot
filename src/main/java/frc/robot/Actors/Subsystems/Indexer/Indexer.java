@@ -1,5 +1,7 @@
 package frc.robot.Actors.Subsystems.Indexer;
 
+import com.ctre.phoenix6.signals.GravityTypeValue;
+
 // Import WPILib Libraries
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -22,16 +24,20 @@ public class Indexer extends SubsystemBase {
         // Configure the indexer motor
         this.motor = new Motor(IndexerConstants.spinMotorID, MotorType.TFX, "rio");
         this.motor2 = new Motor(IndexerConstants.rollerMotorID, MotorType.TFX, "rio");
-        this.motor.motorConfig.direction = RotationDir.CounterClockwise;
+        this.motor.motorConfig.direction = RotationDir.Clockwise;
         this.motor2.motorConfig.direction = RotationDir.Clockwise; //TODO: Find out which way roller bed needs to go
         this.motor.motorConfig.dutyCycleClosedLoopRampPeriod = 0.3;
         this.motor2.motorConfig.dutyCycleClosedLoopRampPeriod = 0.3;
         this.motor.motorConfig.peakReverseDC = -0.1; //?
         this.motor2.motorConfig.peakReverseDC = -0.1;
+        this.motor.motorConfig.brake = false;
+        this.motor2.motorConfig.brake = false;
         this.motor.applyConfig();
         this.motor2.applyConfig();
-        this.motor.pid(0.3, 0.0, 0.0); // Setup the indexer PID
-        this.motor2.pid(0.1, 0.0, 0.0); // Setup the roller bed PID
+        this.motor.slot0TFX.kV = 0.011;
+        this.motor2.slot0TFX.kV = 0.011;
+        this.motor.pid(0.1, 0.0, 0.0); // Setup the indexer PID
+        this.motor2.pid(0.01, 0.0, 0.0); // Setup the roller bed PID
     }
 
     public double getTemp1() {

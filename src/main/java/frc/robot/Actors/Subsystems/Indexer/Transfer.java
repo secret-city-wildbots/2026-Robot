@@ -34,11 +34,13 @@ public class Transfer extends SubsystemBase {
     public Transfer() {
         // Configure the transfer motor
         this.motor = new Motor(IndexerConstants.transferMotorID, MotorType.TFX, "rio");
-        this.motor.motorConfig.direction = RotationDir.CounterClockwise;
+        this.motor.motorConfig.direction = RotationDir.Clockwise;
         this.motor.motorConfig.dutyCycleClosedLoopRampPeriod = 0.3;
         this.motor.motorConfig.peakReverseDC = -0.3; //?
+        this.motor.motorConfig.brake = false;
         this.motor.applyConfig();
-        this.motor.pid(0.3, 0.0, 0.0); // Setup the transfer PID
+        this.motor.slot0TFX.kV = 0.01;
+        this.motor.pid(0.1, 0.0, 0.0); // Setup the transfer PID
 
         // Beam break setup
         this.bpsBeamBreak = new DigitalInput(IndexerConstants.bpsBeamBreakPort);

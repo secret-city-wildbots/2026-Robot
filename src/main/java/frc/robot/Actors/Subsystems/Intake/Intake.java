@@ -17,8 +17,10 @@ public class Intake extends SubsystemBase {
     public Intake() {
         // Configure the intake motor
         this.motor = new Motor(IntakeConstants.intakeMotorID, MotorType.TFX, "rio");
-        this.motor.motorConfig.direction = RotationDir.CounterClockwise;
+        this.motor.motorConfig.direction = RotationDir.Clockwise;
+        this.motor.motorConfig.brake = false;
         this.motor.applyConfig();
+        //0.05, 0.012
     }
 
     public double getTemp() {

@@ -56,9 +56,9 @@ public final class Constants {
     public static final int bpsBeamBreakPort = 3; // TODO: Find which port it lives on
 
     // Properties
-    public static final int transferRPS = 70; //?
+    public static final int transferRPS = 50; //?
     public static final int rollerRPS = 40;
-    public static final int indexerRPS = 10;
+    public static final int indexerRPS = 60;
     public static final double spinupTime = 0.1;
   }
 
@@ -85,8 +85,6 @@ public final class Constants {
     public static final double turretBaseAirtime_s = 0.0;
     public static final double turretDistAirtime_sPm = 0.0; // Additional airtime per meter of distance to target
     public static final double turretGearRatio = (114.0/11.0)*5.0; //??
-    public static final double posExtension = 480/360*turretGearRatio; //??
-    public static final double negExtension = -185/360*turretGearRatio; //??
 
     public static final Translation2d turretPos = new Translation2d(0.133,-0.133);
   }

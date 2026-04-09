@@ -39,6 +39,7 @@ public class ClearTransferCommand extends Command {
         //?
         transfer.motor.dc(-0.3);
         indexer.motor.dc(-0.1);
+        indexer.motor2.dc(-0.1);
     }
 
     @Override

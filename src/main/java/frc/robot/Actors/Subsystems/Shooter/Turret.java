@@ -40,7 +40,7 @@ public class Turret extends SubsystemBase {
         // TurretConstants.turretGearRatio;
 
         this.motor.applyConfig();
-        this.motor.motionMagic(0.3, 0.0, 0.0, 0.05/5.0, 0.0, 30.0*5.0, 30.0*5.0);//?
+        this.motor.motionMagic(0.3, 0.0, 0.0, 0.05/5.0, 0.0, 3.0*5.0, 3.0*5.0);//?
         //this.motor.motionMagic(0.0, 0.0, 0.0, 0.00/5.0, 0.0, 30.0*5.0, 30.0*5.0);//?
     }
 
@@ -124,9 +124,9 @@ public class Turret extends SubsystemBase {
             desired_deg+360
         };
 
-        if (Math.abs(goals[0]-current) <= 180 && goals[0] > -185) {
+        if (Math.abs(goals[0]-current) <= 180 && goals[0] > -160) {
             desired_deg = goals[0];
-        } else if (Math.abs(goals[2]-current) <= 180 && goals[2] < 450) {
+        } else if (Math.abs(goals[2]-current) <= 180 && goals[2] < 360) {
             desired_deg = goals[2];
         } else {
             desired_deg = goals[1];
