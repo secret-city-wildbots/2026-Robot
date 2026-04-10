@@ -52,7 +52,10 @@ import frc.robot.Commands.Indexer.AutoStopIndexCommand;
 import frc.robot.Commands.Indexer.ClearTransferCommand;
 import frc.robot.Commands.Shooter.AimAndShootCommand;
 import frc.robot.Commands.Shooter.AimAtHubCommand;
+import frc.robot.Commands.Shooter.SimpleAimAndShootCommand;
 import frc.robot.Commands.Turret.AimAtHubTurret;
+import frc.robot.Commands.Turret.JoystickAimCommand;
+import frc.robot.Commands.Turret.LockTurret;
 
 
 
@@ -139,14 +142,14 @@ public class RobotContainer {
             );
         }, indexer, transfer, shooter));
         new EventTrigger("Intake").onTrue(new AutoIntakeExtend(intake, intakeExtension));
-        // new EventTrigger("IntakeRetract").onTrue(new AutoIntakeRetract(intake, intakeExtension));
-        //new EventTrigger("Intake").onTrue(Commands.print("Intaking (Trigger)"));
-        // new EventTrigger("Shoot").onTrue(
-        // new AutoStartIndexCommand(transfer, indexer).alongWith(
-        // Commands.print("Shooting Start (Trigger)")));
-        // new EventTrigger("ShootStop").onTrue(
-        // new AutoStopIndexCommand(transfer, indexer).alongWith(
-        // Commands.print("Shooting Stop (Trigger)")));
+        new EventTrigger("IntakeRetract").onTrue(new AutoIntakeRetract(intake, intakeExtension));
+        new EventTrigger("Intake").onTrue(Commands.print("Intaking (Trigger)"));
+        new EventTrigger("Shoot").onTrue(
+        new AutoStartIndexCommand(transfer, indexer).alongWith(
+        Commands.print("Shooting Start (Trigger)")));
+        new EventTrigger("ShootStop").onTrue(
+        new AutoStopIndexCommand(transfer, indexer).alongWith(
+        Commands.print("Shooting Stop (Trigger)")));
 
         configureBindings();
 
@@ -223,7 +226,9 @@ public class RobotContainer {
         // reset the field-centric heading on left bumper press
         joystick.povLeft().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
-        joystick.rightBumper().whileTrue(Commands.startEnd(() -> {MaxSpeed/=2.0;}, () -> {MaxSpeed*=2.0;}));
+        //joystick.povUp().toggleOnTrue(new LockTurret(turret));
+
+        //joystick.rightBumper().whileTrue(Commands.startEnd(() -> {MaxSpeed/=2.0;}, () -> {MaxSpeed*=2.0;}));
 
         // TODO: Enable logger
         //drivetrain.registerTelemetry(logger::telemeterize);
@@ -244,17 +249,12 @@ public class RobotContainer {
             );
         }, indexer, transfer, shooter));  
 
-        /*joystick.rightBumper().whileTrue(new SimpleAimAndShootCommand(drivetrain::getPose, () -> { //?
-            var state = drivetrain.getState();
-            return ChassisSpeeds.fromRobotRelativeSpeeds(
-                state.Speeds,
-                state.Pose.getRotation()
-            );
-        }, indexer, transfer, shooter, turret));*/
+        joystick.rightBumper().whileTrue(new SimpleAimAndShootCommand(indexer, transfer, shooter, turret));
         
-        joystick.a().whileTrue(new ClearTransferCommand(transfer, indexer, intake)); //?
+        joystick.a().whileTrue(new ClearTransferCommand(transfer, indexer, intake, shooter)); //?
 
         turret.setDefaultCommand(new AimAtHubTurret(turret));
+        //joystick.x().whileTrue(new JoystickAimCommand(turret, joystick));
         /*joystick.rightTrigger(0.4).whileFalse(new ParallelRaceGroup( //?
             new ClearTransferCommand(transfer, indexer),
             new WaitCommand(0.5)
@@ -271,7 +271,7 @@ public class RobotContainer {
     //     ));
 
     //     joystick.y().whileTrue(new SpinFuelCommand(indexer, 10));
-        auto = AutoBuilder.buildAutoChooser("L Trench 2 Dip").getSelected(); //?
+        auto = AutoBuilder.buildAutoChooser("SMR 1").getSelected(); //?
     }
 
 

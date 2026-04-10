@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.8,
-        "y": 5.4
+        "x": 3.12804292929293,
+        "y": 5.248914141414142
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.8,
-        "y": 5.4
+        "x": 4.1280429292929295,
+        "y": 5.248914141414142
       },
       "isLocked": false,
       "linkedName": "L Bump 45"
@@ -156,7 +156,7 @@
     },
     {
       "name": "AimAndShoot",
-      "waypointRelativePos": 0.0,
+      "waypointRelativePos": 0.2349869451697158,
       "endWaypointRelativePos": null,
       "command": null
     },
@@ -189,7 +189,7 @@
   "folder": "Left Dip",
   "idealStartingState": {
     "velocity": 1.0,
-    "rotation": 100.0
+    "rotation": -45.0
   },
   "useDefaultConstraints": false
 }

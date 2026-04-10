@@ -19,8 +19,6 @@ public class SimpleShootCommand extends Command {
     // Real Variables
     private final Shooter shooter;
     private final Turret turret;
-    private final Supplier<Pose2d> robotPoseSupplier;
-    private final Supplier<ChassisSpeeds> robotVelSupplier;
 
     /**
      * Creates and sets up the ShootCommand
@@ -32,13 +30,9 @@ public class SimpleShootCommand extends Command {
      */
     public SimpleShootCommand(
         Shooter shooter,
-        Turret turret,
-        Supplier<Pose2d> robotPoseSupplier,
-        Supplier<ChassisSpeeds> robotVelSupplier
+        Turret turret
     ) {
         // Assign the variables and add the subsystem as a requirement to the command
-        this.robotPoseSupplier = robotPoseSupplier;
-        this.robotVelSupplier = robotVelSupplier;
         this.shooter = shooter;
         this.turret = turret;
         addRequirements(shooter);
@@ -66,9 +60,9 @@ public class SimpleShootCommand extends Command {
         //     this.shooter.setHoodAngle(0);
         //     this.shooter.setRPS(0);
         // } else {
-            this.shooter.setHoodAngle(30.0);
-            this.shooter.setRPS(60.0);
-            this.turret.setTargetAngle(new Rotation2d());
+            this.shooter.setHoodAngle(90-(Math.pow(0.475086, 1.5-4.67884)+63+(-1.37205*1.5)));
+            this.shooter.setRPS((1.456*(1.5-2.0) + 50.2 + ((1.5 > 3.0) ? 3.718*(1.5-3.0):0.0)));
+            this.turret.setTargetAngle(new Rotation2d(Math.PI));
        // }
         // Only use execute if we have dynamically changing speeds. This is called each loop (~20ms).
         // So if we have just a constant speed, use initialize to avoid spamming the canbus network.

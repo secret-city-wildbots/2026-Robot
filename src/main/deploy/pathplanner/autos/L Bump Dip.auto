@@ -7,13 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Test Event Trig"
+            "pathName": "L Bump Dip"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "Testing",
+  "folder": "Dips",
   "choreoAuto": false
 }

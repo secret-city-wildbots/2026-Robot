@@ -7,13 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Test Event Trig"
+            "pathName": "L Trench 45"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Copy of 45 to L Bump"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "Testing",
+  "folder": "Defensive Autos",
   "choreoAuto": false
 }

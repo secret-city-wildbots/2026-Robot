@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.8,
-        "y": 5.4
+        "x": 3.12804292929293,
+        "y": 5.248914141414142
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.797766666666667,
-        "y": 6.191644444444445
+        "x": 3.125809595959597,
+        "y": 6.040558585858586
       },
       "isLocked": false,
       "linkedName": "L Bump 45"
@@ -32,12 +32,12 @@
     },
     {
       "anchor": {
-        "x": 2.8,
-        "y": 5.4
+        "x": 3.12804292929293,
+        "y": 5.248914141414142
       },
       "prevControl": {
-        "x": 2.230605555555555,
-        "y": 4.9918499999999995
+        "x": 2.558648484848485,
+        "y": 4.840764141414141
       },
       "nextControl": null,
       "isLocked": false,
@@ -63,13 +63,13 @@
   },
   "goalEndState": {
     "velocity": 1.0,
-    "rotation": 100.0
+    "rotation": -45.0
   },
   "reversed": false,
   "folder": "Defensive Paths",
   "idealStartingState": {
     "velocity": 1.0,
-    "rotation": 100.0
+    "rotation": -45.0
   },
   "useDefaultConstraints": false
 }

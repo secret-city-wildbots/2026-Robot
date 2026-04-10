@@ -21,23 +21,11 @@
           "data": {
             "pathName": "R Bump to Outpost"
           }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Outpost to Mid Dip"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Copy of R Trench Reverse (over bump)"
-          }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "Dips",
+  "folder": "Simple",
   "choreoAuto": false
 }

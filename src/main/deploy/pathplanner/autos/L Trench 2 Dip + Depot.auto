@@ -7,31 +7,31 @@
         {
           "type": "path",
           "data": {
-            "pathName": "R Trench"
+            "pathName": "L Trench Face Forwards"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Copy of R Trench Reverse (over bump)"
+            "pathName": "L Trench over Bump"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "R Bump to Outpost"
+            "pathName": "L Bump 45 to Depot"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Outpost to Mid Dip"
+            "pathName": "Copy of 45 Dip from L Bump"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Copy of R Trench Reverse (over bump)"
+            "pathName": "45 to Mid"
           }
         }
       ]

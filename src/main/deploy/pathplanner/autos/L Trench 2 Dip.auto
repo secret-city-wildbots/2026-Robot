@@ -17,21 +17,15 @@
           }
         },
         {
-          "type": "path",
+          "type": "wait",
           "data": {
-            "pathName": "L Bump 45 to Depot"
+            "waitTime": 3.0
           }
         },
         {
           "type": "path",
           "data": {
             "pathName": "Copy of 45 Dip from L Bump"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "45 to Mid"
           }
         }
       ]

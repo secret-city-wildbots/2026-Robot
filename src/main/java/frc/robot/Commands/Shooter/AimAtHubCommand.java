@@ -57,8 +57,8 @@ public class AimAtHubCommand extends Command {
         //System.out.println("Turret Angle (?): " + shot.yaw.getDegrees());
         //System.out.println("Turret Motor (?): " + shot.yaw.getRotations());
 
-        if (((x > 3.7 && x < 5.5) || //?
-        (x < 16-3.7 && x > 16-5.5)) &&
+        if (((x > 3.5 && x < 5.7) || //?
+        (x < 16.5-3.5 && x > 16.5-5.7)) &&
         (y > 6.8 || y < 1.2)) {
             this.shooter.setHoodAngle(0);
             this.shooter.setRPS(0);

@@ -21,7 +21,7 @@
       },
       "prevControl": {
         "x": 7.789015151515152,
-        "y": 0.7024621212121226
+        "y": 0.7024621212121227
       },
       "nextControl": {
         "x": 7.7827892124107665,
@@ -85,13 +85,13 @@
     },
     {
       "name": "AimAndShoot",
-      "waypointRelativePos": 1.6779808529155797,
+      "waypointRelativePos": 1.5491731940818014,
       "endWaypointRelativePos": null,
       "command": null
     },
     {
       "name": "StopIntake",
-      "waypointRelativePos": 2.0,
+      "waypointRelativePos": 1.9738903394255818,
       "endWaypointRelativePos": null,
       "command": null
     }

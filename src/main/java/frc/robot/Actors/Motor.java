@@ -41,6 +41,7 @@ public class Motor {
     public double actualSpeed_rPs;
     private boolean powersave = false;
     public boolean important = false;
+    public CurrentLimitsConfigs curlim = new CurrentLimitsConfigs();
 
     public Motor(int CanID, MotorType type) {
         this.CanID = CanID;
@@ -56,7 +57,6 @@ public class Motor {
                 this.configTFX = new TalonFXConfiguration();
                 this.slot0TFX = new Slot0Configs();
                 this.motorTFX.getConfigurator().setPosition(0);
-                CurrentLimitsConfigs curlim = new CurrentLimitsConfigs();
                 curlim.SupplyCurrentLimit = (Robot.defense) ? 10:30;
                 curlim.SupplyCurrentLimitEnable = true;
                 this.motorTFX.getConfigurator().apply(curlim);
@@ -84,7 +84,6 @@ public class Motor {
                 this.configTFX = new TalonFXConfiguration();
                 this.slot0TFX = new Slot0Configs();
                 this.motorTFX.getConfigurator().setPosition(0);
-                CurrentLimitsConfigs curlim = new CurrentLimitsConfigs();
                 curlim.SupplyCurrentLimit = (Robot.defense) ? 10:30;
                 curlim.SupplyCurrentLimitEnable = true;
                 this.motorTFX.getConfigurator().apply(curlim);
@@ -481,6 +480,9 @@ public class Motor {
                 this.configTFX.OpenLoopRamps.DutyCycleOpenLoopRampPeriod = this.motorConfig.dutyCycleOpenLoopRampPeriod;
                 this.configTFX.ClosedLoopRamps.DutyCycleClosedLoopRampPeriod = this.motorConfig.dutyCycleClosedLoopRampPeriod;
                 this.motorTFX.getConfigurator().apply(configTFX);
+                curlim.SupplyCurrentLimit = (this.important) ? 60:((Robot.defense) ? 10:30);
+                curlim.SupplyCurrentLimitEnable = true;
+                this.motorTFX.getConfigurator().apply(curlim);
                 break;
             case None:
                 System.err.println("tried to apply motor config on None motor with CanID " + this.CanID);
