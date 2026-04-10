@@ -55,9 +55,9 @@ public final class Constants {
     public static final int bpsBeamBreakPort = 3; // TODO: Find which port it lives on
 
     // Properties
-    public static final int transferRPS = 50; //?
+    public static final int transferRPS = 50;
     public static final int rollerRPS = 40;
-    public static final int indexerRPS = 60;
+    public static final int indexerRPS = 70; //?
     public static final double spinupTime = 0.1;
   }
 

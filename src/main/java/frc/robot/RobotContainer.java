@@ -28,6 +28,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 
@@ -45,6 +46,7 @@ import frc.robot.Actors.Subsystems.Shooter.Turret;
 import frc.robot.Commands.Intake.AutoIntakeExtend;
 import frc.robot.Commands.Intake.AutoIntakeRetract;
 import frc.robot.Commands.Intake.AutoIntakeStop;
+import frc.robot.Commands.Intake.ExtensionCommand;
 // Import Custom Commands
 import frc.robot.Commands.Intake.IntakeSequence;
 import frc.robot.Commands.Indexer.AutoStartIndexCommand;
@@ -55,7 +57,6 @@ import frc.robot.Commands.Shooter.AimAtHubCommand;
 import frc.robot.Commands.Shooter.SimpleAimAndShootCommand;
 import frc.robot.Commands.Turret.AimAtHubTurret;
 import frc.robot.Commands.Turret.JoystickAimCommand;
-import frc.robot.Commands.Turret.LockTurret;
 
 
 
@@ -251,7 +252,11 @@ public class RobotContainer {
 
         joystick.rightBumper().whileTrue(new SimpleAimAndShootCommand(indexer, transfer, shooter, turret));
         
-        joystick.a().whileTrue(new ClearTransferCommand(transfer, indexer, intake, shooter)); //?
+        joystick.a().whileTrue(
+            new ParallelCommandGroup(
+                new ClearTransferCommand(transfer, indexer, intake, shooter),
+                new ExtensionCommand(intakeExtension, 90.0) //?
+            ));
 
         turret.setDefaultCommand(new AimAtHubTurret(turret));
         //joystick.x().whileTrue(new JoystickAimCommand(turret, joystick));
@@ -271,7 +276,7 @@ public class RobotContainer {
     //     ));
 
     //     joystick.y().whileTrue(new SpinFuelCommand(indexer, 10));
-        auto = AutoBuilder.buildAutoChooser("SMR 1").getSelected(); //?
+        auto = AutoBuilder.buildAutoChooser("Shoot 8 + Plow").getSelected(); //?
     }
 
 

@@ -9,6 +9,30 @@
           "data": {
             "pathName": "R Trench"
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Copy of R Trench Reverse (over bump)"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "R Bump to R Trench"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "R Trench Dip"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Copy of R Trench Reverse (over bump)"
+          }
         }
       ]
     }
