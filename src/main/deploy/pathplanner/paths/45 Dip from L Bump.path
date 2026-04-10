@@ -52,12 +52,12 @@
         "y": 4.034999999993223
       },
       "prevControl": {
-        "x": 7.301541086660698,
-        "y": 3.8336229823393144
+        "x": 7.171522222222223,
+        "y": 3.8132888888888887
       },
       "nextControl": {
-        "x": 6.062966666663522,
-        "y": 4.609433333326557
+        "x": 6.3534099271469895,
+        "y": 4.760576809457799
       },
       "isLocked": false,
       "linkedName": null
@@ -107,11 +107,11 @@
     },
     {
       "waypointRelativePos": 2.912280701754377,
-      "rotationDegrees": 180.0
+      "rotationDegrees": 135.0
     },
     {
-      "waypointRelativePos": 3.3947368421052633,
-      "rotationDegrees": 90.0
+      "waypointRelativePos": 3.50877192982456,
+      "rotationDegrees": 70.0
     },
     {
       "waypointRelativePos": 3.9561403508771957,
@@ -147,7 +147,32 @@
     }
   ],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "IntakeRetract",
+      "waypointRelativePos": 0.1771871539313051,
+      "endWaypointRelativePos": null,
+      "command": null
+    },
+    {
+      "name": "AimAndShoot",
+      "waypointRelativePos": 0.27685492801772393,
+      "endWaypointRelativePos": null,
+      "command": null
+    },
+    {
+      "name": "Intake",
+      "waypointRelativePos": 0.8637873754152863,
+      "endWaypointRelativePos": null,
+      "command": null
+    },
+    {
+      "name": "AimAndShoot",
+      "waypointRelativePos": 4.4850498338870235,
+      "endWaypointRelativePos": null,
+      "command": null
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -157,13 +182,13 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0,
+    "velocity": 1.0,
     "rotation": 45.0
   },
   "reversed": false,
   "folder": "Defensive Paths",
   "idealStartingState": {
-    "velocity": 0,
+    "velocity": 1.0,
     "rotation": 100.0
   },
   "useDefaultConstraints": true

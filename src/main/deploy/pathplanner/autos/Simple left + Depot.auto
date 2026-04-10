@@ -11,21 +11,9 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "ShootStop"
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "L Trench Reverse"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Shoot"
           }
         },
         {

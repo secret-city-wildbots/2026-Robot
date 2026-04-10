@@ -17,12 +17,6 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "Shoot"
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "Outpost + Shoot"

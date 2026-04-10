@@ -70,7 +70,26 @@
     }
   ],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "Intake",
+      "waypointRelativePos": 0.38538205980066587,
+      "endWaypointRelativePos": null,
+      "command": null
+    },
+    {
+      "name": "AimAndShoot",
+      "waypointRelativePos": 0.40753045404208565,
+      "endWaypointRelativePos": null,
+      "command": null
+    },
+    {
+      "name": "AimAndShoot",
+      "waypointRelativePos": 1.829457364341103,
+      "endWaypointRelativePos": null,
+      "command": null
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 6.0,

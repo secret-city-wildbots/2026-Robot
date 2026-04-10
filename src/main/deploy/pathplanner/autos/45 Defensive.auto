@@ -17,47 +17,15 @@
           }
         },
         {
-          "type": "race",
+          "type": "path",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "AimAndShoot"
-                }
-              },
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 3.0
-                }
-              }
-            ]
+            "pathName": "L Bump 45 to Depot"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Copy of 45 Dip from L Bump"
-          }
-        },
-        {
-          "type": "race",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "AimAndShoot"
-                }
-              },
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 3.0
-                }
-              }
-            ]
+            "pathName": "45 Dip from L Bump"
           }
         },
         {

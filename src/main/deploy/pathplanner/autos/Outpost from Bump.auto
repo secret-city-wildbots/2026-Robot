@@ -7,19 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "R Trench + Shoot"
+            "pathName": "R Bump to Outpost sideways"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "R Trench Reverse (over bump)"
+            "pathName": "Sideways outpost to R Trench"
           }
         },
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "NamedAimAndShoot"
+            "pathName": "R Trench"
           }
         }
       ]
