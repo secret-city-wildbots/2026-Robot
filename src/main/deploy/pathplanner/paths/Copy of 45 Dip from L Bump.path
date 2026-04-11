@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.1280429292929295,
-        "y": 5.248914141414142
+        "x": 3.883876262626263,
+        "y": 5.970391414141414
       },
       "isLocked": false,
       "linkedName": "L Bump 45"
@@ -48,16 +48,16 @@
     },
     {
       "anchor": {
-        "x": 6.576933333333334,
-        "y": 5.17378888888889
+        "x": 6.56364898989899,
+        "y": 4.8480934343434345
       },
       "prevControl": {
-        "x": 6.886137878787879,
-        "y": 5.070720707070708
+        "x": 6.872853535353535,
+        "y": 4.745025252525253
       },
       "nextControl": {
-        "x": 5.414003792457917,
-        "y": 5.561432069180694
+        "x": 5.4007194490235735,
+        "y": 5.235736614635239
       },
       "isLocked": false,
       "linkedName": null
@@ -94,11 +94,7 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.6349206349206358,
-      "rotationDegrees": 135.0
-    },
-    {
-      "waypointRelativePos": 0.8771929824561396,
+      "waypointRelativePos": 0.8585858585858536,
       "rotationDegrees": 0.0
     },
     {
@@ -106,36 +102,15 @@
       "rotationDegrees": -90.0
     },
     {
-      "waypointRelativePos": 2.912280701754377,
-      "rotationDegrees": 180.0
-    },
-    {
-      "waypointRelativePos": 3.5497835497835495,
-      "rotationDegrees": 70.0
-    },
-    {
-      "waypointRelativePos": 3.9561403508771957,
-      "rotationDegrees": 45.0
+      "waypointRelativePos": 3.2539682539682584,
+      "rotationDegrees": 160.0
     }
   ],
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 2.8460686600221323,
-      "maxWaypointRelativePos": 3.46622369878186,
-      "constraints": {
-        "maxVelocity": 1.5,
-        "maxAcceleration": 3.0,
-        "maxAngularVelocity": 135.0,
-        "maxAngularAcceleration": 720.0,
-        "nominalVoltage": 12.0,
-        "unlimited": false
-      }
-    },
-    {
-      "name": "Constraints Zone",
       "minWaypointRelativePos": 0.7641196013288811,
-      "maxWaypointRelativePos": 3.554817275747488,
+      "maxWaypointRelativePos": 3.2637075718015613,
       "constraints": {
         "maxVelocity": 1.5,
         "maxAcceleration": 3.0,
@@ -168,7 +143,7 @@
     },
     {
       "name": "AimAndShoot",
-      "waypointRelativePos": 5.0,
+      "waypointRelativePos": 4.856396866840715,
       "endWaypointRelativePos": null,
       "command": null
     }
@@ -183,7 +158,7 @@
   },
   "goalEndState": {
     "velocity": 1.0,
-    "rotation": 45.0
+    "rotation": 180.0
   },
   "reversed": false,
   "folder": "Left Dip",

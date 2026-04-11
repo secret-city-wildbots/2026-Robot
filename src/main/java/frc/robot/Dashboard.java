@@ -12,6 +12,7 @@ import edu.wpi.first.hal.can.CANStatus;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -187,7 +188,7 @@ public class Dashboard {
 
     public void update() {
         Pose2d pose = drivetrain.getPose();
-        WBfieldMap.sendPose(8.0-pose.getY(), pose.getX(), pose.getRotation().getDegrees());
+        WBfieldMap.sendPose((DriverStation.getAlliance().get() == Alliance.Red) ? 16.0-pose.getY():pose.getY(), pose.getX(), pose.getRotation().getDegrees());
 
         WBshooter.updateVals(shooter.getRPS(), (shooter.getLeadTemp()+shooter.getFollowTemp())/2.0);
         WBturret.updateVals(turret.getTurretDegrees(), turret.getTemp());

@@ -21,7 +21,7 @@
       },
       "prevControl": {
         "x": 6.517840909090909,
-        "y": 0.3932575757575767
+        "y": 0.3932575757575769
       },
       "nextControl": {
         "x": 6.464266979700586,
@@ -57,6 +57,12 @@
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [
+    {
+      "name": "AimAndShoot",
+      "waypointRelativePos": 0.024369016536116388,
+      "endWaypointRelativePos": null,
+      "command": null
+    },
     {
       "name": "Intake",
       "waypointRelativePos": 0.045256744995644624,

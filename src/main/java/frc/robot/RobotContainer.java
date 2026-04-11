@@ -276,7 +276,7 @@ public class RobotContainer {
     //     ));
 
     //     joystick.y().whileTrue(new SpinFuelCommand(indexer, 10));
-        auto = AutoBuilder.buildAutoChooser("Shoot 8 + Plow").getSelected(); //?
+        auto = AutoBuilder.buildAutoChooser("L Trench 2 Dip").getSelected(); //?
     }
 
 

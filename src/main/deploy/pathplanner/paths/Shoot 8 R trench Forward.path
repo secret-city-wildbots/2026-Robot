@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.8,
-        "y": 3.3
+        "x": 3.0,
+        "y": 0.6
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.778732661130884,
-        "y": 0.3999670225385543
+        "x": 3.25,
+        "y": 0.6
       },
       "isLocked": false,
       "linkedName": null
@@ -20,30 +20,21 @@
         "y": 0.6
       },
       "prevControl": {
-        "x": 7.85,
-        "y": 0.5999999999999994
+        "x": 3.35,
+        "y": 0.6
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.1385964912280694,
-      "rotationDegrees": 90.0
-    },
-    {
-      "waypointRelativePos": 0.8174123337363959,
-      "rotationDegrees": 0.0
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [
     {
       "name": "AimAndShoot",
-      "waypointRelativePos": 0.9852045256744726,
+      "waypointRelativePos": 0.027850304612708397,
       "endWaypointRelativePos": null,
       "command": null
     }
@@ -57,14 +48,14 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 1.5,
+    "velocity": 3.0,
     "rotation": 0.0
   },
   "reversed": false,
-  "folder": "Simple Right + Outpost",
+  "folder": "R Dip",
   "idealStartingState": {
-    "velocity": 1.0,
-    "rotation": 90.0
+    "velocity": 0,
+    "rotation": 0.0
   },
   "useDefaultConstraints": true
 }

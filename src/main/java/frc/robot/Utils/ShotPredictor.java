@@ -37,7 +37,7 @@ public class ShotPredictor {
             Supplier<ChassisSpeeds> robotVelSupplier) {
 
         //Target poses
-        double targetX = (DriverStation.getAlliance().get() == Alliance.Blue) ? (4.63-1.0):(11.9+1.0); //?
+        double targetX = (DriverStation.getAlliance().get() == Alliance.Blue) ? (4.63-3.0):(11.9+3.0); //?
         double hubX = (DriverStation.getAlliance().get() == Alliance.Blue) ? (4.63):(11.9);
         Translation2d hubPosition = new Translation2d(hubX, 4.035);
         Translation2d bumpLeft = new Translation2d(targetX, 6);
@@ -87,15 +87,14 @@ public class ShotPredictor {
         // horizontal distance (adjusted by airtime)
         double futureDist = delta.getNorm();
 
-        lobbing = true;
-        shot.velocity_rPs = getVelocity(futureDist);
+        shot.velocity_rPs = ((lobbing) ? 0.8:1.0)*getVelocity(futureDist);
         shot.tilt = (lobbing) ? getTilt(20.0):getTilt(futureDist);
 
         return shot;
     }
 
     public static double getVelocity(double dist) {
-        return (1.456*(dist-2.0) + 50.2 + ((dist > 3.0) ? 3.7*(dist-3.0):0.0));
+        return (1.456*(dist-2.0) + 50.2 + ((dist > 3.0) ? 3.6*(dist-3.0):0.0));
         //return 1.0;
     }
 
