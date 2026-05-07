@@ -94,7 +94,7 @@ public class ShotPredictor {
     }
 
     public static double getVelocity(double dist) {
-        return (1.456*(dist-2.0) + 50.2 + ((dist > 3.0) ? 3.6*(dist-3.0):0.0));
+        return (1.5*(dist-2.0) + 50 + ((dist > 3.0) ? 3.6*(dist-3.0):0.0)); //?
         //return 1.0;
     }
 
