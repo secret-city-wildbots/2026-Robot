@@ -29,12 +29,16 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.RepeatCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 
 // Import Custom TunerConstants
 import frc.robot.generated.TunerConstants;
 import frc.robot.Utils.JoystickScaler;
+import frc.robot.Constants.IntakeConstants;
 // Import subystems
 import frc.robot.Actors.Subsystems.CommandSwerveDrivetrain;
 import frc.robot.Actors.Subsystems.Intake.Intake;
@@ -242,13 +246,21 @@ public class RobotContainer {
         joystick.rightTrigger(0.4).onFalse(Commands.runOnce(() -> {
             Robot.shooterEnabled = false;
         }));
-        joystick.rightTrigger(0.4).whileTrue(new AimAndShootCommand(drivetrain::getPose, () -> { //?
+        joystick.rightTrigger(0.4).whileTrue(new ParallelCommandGroup(new AimAndShootCommand(drivetrain::getPose, () -> { //?
             var state = drivetrain.getState();
             return ChassisSpeeds.fromRobotRelativeSpeeds(
                 state.Speeds,
                 state.Pose.getRotation()
             );
-        }, indexer, transfer, shooter));  
+        }, indexer, transfer, shooter),
+        new RepeatCommand(
+            new SequentialCommandGroup(
+                Commands.runOnce(() -> intakeExtension.setIntakePos(IntakeConstants.maxDegree)),
+                new WaitCommand(1),
+                Commands.runOnce(() -> intakeExtension.setIntakePos(IntakeConstants.minDegree)),
+                new WaitCommand(1)
+            )
+        )));  
 
         joystick.rightBumper().whileTrue(new SimpleAimAndShootCommand(indexer, transfer, shooter, turret));
         
