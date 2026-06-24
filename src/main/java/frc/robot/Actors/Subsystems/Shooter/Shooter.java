@@ -34,7 +34,7 @@ public class Shooter extends SubsystemBase {
 
         // Configure the lead motor
         this.leadMotor.motorConfig.direction = RotationDir.CounterClockwise;
-        this.leadMotor.motorConfig.peakReverseDC = 0.0;
+        this.leadMotor.motorConfig.peakReverseDC = -1.0;
         this.leadMotor.motorConfig.brake = false;
         this.leadMotor.applyConfig();
         this.leadMotor.slot0TFX.kV = 0.011;

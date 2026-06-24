@@ -1,0 +1,37 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 3.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "R Trench Quarter"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "R Trench Quarter Reverse"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Outpost + Shoot"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "Simple",
+  "choreoAuto": false
+}

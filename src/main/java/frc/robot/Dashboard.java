@@ -12,15 +12,18 @@ import edu.wpi.first.hal.can.CANStatus;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants.VisionConstants;
 import frc.robot.Actors.Subsystems.CommandSwerveDrivetrain;
 import frc.robot.Actors.Subsystems.Intake.Intake;
 import frc.robot.Actors.Subsystems.Intake.IntakeExtension;
 import frc.robot.Actors.Subsystems.Shooter.Shooter;
 import frc.robot.Actors.Subsystems.Shooter.Turret;
+import frc.robot.Commands.SysCheckSequence;
 import frc.robot.Actors.Subsystems.Indexer.Indexer;
 import frc.robot.Actors.Subsystems.Indexer.Transfer;
 import frc.robot.WildBoard.WildBoard;
@@ -83,7 +86,7 @@ public class Dashboard {
                         WBfieldMap))
                 .addChild(new Col(6).addChild(
                         new Row().addChild(
-                                new CameraFeed(11)).addChild(
+                                new CameraFeed(11)).addChild( //?
                                         new CameraFeed(12)))
                         .addChild(
                                 new Row().addChild(
@@ -91,7 +94,7 @@ public class Dashboard {
                                                 new CameraFeed(14))))
                 .addChild(new Col(4).addChild(
                     // TODO: Add autos into Dashboard
-                        new AutoChooser(new String[] { "Nothing", "Fast Away", "SMR 1", "EventTest", "Shoot 8", "R Trench to Bump", "Slow Lob", "SMR 5", "Shoot 8 + Climb", "Awesome" }).onChange((String choice) -> {
+                        new AutoChooser(new String[] { "Nothing", "SMR 1", "EventTest", "Awesome", "L Trench 2 Dip", "R Trench 2 Dips + Outpost" }).onChange((String choice) -> {
                             System.out.println("Auto Chosen: "+choice);
                             autoChosen.accept(new PathPlannerAuto(choice));
                         })).addChild(
@@ -134,20 +137,8 @@ public class Dashboard {
                         new Col(4).addChild(
                                 WBswerveModules).addChild(
                                         new SystemsCheck().onTest(() -> {
-                                            //TODO
-                                            // drive in square
-
-                                            // full climber squence
-
-                                            // deploy intake
-                                            // intake
-                                            // retract intake
-                                            // aim turret to 0
-                                            // aim hood to 0
-                                            // spin up shooter
-                                            // spin up transfer
-                                            // spin indexer to shoot
-                                            System.out.println("blah");
+                                            System.out.println("running SysCheck");
+                                            CommandScheduler.getInstance().schedule(new SysCheckSequence(intake, transfer, indexer, intakeExtension, turret, shooter));
                                         })))
                 .addChild(
                         new Col(3).addChild(
@@ -197,7 +188,7 @@ public class Dashboard {
 
     public void update() {
         Pose2d pose = drivetrain.getPose();
-        WBfieldMap.sendPose(8.0-pose.getY(), pose.getX(), pose.getRotation().getDegrees());
+        WBfieldMap.sendPose((DriverStation.getAlliance().get() == Alliance.Red) ? 16.0-pose.getY():pose.getY(), pose.getX(), pose.getRotation().getDegrees());
 
         WBshooter.updateVals(shooter.getRPS(), (shooter.getLeadTemp()+shooter.getFollowTemp())/2.0);
         WBturret.updateVals(turret.getTurretDegrees(), turret.getTemp());

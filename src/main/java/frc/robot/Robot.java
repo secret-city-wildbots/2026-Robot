@@ -11,10 +11,12 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.util.Units;
-import frc.robot.Utils.HubShooterTrajectoryCalc;
 // Import Limelight Utils
 import frc.robot.Utils.LimelightHelpers;
+import frc.robot.Utils.ShotPredictor;
+import frc.robot.Utils.ShotPredictor.Shot;
 import frc.robot.Actors.Vision;
 import frc.robot.Constants.TurretConstants;
 
@@ -34,14 +36,13 @@ public class Robot extends TimedRobot {
   private final Vision vision;
   public static final boolean test = false; //?
   public static final boolean defense = false;//?
+  public static Shot shot;
 
   /**
    * This function is run when the robot is first started up and should be used
    * for any initialization code.
    */
   public Robot() {
-    HubShooterTrajectoryCalc.initializeCache();
-
     // Instantiate our RobotContainer. This will perform all our button bindings,
     // and put our
     // autonomous chooser on the dashboard.
@@ -73,6 +74,15 @@ public class Robot extends TimedRobot {
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
 
+    
+    shot = ShotPredictor.predict(m_robotContainer.drivetrain::getPose, () -> { //?
+          var state = m_robotContainer.drivetrain.getState();
+          return ChassisSpeeds.fromRobotRelativeSpeeds(
+              state.Speeds,
+              state.Pose.getRotation()
+          );
+      });
+
     // Get the best pose estimate from all of the cameras
     try {
       LimelightHelpers.PoseEstimate bestPose = vision.getBestPose();
@@ -80,6 +90,10 @@ public class Robot extends TimedRobot {
 
       // If bestPose is not null, add vision measurement to the drivetrain
       // TODO: need to tune 0.7,0.7 values
+      /*LimelightHelpers.PoseEstimate[] poses = vision.getPoses();
+      for (LimelightHelpers.PoseEstimate pose: poses) {
+        m_robotContainer.drivetrain.addVisionMeasurement(pose.pose, pose.timestampSeconds, VecBuilder.fill(vision.getStdDev(pose),vision.getStdDev(pose),9999999));
+      }*/
       if (bestPose != null) {
         // TODO: Do we want to just only add or reset the whole pose?
         m_robotContainer.drivetrain.addVisionMeasurement(bestPose.pose, bestPose.timestampSeconds, VecBuilder.fill(0.7,0.7,9999999));
@@ -93,11 +107,6 @@ public class Robot extends TimedRobot {
     // System.out.println(m_robotContainer.drivetrain.getState().Pose);
 
     //m_robotContainer.dashboard.update();
-
-    Translation2d robotPos = m_robotContainer.drivetrain.getPose().getTranslation();
-    Rotation2d robotRot = m_robotContainer.drivetrain.getPose().getRotation();
-    Translation2d turretPos = robotPos.plus(TurretConstants.turretPos.rotateBy(robotRot));
-    double distance = new Translation2d(11.9, 4.035).getDistance(robotPos);
     //System.out.println("dist: "+distance);
   }
 

@@ -29,8 +29,7 @@ public final class Constants {
 
   public static class VisionConstants {
     // Limelight Names
-    //public static final String[] limelightNames = {"limelight-front", "limelight-back", "limelight-left", "limelight-right"};
-    public static final String[] limelightNames = {"limelight-front", "limelight-back", "limelight-left"}; //?
+    public static final String[] limelightNames = {"limelight-front", "limelight-back", "limelight-left", "limelight-right"};
   }
 
   public static class IntakeConstants {
@@ -56,9 +55,9 @@ public final class Constants {
     public static final int bpsBeamBreakPort = 3; // TODO: Find which port it lives on
 
     // Properties
-    public static final int transferRPS = 70; //?
+    public static final int transferRPS = 50;
     public static final int rollerRPS = 40;
-    public static final int indexerRPS = 10;
+    public static final int indexerRPS = 70; //?
     public static final double spinupTime = 0.1;
   }
 
@@ -85,10 +84,8 @@ public final class Constants {
     public static final double turretBaseAirtime_s = 0.0;
     public static final double turretDistAirtime_sPm = 0.0; // Additional airtime per meter of distance to target
     public static final double turretGearRatio = (114.0/11.0)*5.0; //??
-    public static final double posExtension = 480/360*turretGearRatio; //??
-    public static final double negExtension = -185/360*turretGearRatio; //??
 
-    public static final Translation2d turretPos = new Translation2d(-0.133,-0.02413);
+    public static final Translation2d turretPos = new Translation2d(-0.133,-0.133);
   }
   
   public static class DrivetrainConstants {
@@ -117,7 +114,7 @@ public final class Constants {
     public static final double azimuthGearRatio = 150.0 / 7.0;
 
     // Robot Speed and Rotation Specs
-    public static final double maxGroundSpeed_mPs = 5.0;
+    public static final double maxGroundSpeed_mPs = 0.25;
     public static final double maxRotateSpeed_radPs = maxGroundSpeed_mPs / Math.hypot(moduleToModuleLength_X_m, moduleToModuleWidth_Y_m);
   }
 }

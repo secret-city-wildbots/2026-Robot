@@ -27,7 +27,7 @@ public class IntakeCommand extends Command {
     @Override
     public void initialize() {
         // Call the intake subsystem set function
-        intake.set(this.motorSpeedPercentage);
+        intake.intake();
     }
 
     @Override
@@ -39,7 +39,7 @@ public class IntakeCommand extends Command {
     @Override
     public void end(boolean interrupted) {
         // When the command is interrupted or cancelled, we will stop the IntakeExtension subsystem
-        intake.set(0.0);
+        intake.stop();
     }
 
     @Override

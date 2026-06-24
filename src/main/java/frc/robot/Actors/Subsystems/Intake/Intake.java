@@ -17,8 +17,12 @@ public class Intake extends SubsystemBase {
     public Intake() {
         // Configure the intake motor
         this.motor = new Motor(IntakeConstants.intakeMotorID, MotorType.TFX, "rio");
-        this.motor.motorConfig.direction = RotationDir.CounterClockwise;
+        this.motor.motorConfig.direction = RotationDir.Clockwise;
+        this.motor.motorConfig.brake = false;
         this.motor.applyConfig();
+        this.motor.slot0TFX.kV = 0.012;
+        this.motor.pid(0.05, 0.0, 0.0);
+        //0.05, 0.012
     }
 
     public double getTemp() {
@@ -38,5 +42,12 @@ public class Intake extends SubsystemBase {
     public void set(double percent) {
         // Send the output to the motor
         motor.dc(percent);
+    }
+
+    public void intake() {
+        motor.vel(60.0);
+    }
+    public void stop() {
+        motor.vel(0.0);
     }
 }

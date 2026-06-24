@@ -1,0 +1,31 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "R Bump to Outpost sideways"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Sideways outpost to R Trench"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "R Trench"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "Simple",
+  "choreoAuto": false
+}

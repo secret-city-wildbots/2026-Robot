@@ -6,7 +6,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
-
+import frc.robot.Robot;
 // Import Actors, Utils & Constants
 import frc.robot.Actors.Subsystems.Shooter.Shooter;
 import frc.robot.Actors.Subsystems.Shooter.Turret;
@@ -18,7 +18,6 @@ import frc.robot.Constants.ShooterConstants;
 public class AimAtHubCommand extends Command {
     // Real Variables
     private final Shooter shooter;
-    private final Turret turret;
     private final Supplier<Pose2d> robotPoseSupplier;
     private final Supplier<ChassisSpeeds> robotVelSupplier;
 
@@ -32,7 +31,6 @@ public class AimAtHubCommand extends Command {
      */
     public AimAtHubCommand(
         Shooter shooter,
-        Turret turret,
         Supplier<Pose2d> robotPoseSupplier,
         Supplier<ChassisSpeeds> robotVelSupplier
     ) {
@@ -40,9 +38,7 @@ public class AimAtHubCommand extends Command {
         this.robotPoseSupplier = robotPoseSupplier;
         this.robotVelSupplier = robotVelSupplier;
         this.shooter = shooter;
-        this.turret = turret;
         addRequirements(shooter);
-        addRequirements(turret);
     }
 
     @Override
@@ -52,7 +48,7 @@ public class AimAtHubCommand extends Command {
 
     @Override
     public void execute() {
-        Shot shot = ShotPredictor.predict(this.robotPoseSupplier, this.robotVelSupplier);
+        Shot shot = Robot.shot;
         double x = this.robotPoseSupplier.get().getX();
         double y = this.robotPoseSupplier.get().getY();
         //System.out.println("Shooter Hood Angle (degrees): " + shot.tilt.getDegrees());
@@ -61,17 +57,15 @@ public class AimAtHubCommand extends Command {
         //System.out.println("Turret Angle (?): " + shot.yaw.getDegrees());
         //System.out.println("Turret Motor (?): " + shot.yaw.getRotations());
 
-        // trench auto-stow //?
-        // if (((x > 3.7 && x < 5.5) || //?
-        // (x > 16-3.7 && x < 16-5.5)) &&
-        // (y > 6.8 || y < 1.2)) {
-        //     this.shooter.setHoodAngle(0);
-        //     this.shooter.setRPS(0);
-        // } else {
+        if (((x > 3.5 && x < 5.7) || //?
+        (x < 16.5-3.5 && x > 16.5-5.7)) &&
+        (y > 6.8 || y < 1.2)) {
+            this.shooter.setHoodAngle(0);
+            this.shooter.setRPS(0);
+        } else {
             this.shooter.setHoodAngle(shot.tilt.getDegrees());
             this.shooter.setRPS(shot.velocity_rPs);
-            this.turret.setTargetAngle(shot.yaw);
-       // }
+        }
         // Only use execute if we have dynamically changing speeds. This is called each loop (~20ms).
         // So if we have just a constant speed, use initialize to avoid spamming the canbus network.
     }

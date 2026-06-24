@@ -21,6 +21,8 @@ public class Turret extends SubsystemBase {
 
     // initiate motors
     private Motor motor;
+    public static boolean isLocked = false;
+    public double desired_mRot = 0.0;
 
     public Turret() {
         // Configure the turret motor
@@ -115,37 +117,43 @@ public class Turret extends SubsystemBase {
         //         (Math.round(motor.motorTFX.getClosedLoopOutput().getValueAsDouble() * 100) / 100.0));
         double current = this.motor.pos()/TurretConstants.turretGearRatio*360;
 
-        double desired_deg = angle.getDegrees()%360;
+        double desired_deg = angle.plus(new Rotation2d(0.0)).getDegrees()%360; //?
         if (desired_deg < 0) desired_deg+=360;
 
         double[] goals = new double[] {
-            desired_deg-360,
-            desired_deg,
-            desired_deg+360
+            desired_deg-360, //-360
+            desired_deg, //0
+            desired_deg+360 //360
         };
 
-        if (Math.abs(goals[0]-current) <= 180 && goals[0] > -185) {
+        if (Math.abs(goals[0]-current) <= 180 && goals[0] > -120) {
             desired_deg = goals[0];
-        } else if (Math.abs(goals[2]-current) <= 180 && goals[2] < 450) {
+        } else if (Math.abs(goals[2]-current) <= 180 && goals[2] < 360) {
             desired_deg = goals[2];
         } else {
             desired_deg = goals[1];
         }
+
+        if (desired_deg > 360 || desired_deg < -120) {
+            System.out.println("BAHHHHHHH");
+             desired_deg = 0.0;
+        }
         
         double desired_mRot = desired_deg/360*TurretConstants.turretGearRatio;
+        this.desired_mRot = desired_mRot;
 
         /*if (Math.abs(current - (desiredOld)) > 180) {
             desired+= Math.signum(current - (desiredOld)) * TurretConstants.turretGearRatio;
         }*/
 
-        System.out.println(Math.round(current) + " : "+Math.round(desired_deg));
+        //System.out.println(Math.round(current) + " : "+Math.round(desired_deg));
 
-        /*while (desired_mRot > TurretConstants.posExtension) {
-            desired_mRot-=TurretConstants.turretGearRatio;
-        }
-        while (desired_mRot < TurretConstants.negExtension) {
-            desired_mRot+=TurretConstants.turretGearRatio;
-        }*/
+        // while (desired_mRot > TurretConstants.posExtension) {
+        //     desired_mRot-=TurretConstants.turretGearRatio;
+        // }
+        // while (desired_mRot < TurretConstants.negExtension) {
+        //     desired_mRot+=TurretConstants.turretGearRatio;
+        // }
 
         this.motor.posMM(desired_mRot);
 
@@ -157,6 +165,14 @@ public class Turret extends SubsystemBase {
 
     @Override
     public void periodic() {
+        double offAngle = (Math.abs(desired_mRot-this.motor.pos())/TurretConstants.turretGearRatio*360.0)%360;
+        while (offAngle < 0.0) {
+            offAngle+=360;
+        }
+        if (offAngle > 180.0) {
+            offAngle = 360.0-offAngle;
+        }
+        Turret.isLocked = true;//(offAngle < 10);
         //System.out.println("turret: "+this.getTurretDegrees());
     }
 }

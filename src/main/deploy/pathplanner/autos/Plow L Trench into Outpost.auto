@@ -17,12 +17,6 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "Shoot"
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "Outpost + Shoot"
@@ -31,7 +25,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Outpost+Preclimb"
+            "pathName": "Outpost to hub"
           }
         }
       ]

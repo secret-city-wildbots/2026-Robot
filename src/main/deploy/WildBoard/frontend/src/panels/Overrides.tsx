@@ -2,6 +2,7 @@ import { h } from 'preact';
 import { useState } from 'preact/hooks';
 import Switch from '../components/Switch';
 import { useCompMode } from '../ws/CompModeContext';
+import { useLimelightOn } from '../ws/LimelightOnContext';
 import { WsEventBus } from '../ws/WSEventBus';
 
 interface SwitchItem {
@@ -28,6 +29,7 @@ const SwitchGrid = ({
 }: SwitchGridProps) => {
     const [states, setStates] = useState<boolean[]>(Array(switches.length).fill(false));
     const { setCompMode } = useCompMode();
+    const { setLimelightOn } = useLimelightOn();
 
     const handleToggle = (i: number, state: boolean) => {
         setStates(prev => {
@@ -37,6 +39,9 @@ const SwitchGrid = ({
             if (switches[i].label === "CompMode") {
                 socket.send(id, "C" + (state ? "1":"0"));
                 setCompMode(state);
+            }
+            if (switches[i].label === "Disable Camera Feeds") {
+                setLimelightOn(!state);
             }
 
             socket.send(id, newStates.map(v => v ? "1" : "0").join());

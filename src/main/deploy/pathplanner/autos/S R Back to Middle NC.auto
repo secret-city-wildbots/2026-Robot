@@ -13,13 +13,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "R Trench Reverse no climb"
+            "pathName": "R Trench Reverse"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "R Trench Pickup"
+            "pathName": null
           }
         },
         {
