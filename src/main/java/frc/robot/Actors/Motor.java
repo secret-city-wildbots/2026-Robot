@@ -57,7 +57,7 @@ public class Motor {
                 this.configTFX = new TalonFXConfiguration();
                 this.slot0TFX = new Slot0Configs();
                 this.motorTFX.getConfigurator().setPosition(0);
-                curlim.SupplyCurrentLimit = (Robot.defense) ? 10:30;
+                curlim.SupplyCurrentLimit = (Robot.defense) ? 10:15;
                 curlim.SupplyCurrentLimitEnable = true;
                 this.motorTFX.getConfigurator().apply(curlim);
                 this.limitBandwidth();
@@ -84,7 +84,7 @@ public class Motor {
                 this.configTFX = new TalonFXConfiguration();
                 this.slot0TFX = new Slot0Configs();
                 this.motorTFX.getConfigurator().setPosition(0);
-                curlim.SupplyCurrentLimit = (Robot.defense) ? 10:30;
+                curlim.SupplyCurrentLimit = (Robot.defense) ? 10:15;
                 curlim.SupplyCurrentLimitEnable = true;
                 this.motorTFX.getConfigurator().apply(curlim);
                 this.limitBandwidth();
@@ -113,7 +113,7 @@ public class Motor {
                 this.motorTFX.getConfigurator().setPosition(0);
                 if (important) {
                     CurrentLimitsConfigs curlim = new CurrentLimitsConfigs();
-                    curlim.SupplyCurrentLimit = 60;
+                    curlim.SupplyCurrentLimit = 30;
                     curlim.SupplyCurrentLimitEnable = true;
                     this.motorTFX.getConfigurator().apply(curlim);
                 }
@@ -140,7 +140,7 @@ public class Motor {
             if (important) {
                 curlim.SupplyCurrentLimit = 60;
             } else {
-                curlim.SupplyCurrentLimit = (Robot.defense) ? 10:30;
+                curlim.SupplyCurrentLimit = (Robot.defense) ? 10:15;
             }
         } else {
             curlim.SupplyCurrentLimit = 0;
@@ -480,7 +480,7 @@ public class Motor {
                 this.configTFX.OpenLoopRamps.DutyCycleOpenLoopRampPeriod = this.motorConfig.dutyCycleOpenLoopRampPeriod;
                 this.configTFX.ClosedLoopRamps.DutyCycleClosedLoopRampPeriod = this.motorConfig.dutyCycleClosedLoopRampPeriod;
                 this.motorTFX.getConfigurator().apply(configTFX);
-                curlim.SupplyCurrentLimit = (this.important) ? 60:((Robot.defense) ? 10:30);
+                curlim.SupplyCurrentLimit = (this.important) ? 60:((Robot.defense) ? 10:15);
                 curlim.SupplyCurrentLimitEnable = true;
                 this.motorTFX.getConfigurator().apply(curlim);
                 break;

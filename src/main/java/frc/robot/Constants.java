@@ -42,7 +42,8 @@ public final class Constants {
 
     // Intake Ranges
     public static final double minDegree = 0.0;
-    public static final double maxDegree = 86.0;
+    public static final double maxDegree = 118;
+    public static final int intake_rps = 40;
   }
 
   public static class IndexerConstants {
@@ -55,9 +56,9 @@ public final class Constants {
     public static final int bpsBeamBreakPort = 3; // TODO: Find which port it lives on
 
     // Properties
-    public static final int transferRPS = 90;
-    public static final int rollerRPS = 70;
-    public static final int indexerRPS = 80; //?
+    public static final int transferRPS = 80;
+    public static final int rollerRPS = 60;
+    public static final int indexerRPS = 70; //?
     public static final double spinupTime = 0.1;
   }
 

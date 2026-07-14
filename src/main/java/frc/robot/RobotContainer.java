@@ -112,9 +112,9 @@ public class RobotContainer {
     public RobotContainer() {
         dashboard = new Dashboard(drivetrain, shooter, indexer, transfer, turret, intake, intakeExtension, pdh, autoChosen);
 
-        shotSmoothingx = new SlewRateLimiter(1.0);
-        shotSmoothingy = new SlewRateLimiter(1.0);
-        shotSmoothingh = new SlewRateLimiter(2.0);
+        shotSmoothingx = new SlewRateLimiter(4.0);
+        shotSmoothingy = new SlewRateLimiter(4.0);
+        shotSmoothingh = new SlewRateLimiter(7.0);
         //TODO: Make sure values for Commands are correct
          //Register Named Commands within Pathplanner
         // NamedCommands.registerCommand("Shoot",
@@ -252,15 +252,15 @@ public class RobotContainer {
                 state.Speeds,
                 state.Pose.getRotation()
             );
-        }, indexer, transfer, shooter),
-        new RepeatCommand(
+        }, indexer, transfer, shooter)
+        /*,new RepeatCommand(
             new SequentialCommandGroup(
                 Commands.runOnce(() -> intakeExtension.setIntakePos(IntakeConstants.maxDegree)),
                 new WaitCommand(1),
                 Commands.runOnce(() -> intakeExtension.setIntakePos(IntakeConstants.minDegree)),
                 new WaitCommand(1)
             )
-        )));  
+        )*/));  
 
         joystick.rightBumper().whileTrue(new SimpleAimAndShootCommand(indexer, transfer, shooter, turret));
         
