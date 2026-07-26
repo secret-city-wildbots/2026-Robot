@@ -1,13 +1,13 @@
 package frc.robot.Commands.Indexer;
 
+import java.util.function.Supplier;
+
 // Import WPILib Commands
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 
 // Import Actors, Utils & Constants
 import frc.robot.Actors.Subsystems.Indexer.Indexer;
 import frc.robot.Actors.Subsystems.Indexer.Transfer;
-import frc.robot.Actors.Subsystems.Shooter.Turret;
 import frc.robot.Constants.IndexerConstants;
 
 public class SpinAndFeedCommand extends Command {
@@ -20,6 +20,8 @@ public class SpinAndFeedCommand extends Command {
     private final double transferRPS;
     private final double indexerRPS;
 
+    private final Supplier<Boolean> isLocked;
+
     /**
      * Creates and sets up the SpinFuelCommand
      * 
@@ -27,12 +29,14 @@ public class SpinAndFeedCommand extends Command {
      * @param indexer The subsystem to be controlled by the command ({@link Indexer})
      * @param transferRPS The rps for the transfer
      * @param indexerRPS The rps for the indexer and roller bed
+     * @param isLocked if its locked
      */
     public SpinAndFeedCommand(
         Transfer transfer,
         Indexer indexer,
         double transferRPS,
-        double indexerRPS
+        double indexerRPS,
+        Supplier<Boolean> isLocked
         ) {
         // Set the subystems
         this.transfer = transfer;
@@ -41,6 +45,7 @@ public class SpinAndFeedCommand extends Command {
         // Set the speeds
         this.transferRPS = transferRPS;
         this.indexerRPS = indexerRPS;
+        this.isLocked = isLocked;
 
         // Add subsystem requirements
         addRequirements(transfer, indexer);
@@ -53,7 +58,7 @@ public class SpinAndFeedCommand extends Command {
 
     @Override
     public void execute() {
-        if (Turret.isLocked) {
+        if (this.isLocked.get()) {
             transfer.setRPS(transferRPS);
             indexer.setRPS(indexerRPS, IndexerConstants.rollerRPS);
         } else {

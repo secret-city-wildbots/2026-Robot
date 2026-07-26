@@ -87,7 +87,7 @@ public class ShotPredictor {
         // horizontal distance (adjusted by airtime)
         double futureDist = delta.getNorm();
 
-        shot.velocity_rPs = ((lobbing) ? 0.8:1.0)*getVelocity(futureDist);
+        shot.velocity_rPs = ((lobbing) ? 1.0:1.0)*getVelocity(futureDist);
         shot.tilt = (lobbing) ? getTilt(20.0):getTilt(futureDist);
 
 
@@ -95,7 +95,7 @@ public class ShotPredictor {
     }
 
     public static double getVelocity(double dist) {
-        return (1.4*(dist-2.0) + 47 + ((dist > 3.0) ? 3.8*(dist-3.0):0.0)); //?
+        return (4.28*(dist-1.87) + 48 + ((dist > 3.0) ? -1.44*(dist-3.0):0.0)); //?
         //return 1.0;
     }
 

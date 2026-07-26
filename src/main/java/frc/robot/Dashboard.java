@@ -94,7 +94,7 @@ public class Dashboard {
                                                 new CameraFeed(14))))
                 .addChild(new Col(4).addChild(
                     // TODO: Add autos into Dashboard
-                        new AutoChooser(new String[] { "Nothing", "SMR 1", "EventTest", "Awesome", "L Trench 2 Dip", "R Trench 2 Dips + Outpost" }).onChange((String choice) -> {
+                        new AutoChooser(new String[] { "Nothing", "SMR 1", "EventTest", "Awesome", "L Trench 2 Dip", "R Trench 2 Dips + Outpost","Simple Left" }).onChange((String choice) -> {
                             System.out.println("Auto Chosen: "+choice);
                             autoChosen.accept(new PathPlannerAuto(choice));
                         })).addChild(

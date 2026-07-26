@@ -2,6 +2,7 @@ package frc.robot.Actors.Subsystems.Shooter;
 
 // Import WPILib Libraries
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -21,7 +22,7 @@ public class Turret extends SubsystemBase {
 
     // initiate motors
     private Motor motor;
-    public static boolean isLocked = false;
+    public boolean isLocked = false;
     public double desired_mRot = 0.0;
 
     public Turret() {
@@ -42,7 +43,7 @@ public class Turret extends SubsystemBase {
         // TurretConstants.turretGearRatio;
 
         this.motor.applyConfig();
-        this.motor.motionMagic(0.3, 0.0, 0.0, 0.05/5.0, 0.0, 30.0*5.0, 30.0*5.0);//?
+        this.motor.motionMagic(0.3, 0.0, 0.0, 0.05/5.0, 0.0, 30.0*5.0, 40.0*5.0);//?
         //this.motor.motionMagic(0.0, 0.0, 0.0, 0.00/5.0, 0.0, 30.0*5.0, 30.0*5.0);//?
     }
 
@@ -163,6 +164,11 @@ public class Turret extends SubsystemBase {
             .getDegrees()));
     }
 
+    public boolean isLocked() {
+        return this.isLocked;
+    }
+
+
     @Override
     public void periodic() {
         double offAngle = (Math.abs(desired_mRot-this.motor.pos())/TurretConstants.turretGearRatio*360.0)%360;
@@ -172,7 +178,13 @@ public class Turret extends SubsystemBase {
         if (offAngle > 180.0) {
             offAngle = 360.0-offAngle;
         }
-        Turret.isLocked = true;//(offAngle < 10);
+        this.isLocked = (offAngle < 30);
+
+        if (RobotState.isEnabled()) {
+            motor.setBrake(true);
+        } else {
+            motor.setBrake(false);
+        }
         //System.out.println("turret: "+this.getTurretDegrees());
     }
 }

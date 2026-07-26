@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Actors.Subsystems.Intake.Intake;
 // Import Actors, Utils & Constants
 import frc.robot.Actors.Subsystems.Intake.IntakeExtension;
+import frc.robot.Constants.IntakeConstants;
 
 public class AutoIntakeRetract extends Command {
     // Real Variables
@@ -28,7 +29,7 @@ public class AutoIntakeRetract extends Command {
     @Override
     public void initialize() {
         // Call the intakeExtension subsystem setIntakePos function
-        intakeExtension.setIntakePos(0);
+        intakeExtension.setIntakePos(IntakeConstants.minDegree);
         intake.set(0);
     }
 

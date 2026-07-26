@@ -21,7 +21,7 @@ import frc.robot.Commands.Indexer.SpinAndFeedCommand;
 public class AimAndShootCommand extends ParallelCommandGroup {
     public AimAndShootCommand(
         Supplier<Pose2d> robotPoseSupplier,
-        Supplier<ChassisSpeeds> robotVelSupplier,Indexer indexer, Transfer transfer, Shooter shooter) {
+        Supplier<ChassisSpeeds> robotVelSupplier,Indexer indexer, Transfer transfer, Shooter shooter, Turret turret) {
         addCommands(
             new AimAtHubCommand(shooter, robotPoseSupplier, robotVelSupplier),
             
@@ -31,9 +31,7 @@ public class AimAndShootCommand extends ParallelCommandGroup {
             //         new WaitCommand(0.6)
             // ),
 
-            new WaitCommand(0.2).andThen(Commands.waitUntil(() -> {
-                return Turret.isLocked;
-            })).andThen(new SpinAndFeedCommand(transfer, indexer, IndexerConstants.transferRPS, IndexerConstants.indexerRPS))
+            new WaitCommand(0.1).andThen(new SpinAndFeedCommand(transfer, indexer, IndexerConstants.transferRPS, IndexerConstants.indexerRPS, turret::isLocked))
         );
         addRequirements(shooter, transfer, indexer);
     }

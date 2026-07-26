@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 
 // Import Actors, Utils & Constants
 import frc.robot.Actors.Subsystems.Intake.IntakeExtension;
+import frc.robot.Constants.IntakeConstants;
 
 public class ExtensionCommand extends Command {
     // Real Variables
@@ -39,7 +40,7 @@ public class ExtensionCommand extends Command {
     @Override
     public void end(boolean interrupted) {
         // When the command is interrupted or cancelled, we will retract the intakeExtension subsystem
-        intakeExtension.setIntakePos(0.0);
+        intakeExtension.setIntakePos(IntakeConstants.minDegree);
     }
 
     @Override

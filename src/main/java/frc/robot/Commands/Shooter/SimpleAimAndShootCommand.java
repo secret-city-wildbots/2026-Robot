@@ -12,7 +12,7 @@ public class SimpleAimAndShootCommand extends ParallelCommandGroup {
     public SimpleAimAndShootCommand(Indexer indexer, Transfer transfer, Shooter shooter, Turret turret) {
         addCommands(
             new SimpleShootCommand(shooter, turret),
-            new SpinAndFeedCommand(transfer, indexer, IndexerConstants.transferRPS, IndexerConstants.indexerRPS)
+            new SpinAndFeedCommand(transfer, indexer, IndexerConstants.transferRPS, IndexerConstants.indexerRPS, turret::isLocked)
         );
         addRequirements(shooter, turret);
     }

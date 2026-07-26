@@ -5,6 +5,7 @@
 
 package frc.robot;
 
+import com.ctre.phoenix6.SignalLogger;
 // Import Phoenix6 Libraries
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
@@ -34,7 +35,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
-
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 // Import Custom TunerConstants
 import frc.robot.generated.TunerConstants;
 import frc.robot.Utils.JoystickScaler;
@@ -145,7 +146,7 @@ public class RobotContainer {
                 state.Speeds,
                 state.Pose.getRotation()
             );
-        }, indexer, transfer, shooter));
+        }, indexer, transfer, shooter, turret));
         new EventTrigger("Intake").onTrue(new AutoIntakeExtend(intake, intakeExtension));
         new EventTrigger("IntakeRetract").onTrue(new AutoIntakeRetract(intake, intakeExtension));
         new EventTrigger("Intake").onTrue(Commands.print("Intaking (Trigger)"));
@@ -180,7 +181,7 @@ public class RobotContainer {
                         System.out.println("shot smoothing active");
                         return drive.withVelocityX(shotSmoothingx.calculate(-JoystickScaler.scaleStrafe(inputX) * MaxSpeed * 0.3)) // Drive forward with negative Y (forward)
                         .withVelocityY(shotSmoothingy.calculate(-JoystickScaler.scaleStrafe(inputY) * MaxSpeed * 0.3)) // Drive left with negative X (left)
-                        .withRotationalRate(shotSmoothingh.calculate(-JoystickScaler.scaleStrafe(inputH) * MaxAngularRate * 0.3)); // Drive counterclockwise with negative X (left)
+                        .withRotationalRate(shotSmoothingh.calculate(-JoystickScaler.scaleStrafe(inputH) * MaxAngularRate * 0.5)); // Drive counterclockwise with negative X (left)
                     } else {
                         return drive.withVelocityX(-JoystickScaler.scaleStrafe(inputX) * MaxSpeed) // Drive forward with negative Y (forward)
                         .withVelocityY(-JoystickScaler.scaleStrafe(inputY) * MaxSpeed) // Drive left with negative X (left)
@@ -223,11 +224,13 @@ public class RobotContainer {
 
         // Run SysId routines when holding back/start and X/Y.
         // Note that each routine should be run exactly once in a single log.
-        /*joystick.back().and(joystick.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
+        /*joystick.povUp().onTrue(Commands.runOnce(SignalLogger::start));
+        joystick.povDown().onFalse(Commands.runOnce(SignalLogger::stop));
+        joystick.back().and(joystick.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
         joystick.back().and(joystick.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
         joystick.start().and(joystick.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
-        joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
-        */
+        joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));*/
+        
         // reset the field-centric heading on left bumper press
         joystick.povLeft().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
@@ -237,8 +240,20 @@ public class RobotContainer {
 
         // TODO: Enable logger
         //drivetrain.registerTelemetry(logger::telemeterize);
-        
         joystick.leftBumper().toggleOnTrue(new IntakeSequence(intake, intakeExtension));
+
+        joystick.leftTrigger(0.4).whileTrue(Commands.runEnd(
+            () -> {
+                if (intakeExtension.getPos() > 50) {
+                    intakeExtension.setIntakePos(IntakeConstants.jostleDegree);
+                }
+            },
+            () -> {
+                if (intakeExtension.getPos() > 50) {
+                    intakeExtension.setIntakePos(IntakeConstants.maxDegree);
+                }
+            }
+        ));
 
         joystick.rightTrigger(0.4).onTrue(Commands.runOnce(() -> {
             Robot.shooterEnabled = true;
@@ -252,7 +267,7 @@ public class RobotContainer {
                 state.Speeds,
                 state.Pose.getRotation()
             );
-        }, indexer, transfer, shooter)
+        }, indexer, transfer, shooter, turret)
         /*,new RepeatCommand(
             new SequentialCommandGroup(
                 Commands.runOnce(() -> intakeExtension.setIntakePos(IntakeConstants.maxDegree)),

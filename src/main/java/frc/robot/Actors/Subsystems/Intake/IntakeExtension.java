@@ -2,9 +2,11 @@ package frc.robot.Actors.Subsystems.Intake;
 
 // Import WPILib Libraries
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
+import frc.robot.Robot;
 // Import Actors, Utils & Constants
 import frc.robot.Actors.Motor;
 import frc.robot.Utils.MotorType;
@@ -24,12 +26,21 @@ public class IntakeExtension extends SubsystemBase {
         this.motor.motorConfig.direction = RotationDir.Clockwise;
         this.motor.motorConfig.brake = false;
         this.motor.applyConfig();
-        this.motor.pid(0.06, 0.02, 0.01);
+        this.motor.pid(0.1, 0.02, 0.01);
+
+        this.motor.curlim.SupplyCurrentLimit = 15;
+        this.motor.curlim.SupplyCurrentLimitEnable = true;
+        this.motor.motorTFX.getConfigurator().apply(this.motor.curlim);
         //this.motor.pid(0.0, 0.0, 0.0);
+        this.setIntakePos(IntakeConstants.minDegree);
     }
 
     public double getTemp() {
         return this.motor.getTemp();
+    }
+
+    public double getPos() {
+        return this.motor.pos() / IntakeConstants.extensionGearRatio * 360.0;
     }
 
     public void setBrake(boolean brake) {
@@ -65,11 +76,16 @@ public class IntakeExtension extends SubsystemBase {
      * @param degrees
      */
     private double degreesToMotorRotations(double degrees) {
-        return (degrees - IntakeConstants.minDegree) * IntakeConstants.extensionGearRatio / 360.0;
+        return (degrees) * IntakeConstants.extensionGearRatio / 360.0;
     }
 
     @Override
     public void periodic() {
+        if (RobotState.isEnabled()) {
+            motor.setBrake(true);
+        } else {
+            motor.setBrake(false);
+        }
         //System.out.println("I: "+(motor.pos() * 360 / IntakeConstants.extensionGearRatio + IntakeConstants.minDegree));
     }
 }

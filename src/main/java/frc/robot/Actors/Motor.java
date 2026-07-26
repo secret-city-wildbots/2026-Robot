@@ -22,6 +22,7 @@ import com.revrobotics.spark.SparkMax;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 
 import frc.robot.Robot;
+import frc.robot.Constants.RobotConstants;
 // Import Actors, Utils & Constants
 import frc.robot.Utils.MotorType;
 import frc.robot.Utils.RotationDir;
@@ -57,7 +58,7 @@ public class Motor {
                 this.configTFX = new TalonFXConfiguration();
                 this.slot0TFX = new Slot0Configs();
                 this.motorTFX.getConfigurator().setPosition(0);
-                curlim.SupplyCurrentLimit = (Robot.defense) ? 10:15;
+                curlim.SupplyCurrentLimit = (Robot.defense) ? 10:RobotConstants.motorCurLim;
                 curlim.SupplyCurrentLimitEnable = true;
                 this.motorTFX.getConfigurator().apply(curlim);
                 this.limitBandwidth();
@@ -84,7 +85,7 @@ public class Motor {
                 this.configTFX = new TalonFXConfiguration();
                 this.slot0TFX = new Slot0Configs();
                 this.motorTFX.getConfigurator().setPosition(0);
-                curlim.SupplyCurrentLimit = (Robot.defense) ? 10:15;
+                curlim.SupplyCurrentLimit = (Robot.defense) ? 10:RobotConstants.motorCurLim;
                 curlim.SupplyCurrentLimitEnable = true;
                 this.motorTFX.getConfigurator().apply(curlim);
                 this.limitBandwidth();
@@ -113,7 +114,7 @@ public class Motor {
                 this.motorTFX.getConfigurator().setPosition(0);
                 if (important) {
                     CurrentLimitsConfigs curlim = new CurrentLimitsConfigs();
-                    curlim.SupplyCurrentLimit = 30;
+                    curlim.SupplyCurrentLimit = RobotConstants.motorImpCurLim;
                     curlim.SupplyCurrentLimitEnable = true;
                     this.motorTFX.getConfigurator().apply(curlim);
                 }
@@ -138,9 +139,9 @@ public class Motor {
         CurrentLimitsConfigs curlim = new CurrentLimitsConfigs();
         if (powersave) {
             if (important) {
-                curlim.SupplyCurrentLimit = 60;
+                curlim.SupplyCurrentLimit = RobotConstants.motorImpCurLim;
             } else {
-                curlim.SupplyCurrentLimit = (Robot.defense) ? 10:15;
+                curlim.SupplyCurrentLimit = (Robot.defense) ? 10:RobotConstants.motorCurLim;
             }
         } else {
             curlim.SupplyCurrentLimit = 0;
