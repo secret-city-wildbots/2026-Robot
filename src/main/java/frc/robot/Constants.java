@@ -47,7 +47,7 @@ public final class Constants {
     public static final double minDegree = 25.0;
     public static final double jostleDegree = 60;
     public static final double maxDegree = 118;
-    public static final int intake_rps = 30;
+    public static final int intake_rps = 50;
   }
 
   public static class IndexerConstants {
