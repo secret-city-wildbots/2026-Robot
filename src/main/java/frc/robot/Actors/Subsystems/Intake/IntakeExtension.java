@@ -14,6 +14,7 @@ import frc.robot.Utils.RotationDir;
 import frc.robot.Constants.IntakeConstants;
 
 public class IntakeExtension extends SubsystemBase {
+    private double desiredDeg = 0;
 
     // Define variables
      private Motor motor; // Motor to control the intake extension position
@@ -28,7 +29,7 @@ public class IntakeExtension extends SubsystemBase {
         this.motor.applyConfig();
         this.motor.pid(0.1, 0.02, 0.01);
 
-        this.motor.curlim.SupplyCurrentLimit = 15;
+        this.motor.curlim.SupplyCurrentLimit = 12;
         this.motor.curlim.SupplyCurrentLimitEnable = true;
         this.motor.motorTFX.getConfigurator().apply(this.motor.curlim);
         //this.motor.pid(0.0, 0.0, 0.0);
@@ -65,6 +66,7 @@ public class IntakeExtension extends SubsystemBase {
      * @param degrees
      */
     public void setIntakePos(double degrees) {
+        desiredDeg = degrees;
         degrees = MathUtil.clamp(degrees, IntakeConstants.minDegree, IntakeConstants.maxDegree);
         double motorRotations = degreesToMotorRotations(degrees);
         motor.pos(motorRotations);
@@ -81,7 +83,10 @@ public class IntakeExtension extends SubsystemBase {
 
     @Override
     public void periodic() {
-        if (RobotState.isEnabled()) {
+        if (desiredDeg > IntakeConstants.maxDegree - 10 && this.getPos() > IntakeConstants.maxDegree - 10) {
+            motor.dc(0.0);
+            motor.setBrake(false);
+        } else if (RobotState.isEnabled()) {
             motor.setBrake(true);
         } else {
             motor.setBrake(false);
