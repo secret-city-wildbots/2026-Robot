@@ -106,7 +106,10 @@ public class Robot extends TimedRobot {
     // TODO: Printing pose
     // System.out.println(m_robotContainer.drivetrain.getState().Pose);
 
-    //m_robotContainer.dashboard.update();
+    // Drives every WildBoard panel. Without this nothing on the dashboard
+    // updates and no panel message is ever flushed to the browser, so the
+    // Autos tab cannot arm, rescan, or report what is armed.
+    m_robotContainer.dashboard.update();
     //System.out.println("dist: "+distance);
   }
 

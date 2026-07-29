@@ -78,7 +78,17 @@ public class Server {
             }
 
             String requestPath = exchange.getRequestURI().getPath();
-            if (requestPath.equals("/"))
+
+            // Strip the context prefix before resolving. A handler mounted at
+            // "/dynamic/" receives the full "/dynamic/foo.js", so without this
+            // it would look for <dynamicDir>/dynamic/foo.js and 404 on
+            // everything except the one file that used to be special-cased.
+            String context = exchange.getHttpContext().getPath();
+            if (!"/".equals(context) && requestPath.startsWith(context)) {
+                requestPath = "/" + requestPath.substring(context.length());
+            }
+
+            if (requestPath.equals("/") || requestPath.isEmpty())
                 requestPath = "/index.html";
 
             Path filePath = rootPath.resolve("." + requestPath).normalize();
@@ -88,20 +98,10 @@ public class Server {
                 return;
             }
 
-            if (requestPath.equals("/dynamic/index.js")) {
-                byte[] fileBytes;
-                if (RobotBase.isSimulation()) {
-                    fileBytes = Files.readAllBytes(Path.of(new File(Filesystem.getOperatingDirectory(), "sim/home/frontend-public/dynamic/index.js").getAbsolutePath()));
-                } else {
-                    fileBytes = Files.readAllBytes(Path.of("/home/lvuser/WildBoard/frontend-public/dynamic/index.js"));
-                }
-                exchange.getResponseHeaders().set("Content-Type", "application/javascript");
-                exchange.sendResponseHeaders(200, fileBytes.length);
-
-                try (OutputStream os = exchange.getResponseBody()) {
-                    os.write(fileBytes);
-                }
-            }
+            // index.js used to need a hardcoded special case here because the
+            // context prefix was not being stripped. It resolves normally now,
+            // and dropping the special case also fixes a double
+            // sendResponseHeaders() call that it fell through into.
 
             if (Files.exists(filePath) && !Files.isDirectory(filePath)) {
                 String mimeType;
@@ -111,6 +111,8 @@ public class Server {
                     mimeType = "text/css";
                 } else if (filePath.toString().endsWith(".html")) {
                     mimeType = "text/html";
+                } else if (filePath.toString().endsWith(".json")) {
+                    mimeType = "application/json";
                 } else {
                     mimeType = URLConnection.guessContentTypeFromName(filePath.toString());
                     if (mimeType == null)

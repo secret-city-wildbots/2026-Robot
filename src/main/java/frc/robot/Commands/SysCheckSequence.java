@@ -29,7 +29,7 @@ public class SysCheckSequence extends SequentialCommandGroup {
 
         addCommands(
             // Drive in Square
-            new PathPlannerAuto("SysCheck"),
+            new PathPlannerAuto("ZZ-SysCheck"),
             //Intake and Extend
             new ParallelRaceGroup(
                 new ExtensionCommand(extender, 86.0),
