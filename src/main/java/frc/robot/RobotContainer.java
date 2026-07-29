@@ -40,6 +40,10 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.generated.TunerConstants;
 import frc.robot.Utils.JoystickScaler;
 import frc.robot.Constants.IntakeConstants;
+import frc.robot.Actors.LEDs.LEDPattern;
+import frc.robot.Actors.LEDs.LEDstrip;
+import frc.robot.Actors.LEDs.LEDPatterns.RainbowPattern;
+import frc.robot.Actors.LEDs.LEDPatterns.ShiftPattern;
 // Import subystems
 import frc.robot.Actors.Subsystems.CommandSwerveDrivetrain;
 import frc.robot.Actors.Subsystems.Intake.Intake;
@@ -109,9 +113,23 @@ public class RobotContainer {
       /* Path follower */
     private Command auto;
     private final Consumer<Command> autoChosen = (Command newAuto) -> {this.auto = newAuto;};
+
+    private LEDPattern[] ledPatterns;
+
+    private final LEDstrip ledStrip;
+    private int pattern = 0;
     
     public RobotContainer() {
         dashboard = new Dashboard(drivetrain, shooter, indexer, transfer, turret, intake, intakeExtension, pdh, autoChosen);
+
+        int length = 50;
+
+        ledPatterns = new LEDPattern[] {
+            new ShiftPattern(length),
+            new RainbowPattern(length)
+        };
+
+        ledStrip = new LEDstrip(1, length);
 
         shotSmoothingx = new SlewRateLimiter(4.0);
         shotSmoothingy = new SlewRateLimiter(4.0);
@@ -233,6 +251,9 @@ public class RobotContainer {
         
         // reset the field-centric heading on left bumper press
         joystick.povLeft().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+
+        joystick.povUp().onTrue(Commands.runOnce(() -> ledStrip.setPattern(ledPatterns[pattern++])));
+        joystick.povUp().onTrue(Commands.runOnce(() -> ledStrip.setPattern(ledPatterns[pattern--])));
 
         //joystick.povUp().toggleOnTrue(new LockTurret(turret));
 
