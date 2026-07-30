@@ -111,7 +111,12 @@ export default function ({ socket, id }: Props) {
         setArmed(n);
         if (n) setFlash("armed " + n);
       } else if (msg.startsWith("refused:")) {
-        setFlash("REFUSED " + msg.slice(8) + " — it will not load");
+        // payload is "<name>|<reason>"; older builds sent just "<name>"
+        const body = msg.slice(8);
+        const cut = body.indexOf("|");
+        const who = cut < 0 ? body : body.slice(0, cut);
+        const why = cut < 0 ? "it will not load" : body.slice(cut + 1);
+        setFlash("REFUSED " + who + " — " + why);
       } else if (msg === "rescanned") {
         setFlash("rescanned");
         load();

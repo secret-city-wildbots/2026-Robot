@@ -40,9 +40,22 @@ public class WildBoard {
 
     public void start() {
         serverStart();
-        clientBuild();
         this.server.start();
         lastTime_s = Timer.getTimestamp();
+
+        // Build the frontend in a background thread so it does not block robot
+        // startup.  On the roboRIO the esbuild step is slow and was preventing
+        // the HTTP server from ever starting.  The server is now live before the
+        // build begins — the browser shows a blank page until /dynamic/index.js
+        // is ready, then a refresh picks it up.
+        new Thread(() -> {
+            try {
+                clientBuild();
+            } catch (Exception e) {
+                System.err.println("[WildBoard] frontend build failed: " + e.getMessage());
+                e.printStackTrace();
+            }
+        }, "WildBoard-FrontendBuild").start();
     }
 
     private void clientBuild() {

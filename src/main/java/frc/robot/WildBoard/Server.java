@@ -48,7 +48,18 @@ public class Server {
 
             ws = new WsServer(port + 1);
 
-            System.out.println("HTTP + WebSocket server running on port " + (port + 1));
+            // Print the address people actually need to type. In simulation the
+            // code runs on the laptop, so localhost works; on the roboRIO it
+            // does NOT — you must use the robot's address, and "localhost
+            // refused to connect" is what you get for forgetting.
+            if (RobotBase.isSimulation()) {
+                System.out.println("[WildBoard] open  http://localhost:" + port);
+            } else {
+                System.out.println("[WildBoard] open  http://10.TE.AM.2:" + port
+                        + "   (or http://roborio-TEAM-frc.local:" + port + ")");
+                System.out.println("[WildBoard] NOT localhost — the dashboard is served by the roboRIO");
+            }
+            System.out.println("[WildBoard] http port " + port + ", websocket port " + (port + 1));
             System.out.println("Serving public: " + publicDir.toAbsolutePath());
             System.out.println("Serving dynamic: " + dynamicDir.toAbsolutePath());
 

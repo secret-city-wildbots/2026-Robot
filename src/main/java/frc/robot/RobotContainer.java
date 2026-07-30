@@ -10,6 +10,10 @@ import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.DriverStation;
 // Import Path Planner Libraries
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.FollowPathCommand;
@@ -108,7 +112,43 @@ public class RobotContainer {
 
       /* Path follower */
     private Command auto;
-    private final Consumer<Command> autoChosen = (Command newAuto) -> {this.auto = newAuto;};
+    private final Consumer<Command> autoChosen = (Command newAuto) -> {
+        this.auto = newAuto;
+        this.dashboardArmed = true;
+    };
+
+    /*
+     *=========================================================================
+     * AUTO BYPASS  —  currently INACTIVE
+     *=========================================================================
+     * Normally the auto is armed from the dashboard's "Autos" tab, which
+     * validates that it will actually load before letting you pick it. If the
+     * dashboard is unavailable - browser closed, laptop dead, WildBoard not
+     * serving - there is otherwise no way to choose an auto and the robot sits
+     * still for the whole autonomous period.
+     *
+     * The bypass publishes a plain SendableChooser to NetworkTables as
+     * "Auto Bypass", so Glass / Elastic / SmartDashboard can select one.
+     *
+     *     >>> TO ENABLE: uncomment the ONE line marked BYPASS  <<<
+     *     >>> in getAutonomousCommand() at the bottom of this file. <<<
+     *
+     * Everything else here is already live. The chooser is built and published
+     * at startup so it is visible and selectable in NetworkTables even while
+     * the bypass is inactive - it has to be, or it would not appear in time to
+     * pick from. Until you uncomment that line its selection is simply
+     * ignored, and the dashboard stays the only source of the auto.
+     *
+     * Once enabled the dashboard still wins whenever it has armed something;
+     * the chooser is consulted only when it has not.
+     *
+     * NOTE: buildAutoChooser() lists every auto in the deploy folder,
+     * including the ones the analysis flags as unloadable. Selecting one of
+     * those will throw when autonomous starts - the Autos tab refuses them, a
+     * plain SendableChooser cannot. Check the Autos tab first.
+     */
+    private SendableChooser<Command> autoBypass = null;
+    private boolean dashboardArmed = false;
     
     public RobotContainer() {
         dashboard = new Dashboard(drivetrain, shooter, indexer, transfer, turret, intake, intakeExtension, pdh, autoChosen);
@@ -303,14 +343,98 @@ public class RobotContainer {
     //     ));
 
     //     joystick.y().whileTrue(new SpinFuelCommand(indexer, 10));
-        auto = AutoBuilder.buildAutoChooser("L Trench 2 Dip").getSelected(); //?
+        // Was: auto = AutoBuilder.buildAutoChooser("L Trench 2 Dip").getSelected();
+        // Removed because it did not do what it looks like it does:
+        //   - the SendableChooser it built was never published anywhere, so
+        //     nothing could ever select from it;
+        //   - it called getSelected() immediately, one statement after
+        //     construction, so it only ever returned the default;
+        //   - "L Trench 2 Dip" no longer exists (renamed to "LT-2Dip"), so
+        //     even the default did not match and it returned Commands.none();
+        //   - running last in configureBindings(), it silently overwrote the
+        //     WaitCommand(5.0) fallback set earlier in the constructor.
+        // The auto now comes from the dashboard's Autos tab, or from the
+        // bypass chooser below if you enable it.
+
+        // Build and publish the bypass chooser. This happens whether or not the
+        // bypass is active, because a chooser that appears only after you flip
+        // it on would not be selectable in time to matter. See the AUTO BYPASS
+        // block near the top of this file.
+        //
+        // buildAutoChooser() constructs every auto in the deploy folder, so one
+        // unloadable auto would otherwise take out the whole robot program at
+        // startup. Losing the bypass is survivable; failing to boot is not.
+        try {
+            autoBypass = AutoBuilder.buildAutoChooser("LT-2Dip");
+            SmartDashboard.putData("Auto Bypass", autoBypass);
+        } catch (Exception e) {
+            autoBypass = null;
+            DriverStation.reportError(
+                    "Auto Bypass chooser could not be built (the Autos tab still works): " + e,
+                    false);
+        }
     }
 
 
     public Command getAutonomousCommand() {
-         /* Run the path selected from the auto chooser */
+        /*
+         * Run the auto armed in the dashboard's "Autos" tab.
+         *
+         * If nothing has been armed, and no bypass below is enabled, this
+         * returns the WaitCommand(5.0) set in the constructor — the robot does
+         * nothing for 5 seconds.
+         *
+         *=====================================================================
+         * BYPASS — two ways to choose an auto without the dashboard.
+         * Uncomment ONE. Either only applies when the dashboard has NOT armed
+         * anything, so the Autos tab always wins when it is available.
+         *=====================================================================
+         *
+         * A) TYPE THE NAME HERE. Use this if you are not running Glass or
+         *    Elastic. Put the auto name between the quotes. It must match a
+         *    file in src/main/deploy/pathplanner/autos/ exactly, without the
+         *    .auto extension — for example "LT-2Dip" or "RT-2Dip-Outpost".
+         *    The Autos tab lists them, or run tools\audit.bat.
+         */
+         //if (!dashboardArmed) return new PathPlannerAuto("LT-Simple");
+
+        /*
+         * B) PICK IT FROM A DROPDOWN. Nothing to type. The chooser is already
+         *    published to NetworkTables at startup as "Auto Bypass", so it
+         *    shows up in Glass / Elastic / SmartDashboard whether or not this
+         *    line is uncommented. Open one of those, find "Auto Bypass", and
+         *    select from the list.
+         *
+         *    In Glass:    NetworkTables → SmartDashboard → Auto Bypass
+         *    In Elastic:  add a "ComboBox Chooser" widget bound to Auto Bypass
+         */
+        if (!dashboardArmed) return bypassAuto();
+
         return auto;
-        // /* Run the path selected from the auto chooser */
-        //return Commands.print("No autonomous command configured");
+    }
+
+    /**
+     * The auto selected in the NetworkTables "Auto Bypass" chooser, or the
+     * normal auto if the chooser is unavailable or has nothing selected.
+     *
+     * <p>Only reached when the BYPASS line in {@link #getAutonomousCommand()}
+     * is uncommented.
+     */
+    private Command bypassAuto() {
+        if (autoBypass == null) {
+            DriverStation.reportError(
+                    "Auto bypass is enabled but the chooser failed to build; "
+                            + "falling back to the dashboard auto", false);
+            return auto;
+        }
+        Command picked = autoBypass.getSelected();
+        if (picked == null) {
+            DriverStation.reportWarning(
+                    "Auto bypass is enabled but nothing is selected in \"Auto Bypass\"", false);
+            return auto;
+        }
+        DriverStation.reportWarning(
+                "Auto came from the BYPASS chooser, not the dashboard", false);
+        return picked;
     }
 }
