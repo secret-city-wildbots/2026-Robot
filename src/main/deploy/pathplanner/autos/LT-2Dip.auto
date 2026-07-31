@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "LT-Base-Fwd"
+            "pathName": "LT-Base"
           }
         },
         {
@@ -17,15 +17,21 @@
           }
         },
         {
-          "type": "wait",
+          "type": "path",
           "data": {
-            "waitTime": 3.0
+            "pathName": "1st-to-2nd-Dip"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "45-Dip-FromLBump-2"
+            "pathName": "Dip-FromLBump-2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "45-Mid"
           }
         }
       ]
