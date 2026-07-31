@@ -8,24 +8,24 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.556777777777777,
-        "y": 5.4156555555555554
+        "x": 7.947606635071089,
+        "y": 5.68995260663507
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.12804292929293,
-        "y": 5.248914141414142
+        "x": 2.8,
+        "y": 5.4
       },
       "prevControl": {
-        "x": 4.921944444444446,
-        "y": 5.693333333333333
+        "x": 4.758295454545454,
+        "y": 5.594684343434342
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "L Bump 45"
+      "linkedName": null
     }
   ],
   "rotationTargets": [

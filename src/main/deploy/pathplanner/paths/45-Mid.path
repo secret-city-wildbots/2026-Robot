@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.8481555555555556,
-        "y": 6.282344444444444
+        "x": 1.8339646464646469,
+        "y": 6.27959595959596
       },
       "isLocked": false,
       "linkedName": null
@@ -93,7 +93,7 @@
   "eventMarkers": [
     {
       "name": "AimAndShoot",
-      "waypointRelativePos": 1.0166112956810651,
+      "waypointRelativePos": 0.8720626631853803,
       "endWaypointRelativePos": null,
       "command": null
     },

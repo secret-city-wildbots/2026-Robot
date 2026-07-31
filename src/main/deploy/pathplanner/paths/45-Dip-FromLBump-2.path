@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.12804292929293,
-        "y": 5.248914141414142
+        "x": 2.8,
+        "y": 5.4
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.883876262626263,
-        "y": 5.970391414141414
+        "x": 3.9640404040404045,
+        "y": 5.581022727272727
       },
       "isLocked": false,
-      "linkedName": "L Bump 45"
+      "linkedName": null
     },
     {
       "anchor": {
@@ -102,8 +102,12 @@
       "rotationDegrees": -90.0
     },
     {
-      "waypointRelativePos": 3.2539682539682584,
-      "rotationDegrees": 160.0
+      "waypointRelativePos": 2.8066378066377977,
+      "rotationDegrees": 140.0
+    },
+    {
+      "waypointRelativePos": 3.6435786435786843,
+      "rotationDegrees": 45.0
     }
   ],
   "constraintZones": [
@@ -158,13 +162,13 @@
   },
   "goalEndState": {
     "velocity": 1.0,
-    "rotation": 180.0
+    "rotation": 45.0
   },
   "reversed": false,
   "folder": "Left Dip",
   "idealStartingState": {
     "velocity": 1.0,
-    "rotation": -45.0
+    "rotation": 45.0
   },
   "useDefaultConstraints": false
 }

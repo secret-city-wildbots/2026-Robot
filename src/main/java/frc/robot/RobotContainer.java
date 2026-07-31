@@ -396,7 +396,7 @@ public class RobotContainer {
          *    .auto extension — for example "LT-2Dip" or "RT-2Dip-Outpost".
          *    The Autos tab lists them, or run tools\audit.bat.
          */
-         //if (!dashboardArmed) return new PathPlannerAuto("LT-Simple");
+         // if (!dashboardArmed) return new PathPlannerAuto("LT-T-B"); TODO: AUTO BYPASS
 
         /*
          * B) PICK IT FROM A DROPDOWN. Nothing to type. The chooser is already

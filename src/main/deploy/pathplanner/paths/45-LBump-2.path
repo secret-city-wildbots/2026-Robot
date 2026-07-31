@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 3.12804292929293,
-        "y": 5.248914141414142
+        "x": 3.6,
+        "y": 7.390441919191919
       },
       "prevControl": {
-        "x": 5.303926767676768,
-        "y": 6.1650757575757575
+        "x": 5.775883838383839,
+        "y": 8.306603535353535
       },
       "nextControl": null,
       "isLocked": false,
@@ -49,7 +49,7 @@
   },
   "goalEndState": {
     "velocity": 1.0,
-    "rotation": -45.0
+    "rotation": 0.0
   },
   "reversed": false,
   "folder": "Defensive Paths",
