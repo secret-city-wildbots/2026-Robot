@@ -197,6 +197,10 @@ def newest_auto():
 
 
 TEMPLATE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "view_template.html")
+# Generated output lives beside this script, not at the repo root, so the
+# repo root stays clean. field2026.png is in here too, which is why the
+# HTML can reference it with a bare relative path.
+OUT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 def build(open_after=False, quiet=False):
@@ -213,7 +217,7 @@ def build(open_after=False, quiet=False):
                          ("__DEFAULT__", json.dumps(default))):
         html = html.replace(token, value)
 
-    out = os.path.join(ROOT, "pathplanner_view.html")
+    out = os.path.join(OUT_DIR, "pathplanner_view.html")
     with open(out, "w", encoding="utf-8") as f:
         f.write(html)
     if not quiet:

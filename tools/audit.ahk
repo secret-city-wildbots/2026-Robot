@@ -26,9 +26,9 @@ REPO := "C:\Users\wildr\Programming\Robotics\FRC-4265\2026-Robot"
 
 SetTitleMatchMode 2            ; "contains" matching on window titles
 
-Audit()     => Run('"' REPO '\audit.bat"',      REPO)
-AuditAll()  => Run('"' REPO '\audit-all.bat"',  REPO)
-View()      => Run('"' REPO '\view-once.bat"',  REPO)
+Audit()     => Run('"' REPO '\tools\audit.bat"',      REPO)
+AuditAll()  => Run('"' REPO '\tools\audit-all.bat"',  REPO)
+View()      => Run('"' REPO '\tools\view-once.bat"',  REPO)
 
 A_IconTip := "FRC 4265 PathPlanner`nF9 audit | F10 view | Ctrl+F9 audit all"
 TrayTip "PathPlanner hotkeys loaded",

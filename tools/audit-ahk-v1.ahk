@@ -18,17 +18,17 @@ Menu, Tray, Tip, FRC 4265 PathPlanner`nF9 audit | F10 view | Ctrl+F9 audit all
 TrayTip, PathPlanner hotkeys loaded, In PathPlanner:`n  F9 audit`n  F10 overlay`n  Ctrl+F9 audit all
 
 #If WinActive("PathPlanner")
-F9::   Run, "%REPO%\audit.bat", %REPO%
+F9::   Run, "%REPO%\tools\audit.bat", %REPO%
        return
-F10::  Run, "%REPO%\view-once.bat", %REPO%
+F10::  Run, "%REPO%\tools\view-once.bat", %REPO%
        return
-^F9::  Run, "%REPO%\audit-all.bat", %REPO%
+^F9::  Run, "%REPO%\tools\audit-all.bat", %REPO%
        return
 #If
 
-^!F9::  Run, "%REPO%\audit.bat", %REPO%
+^!F9::  Run, "%REPO%\tools\audit.bat", %REPO%
         return
-^!F10:: Run, "%REPO%\view-once.bat", %REPO%
+^!F10:: Run, "%REPO%\tools\view-once.bat", %REPO%
         return
 ^!r::   Reload
         return

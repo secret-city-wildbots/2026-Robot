@@ -7,19 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "LT-Base-Fwd"
+            "pathName": "LT-Base"
           }
         },
         {
           "type": "path",
           "data": {
             "pathName": "LT-Base-OB"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "LB-45-Depot"
           }
         },
         {

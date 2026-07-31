@@ -1,12 +1,12 @@
 ==========================================================================
-PATHPLANNER AUDIT  -  67 paths, 41 autos
+PATHPLANNER AUDIT  -  68 paths, 43 autos
 ==========================================================================
 
 STATIC ISSUES
 
   [embedded command instead of bare trigger]  (9)
     LT-Base-Fwd: 'Intake' @ 0.29
-    LT-Base: 'Intake' @ 0.58
+    LT-Base: 'Intake' @ 0.45
     LT-Depot-Mid: 'Intake' @ 0.43
     LT-Depot-Pickup: 'Intake' @ 0.10
     LT-Plow: 'Intake' @ 0.77
@@ -53,6 +53,11 @@ CTR-FastAway
   1 paths, 0 markers, 0 shot(s), shooter off at end
   OK
 
+Check n Shoot
+  1 paths, 2 markers, 1 shot(s), shooter RUNNING at end
+  ~ ends with shot #1 still running (started at [Copy of ZZ-EventTriggers @0.40]) — odd AimAndShoot count, shooter carries into teleop
+  ~ auto ends with intake still extended
+
 LB-Dip
   1 paths, 3 markers, 1 shot(s), shooter off at end
   ~ auto ends with intake still extended
@@ -86,25 +91,33 @@ LT-Plow-Outpost
   ~ auto ends with intake still extended
 
 LT-RT-BackToMid-NC
-  4 paths, 11 markers, 4 shot(s), shooter RUNNING at end
-  ~ ends with shot #4 still running (started at [LT-BackToMid @2.07]) — odd AimAndShoot count, shooter carries into teleop
+  4 paths, 8 markers, 3 shot(s), shooter RUNNING at end
+  ~ [LT-Depot-Pickup @0.10] 'Intake' fired while intake is already extended
+  ~ ends with shot #3 still running (started at [LT-BackToMid @2.07]) — odd AimAndShoot count, shooter carries into teleop
 
 LT-Simple
-  2 paths, 5 markers, 2 shot(s), shooter RUNNING at end
-  ~ ends with shot #2 still running (started at [LT-Base-Rev @1.00]) — odd AimAndShoot count, shooter carries into teleop
+  2 paths, 2 markers, 1 shot(s), shooter RUNNING at end
+  ~ ends with shot #1 still running (started at [LT-Base-Rev @1.00]) — odd AimAndShoot count, shooter carries into teleop
+  ~ auto ends with intake still extended
 
 LT-Simple-Depot
-  3 paths, 6 markers, 2 shot(s), shooter RUNNING at end
-  ~ ends with shot #2 still running (started at [LT-Base-Rev @1.00]) — odd AimAndShoot count, shooter carries into teleop
+  3 paths, 3 markers, 1 shot(s), shooter RUNNING at end
+  ~ [LT-Depot-Mid @0.43] 'Intake' fired while intake is already extended
+  ~ ends with shot #1 still running (started at [LT-Base-Rev @1.00]) — odd AimAndShoot count, shooter carries into teleop
   ~ auto ends with intake still extended
 
 LT-Simple-NC
-  3 paths, 7 markers, 2 shot(s), shooter off at end
+  3 paths, 4 markers, 1 shot(s), shooter off at end
+  ~ [LT-Depot-Pickup @0.10] 'Intake' fired while intake is already extended
   ~ auto ends with intake still extended
 
 LT-SlowLob
   2 paths, 3 markers, 1 shot(s), shooter RUNNING at end
   ~ ends with shot #1 still running (started at [LT-Base-OB @1.00]) — odd AimAndShoot count, shooter carries into teleop
+
+New Auto
+  1 paths, 1 markers, 0 shot(s), shooter off at end
+  ~ auto ends with intake still extended
 
 OUT-Base
   5 paths, 4 markers, 1 shot(s), shooter off at end
@@ -191,7 +204,7 @@ S8-RT-Dip
   ~ auto ends with intake still extended
 
 ZZ-EventTest
-  1 paths, 6 markers, 2 shot(s), shooter off at end
+  1 paths, 4 markers, 1 shot(s), shooter off at end
   OK
 
 ZZ-Old-Awesome
@@ -200,7 +213,8 @@ ZZ-Old-Awesome
   ~ auto ends with intake still extended
 
 ZZ-Old-NewAuto
-  3 paths, 7 markers, 2 shot(s), shooter off at end
+  3 paths, 4 markers, 1 shot(s), shooter off at end
+  ~ [LT-Depot-Pickup @0.10] 'Intake' fired while intake is already extended
   ~ auto ends with intake still extended
 
 ZZ-Old-NewNewAuto
@@ -225,4 +239,4 @@ ZZ-SysCheck
   1 paths, 0 markers, 0 shot(s), shooter off at end
   OK
 
-6 of 41 autos have errors.
+6 of 43 autos have errors.

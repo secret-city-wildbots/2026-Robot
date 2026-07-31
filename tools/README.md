@@ -1,12 +1,12 @@
 # PathPlanner tools
 
 - **`pathplanner_visualize.py`** — visual overlay: field route with intake/shooter
-  spans drawn on it. Run `view.bat`. **Start here.**
-- **`pathplanner_map.py`** — path ↔ auto cross-reference. Run `map.bat`.
+  spans drawn on it. Run `tools\view.bat`. **Start here.**
+- **`pathplanner_map.py`** — path ↔ auto cross-reference. Run `tools\map.bat`.
   **Check this before editing a marker** — 30 of 67 paths are shared, and
   `RT-Base` alone feeds 11 autos.
 - **`pathplanner_audit.py`** — text report of the same analysis, for one auto or all.
-  Run `audit.bat`.
+  Run `tools\audit.bat`.
 - **`pathplanner_rename.py`** — bulk rename paths/autos, rewriting references.
 
 ---
@@ -14,7 +14,7 @@
 # `pathplanner_map.py`
 
 Builds `pathplanner_map.html` (interactive) and `PATHPLANNER_MAP.md` (static,
-diffable in git). Run `map.bat`.
+diffable in git). Run `tools\map.bat`.
 
 **Event markers live in paths, not autos.** Editing one marker changes every
 auto that runs that path — and 30 of 67 paths are shared. This is the tool that
@@ -37,9 +37,9 @@ Builds `pathplanner_view.html` — the answer to "is intake down actually *over*
 the stretch of path I meant?"
 
 **Hotkey: F10 while PathPlanner is focused** (see `audit.ahk` below), or run
-`view-once.bat`.
+`tools\view-once.bat`.
 
-**`view.bat`** opens the page and then rebuilds it every time you save
+**`tools\view.bat`** opens the page and then rebuilds it every time you save
 in PathPlanner; press F5 in the browser to see the update. Keep it on a second
 monitor next to PathPlanner.
 
@@ -104,11 +104,11 @@ Its main job is **counting AimAndShoot parity for you.**
 
 ## The button
 
-**One click:** run `audit.bat` (repo root). It audits the *most recently saved
+**One click:** run `tools\audit.bat` (repo root). It audits the *most recently saved
 auto*, which is the one you have open in PathPlanner. Pin it to your taskbar
 or make a desktop shortcut, then: edit in PathPlanner → Ctrl+S → click.
 
-**Zero clicks:** run `audit-watch.bat` once and leave the window open next to
+**Zero clicks:** run `tools\audit-watch.bat` once and leave the window open next to
 PathPlanner. It re-runs itself every time you save. This is the better setup
 if you have a second monitor.
 

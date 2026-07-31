@@ -27,6 +27,8 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from pathplanner_audit import PP, ROOT, load, markers_of, path_sequence, replay  # noqa: E402
 
 TEMPLATE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "map_template.html")
+# Generated output lives beside this script, not at the repo root.
+OUT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 ZONES = [("LT-", "Left Trench"), ("RT-", "Right Trench"), ("LB-", "Left Bump"),
          ("RB-", "Right Bump"), ("OUT-", "Outpost"), ("CTR-", "Center / Mid"),
@@ -142,10 +144,10 @@ def build(open_after=False, quiet=False):
     html = (html.replace("__PATHS__", json.dumps(pm))
                 .replace("__AUTOS__", json.dumps(am))
                 .replace("__ZONES__", json.dumps([z[1] for z in ZONES] + ["Unprefixed"])))
-    out_html = os.path.join(ROOT, "pathplanner_map.html")
+    out_html = os.path.join(OUT_DIR, "pathplanner_map.html")
     with open(out_html, "w", encoding="utf-8") as f:
         f.write(html)
-    out_md = os.path.join(ROOT, "PATHPLANNER_MAP.md")
+    out_md = os.path.join(OUT_DIR, "PATHPLANNER_MAP.md")
     write_md(pm, am, out_md)
 
     shared = [p for p, d in pm.items() if d["shared"]]

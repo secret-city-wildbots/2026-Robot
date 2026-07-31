@@ -37,10 +37,16 @@ starting commit is your undo.
 | `tools/audit.ahk` | AutoHotkey v2 hotkeys (F9 / F10 / Ctrl+F9) |
 | `tools/audit-ahk-v1.ahk` | Same, for AutoHotkey v1 |
 
-### Launchers (repo root)
+### Launchers
 
-`audit.bat` · `audit-all.bat` · `audit-watch.bat` · `view.bat` ·
-`view-once.bat` · `map.bat`
+**Layout note:** these live under `tools/`, not the repo root — launchers, the
+field image, the docs and the generated HTML. The repo root keeps only
+`esbuild.exe` (FrontendBuilder requires it there) and `pathplanner_archive/`.
+The `.bat` files `cd /d "%~dp0.."` so they still run from the repo root, and the
+Python scripts write generated output beside themselves.
+
+`tools\audit.bat` · `tools\audit-all.bat` · `tools\audit-watch.bat` · `tools\view.bat` ·
+`tools\view-once.bat` · `tools\map.bat`
 
 They all use `%~dp0`, so they work unchanged in any repo.
 

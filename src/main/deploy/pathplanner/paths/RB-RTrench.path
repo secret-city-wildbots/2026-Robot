@@ -61,7 +61,7 @@
   "folder": "R Dip",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 160.0
+    "rotation": 45.0
   },
   "useDefaultConstraints": false
 }
