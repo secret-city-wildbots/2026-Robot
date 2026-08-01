@@ -60,7 +60,7 @@ public class SimpleShootCommand extends Command {
         //     this.shooter.setHoodAngle(0);
         //     this.shooter.setRPS(0);
         // } else {
-            this.shooter.setHoodAngle(90-(Math.pow(0.475086, 1-4.67884)+66+(-1.37205*1)));
+            this.shooter.setHoodAngle(90-(Math.pow(0.475086, 1-4.67884)+80+(-1.37205*1)));
             this.shooter.setRPS((1.456*(1-2.0) + 50.2));
             this.turret.setTargetAngle(new Rotation2d(0));
        // }

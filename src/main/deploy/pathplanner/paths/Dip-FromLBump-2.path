@@ -132,18 +132,6 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "IntakeRetract",
-      "waypointRelativePos": 0.0,
-      "endWaypointRelativePos": null,
-      "command": null
-    },
-    {
-      "name": "Intake",
-      "waypointRelativePos": 0.8355091383811984,
-      "endWaypointRelativePos": null,
-      "command": null
-    },
-    {
       "name": "AimAndShoot",
       "waypointRelativePos": 4.856396866840715,
       "endWaypointRelativePos": null,

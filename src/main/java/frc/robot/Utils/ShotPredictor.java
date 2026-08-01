@@ -40,8 +40,8 @@ public class ShotPredictor {
         double targetX = (DriverStation.getAlliance().get() == Alliance.Blue) ? (4.63-3.0):(11.9+3.0); //?
         double hubX = (DriverStation.getAlliance().get() == Alliance.Blue) ? (4.63):(11.9);
         Translation2d hubPosition = new Translation2d(hubX, 4.035);
-        Translation2d bumpLeft = new Translation2d(targetX, 6);
-        Translation2d bumpRight = new Translation2d(targetX, 8-6);
+        Translation2d bumpLeft = new Translation2d(targetX, 5.6);
+        Translation2d bumpRight = new Translation2d(targetX, 2.6);
 
         Shot shot = new Shot();
 
@@ -96,7 +96,7 @@ public class ShotPredictor {
 
     public static double getVelocity(double dist) {
 
-        return (49 + (4.1*(dist-1.87)) + ((dist > 3.0) ? -0.4*(dist-3.0):0.0)); //? -1.1 -> .7
+        return (49 + (4.1*(dist-1.87)) + ((dist > 3.0) ? -0.3*(dist-3.0):0.0)); //? -1.1 -> .7
         //return 1.0;
     }
 
