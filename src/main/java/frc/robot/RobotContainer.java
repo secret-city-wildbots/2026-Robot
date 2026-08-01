@@ -65,6 +65,8 @@ import frc.robot.Commands.Indexer.AutoStopIndexCommand;
 import frc.robot.Commands.Indexer.ClearTransferCommand;
 import frc.robot.Commands.Shooter.AimAndShootCommand;
 import frc.robot.Commands.Shooter.AimAtHubCommand;
+import frc.robot.Commands.Shooter.LadderAimAndShootCommand;
+import frc.robot.Commands.Shooter.LadderShootCommand;
 import frc.robot.Commands.Shooter.SimpleAimAndShootCommand;
 import frc.robot.Commands.Shooter.SimpleShootCommand;
 import frc.robot.Commands.Turret.AimAtHubTurret;
@@ -328,6 +330,8 @@ public class RobotContainer {
                 new ClearTransferCommand(transfer, indexer, intake, shooter),
                 new ExtensionCommand(intakeExtension, 90.0) //?
             ));
+
+        joystick.x().whileTrue(new LadderAimAndShootCommand(indexer, transfer, shooter, turret));
 
         turret.setDefaultCommand(new AimAtHubTurret(turret));
         //joystick.x().whileTrue(new JoystickAimCommand(turret, joystick));
