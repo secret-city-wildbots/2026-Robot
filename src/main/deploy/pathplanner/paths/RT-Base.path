@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.6,
-        "y": 0.6
+        "x": 4.4450252525252525,
+        "y": 0.6108459595959597
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.605199681099098,
-        "y": 0.6
+        "x": 5.45022493362435,
+        "y": 0.6108459595959597
       },
-      "isLocked": true,
-      "linkedName": "R Trench Start"
+      "isLocked": false,
+      "linkedName": null
     },
     {
       "anchor": {
@@ -47,7 +47,7 @@
   "rotationTargets": [
     {
       "waypointRelativePos": 0.39249639249639545,
-      "rotationDegrees": 0.0
+      "rotationDegrees": 90.0
     },
     {
       "waypointRelativePos": 1.0418470418470436,
@@ -73,7 +73,7 @@
   "eventMarkers": [
     {
       "name": "Intake",
-      "waypointRelativePos": 0.40812720848056416,
+      "waypointRelativePos": 0.34812880765883414,
       "endWaypointRelativePos": null,
       "command": null
     }
@@ -94,7 +94,7 @@
   "folder": "Simple Right + Outpost",
   "idealStartingState": {
     "velocity": 0.0,
-    "rotation": 0.0
+    "rotation": 90.0
   },
   "useDefaultConstraints": false
 }

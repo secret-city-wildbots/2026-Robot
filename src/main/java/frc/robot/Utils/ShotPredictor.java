@@ -88,7 +88,7 @@ public class ShotPredictor {
         double futureDist = delta.getNorm();
 
         shot.velocity_rPs = ((lobbing) ? 0.9:1.0)*getVelocity(futureDist);
-        shot.tilt = (lobbing) ? getTilt(10.0):getTilt(futureDist);
+        shot.tilt = (lobbing) ? new Rotation2d(45.0/180*Math.PI):getTilt(futureDist);
 
 
         return shot;
@@ -96,12 +96,12 @@ public class ShotPredictor {
 
     public static double getVelocity(double dist) {
 
-        return (4.3*(dist-1.87) + 52 + ((dist > 3.0) ? -0.1*(dist-3.0):0.0)); //? -1.1 -> .7
+        return (49 + (4.1*(dist-1.87)) + ((dist > 3.0) ? -0.4*(dist-3.0):0.0)); //? -1.1 -> .7
         //return 1.0;
     }
 
     public static Rotation2d getTilt(double dist) {
-        return new Rotation2d((90-Math.min(Math.pow(0.475086, dist-4.67884)+62+(-1.37205*dist), 75))/180*Math.PI);
+        return new Rotation2d((90-Math.min(Math.pow(0.475086, dist-4.67884)+63+(-1.37205*dist), 75))/180*Math.PI);
         //return new Rotation2d();
     }
 

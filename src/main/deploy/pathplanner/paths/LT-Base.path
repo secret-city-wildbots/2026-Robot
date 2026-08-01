@@ -64,14 +64,9 @@
   "eventMarkers": [
     {
       "name": "Intake",
-      "waypointRelativePos": 0.45182724252492457,
+      "waypointRelativePos": 0.19147084421236168,
       "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "Shoot"
-        }
-      }
+      "command": null
     }
   ],
   "globalConstraints": {

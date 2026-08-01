@@ -26,6 +26,8 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -64,6 +66,7 @@ import frc.robot.Commands.Indexer.ClearTransferCommand;
 import frc.robot.Commands.Shooter.AimAndShootCommand;
 import frc.robot.Commands.Shooter.AimAtHubCommand;
 import frc.robot.Commands.Shooter.SimpleAimAndShootCommand;
+import frc.robot.Commands.Shooter.SimpleShootCommand;
 import frc.robot.Commands.Turret.AimAtHubTurret;
 import frc.robot.Commands.Turret.JoystickAimCommand;
 
@@ -179,6 +182,7 @@ public class RobotContainer {
         auto = new WaitCommand(5.0); //?
 
         // Register Event Triggers within Pathplanner
+        new EventTrigger("SimpleShoot").toggleOnTrue(new SimpleShootCommand(shooter, turret));
         new EventTrigger("StopIntake").onTrue( new AutoIntakeStop(intake));
         new EventTrigger("AimAndShoot").toggleOnTrue(new AimAndShootCommand(drivetrain::getPose, () -> { //?
             var state = drivetrain.getState();
@@ -408,9 +412,16 @@ public class RobotContainer {
          *    In Glass:    NetworkTables → SmartDashboard → Auto Bypass
          *    In Elastic:  add a "ComboBox Chooser" widget bound to Auto Bypass
          */
-        if (!dashboardArmed) return bypassAuto();
+        if (Robot.noTags) {
+            return new SequentialCommandGroup(
+                Commands.runOnce(() -> drivetrain.resetPose(new Pose2d(3.59, 7.61, new Rotation2d(0))), drivetrain),
+                new PathPlannerAuto("Houston")
+            );
+        } else {
+            if (!dashboardArmed) return bypassAuto();
 
-        return auto;
+            return auto;
+        }
     }
 
     /**

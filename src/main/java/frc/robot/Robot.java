@@ -36,6 +36,7 @@ public class Robot extends TimedRobot {
   private final Vision vision;
   public static final boolean test = false; //?
   public static final boolean defense = false;//?
+  public static final boolean noTags = false;
   public static Shot shot;
 
   /**
