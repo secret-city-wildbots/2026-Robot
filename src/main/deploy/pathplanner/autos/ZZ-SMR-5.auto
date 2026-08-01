@@ -9,12 +9,6 @@
           "data": {
             "pathName": "ZZ-SMR"
           }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "AimAndShoot"
-          }
         }
       ]
     }

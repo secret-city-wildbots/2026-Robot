@@ -37,12 +37,6 @@
       "waypointRelativePos": 0.7850304612706711,
       "endWaypointRelativePos": null,
       "command": null
-    },
-    {
-      "name": "IntakeRetract",
-      "waypointRelativePos": 0.8285465622280244,
-      "endWaypointRelativePos": null,
-      "command": null
     }
   ],
   "globalConstraints": {
