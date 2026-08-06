@@ -195,7 +195,7 @@ public class RobotContainer {
         }, indexer, transfer, shooter, turret));
         new EventTrigger("Intake").onTrue(new AutoIntakeExtend(intake, intakeExtension));
         new EventTrigger("IntakeRetract").onTrue(new AutoIntakeRetract(intake, intakeExtension));
-        new EventTrigger("Intake").onTrue(Commands.print("Intaking (Trigger)"));
+        //new EventTrigger("Intake").onTrue(Commands.print("Intaking (Trigger)"));
         new EventTrigger("Shoot").onTrue(
         new AutoStartIndexCommand(transfer, indexer).alongWith(
         Commands.print("Shooting Start (Trigger)")));

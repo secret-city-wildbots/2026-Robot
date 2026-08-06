@@ -20,10 +20,11 @@
     "Defensive Autos",
     "Dips",
     "Hot Autos",
-    "Special",
+    "Elims",
     "No Climb",
     "Plow",
     "Simple",
+    "Special",
     "Testing"
   ],
   "defaultMaxVel": 3.0,

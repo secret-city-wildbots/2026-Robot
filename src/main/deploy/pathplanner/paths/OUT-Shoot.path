@@ -4,69 +4,58 @@
     {
       "anchor": {
         "x": 3.6,
-        "y": 0.7
+        "y": 0.65
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.9754513736888644,
-        "y": 0.7
+        "x": 3.0475004932722154,
+        "y": 0.6500000000000001
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.1431691919191924,
-        "y": 0.7
+        "x": 0.7689267676767684,
+        "y": 5.947487373737374
       },
       "prevControl": {
-        "x": 4.1431691919191875,
-        "y": 0.6999999999999995
+        "x": 1.2503458123065392,
+        "y": 5.947487373737374
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": "Outpost"
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.7824561403508807,
-      "rotationDegrees": 180.0
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [
     {
       "name": "AimAndShoot",
-      "waypointRelativePos": 0,
-      "endWaypointRelativePos": null,
-      "command": null
-    },
-    {
-      "name": "Intake",
-      "waypointRelativePos": 0,
+      "waypointRelativePos": 1.0,
       "endWaypointRelativePos": null,
       "command": null
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 1.5,
-    "maxAcceleration": 0.5,
-    "maxAngularVelocity": 60.0,
-    "maxAngularAcceleration": 180.0,
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0,
+    "velocity": 0.0,
     "rotation": 180.0
   },
   "reversed": false,
   "folder": "Simple Right + Outpost",
   "idealStartingState": {
     "velocity": 1.5,
-    "rotation": 180.0
+    "rotation": 0.0
   },
   "useDefaultConstraints": false
 }

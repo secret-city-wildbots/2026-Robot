@@ -5,9 +5,15 @@
     "data": {
       "commands": [
         {
-          "type": "wait",
+          "type": "path",
           "data": {
-            "waitTime": 5.0
+            "pathName": "RT-8"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "RT-8-Sweep"
           }
         },
         {
@@ -25,7 +31,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "OUT-Shoot"
+            "pathName": "RT-Depot"
           }
         }
       ]
