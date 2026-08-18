@@ -65,8 +65,6 @@ import frc.robot.Commands.Indexer.AutoStopIndexCommand;
 import frc.robot.Commands.Indexer.ClearTransferCommand;
 import frc.robot.Commands.Shooter.AimAndShootCommand;
 import frc.robot.Commands.Shooter.AimAtHubCommand;
-import frc.robot.Commands.Shooter.LadderAimAndShootCommand;
-import frc.robot.Commands.Shooter.LadderShootCommand;
 import frc.robot.Commands.Shooter.SimpleAimAndShootCommand;
 import frc.robot.Commands.Shooter.SimpleShootCommand;
 import frc.robot.Commands.Turret.AimAtHubTurret;
@@ -184,7 +182,6 @@ public class RobotContainer {
         auto = new WaitCommand(5.0); //?
 
         // Register Event Triggers within Pathplanner
-        new EventTrigger("SimpleShoot").toggleOnTrue(new SimpleShootCommand(shooter, turret));
         new EventTrigger("StopIntake").onTrue( new AutoIntakeStop(intake));
         new EventTrigger("AimAndShoot").toggleOnTrue(new AimAndShootCommand(drivetrain::getPose, () -> { //?
             var state = drivetrain.getState();
@@ -323,15 +320,38 @@ public class RobotContainer {
             )
         )*/));  
 
-        joystick.rightBumper().whileTrue(new SimpleAimAndShootCommand(indexer, transfer, shooter, turret));
+    //3,14
+    //5.14
+
+        joystick.rightBumper().and(joystick.y()).whileTrue(new SimpleAimAndShootCommand(indexer, transfer, shooter, turret,
+            90-(Math.pow(0.475086, 1-4.67884)+62+(-1.37205*1)),
+            (1.456*(1-2.0) + 50),
+            new Rotation2d()
+        ));
+
+        joystick.rightBumper().and(joystick.a()).whileTrue(new SimpleAimAndShootCommand(indexer, transfer, shooter, turret,
+            90-(Math.pow(0.475086, 3.14-4.67884)+62+(-1.37205*3.14)),
+            Math.pow(Math.E,0.565613*(3.14-0.832416)) + 48.5,
+            new Rotation2d()
+        ));
+
+        joystick.rightBumper().and(joystick.b()).whileTrue(new SimpleAimAndShootCommand(indexer, transfer, shooter, turret,
+            90-(Math.pow(0.475086, 5.14-4.67884)+62+(-1.37205*5.14)),
+            Math.pow(Math.E,0.565613*(5.14-0.832416)) + 48.8,
+            new Rotation2d(Math.PI * 0.23)
+        ));
+
+        joystick.rightBumper().and(joystick.x()).whileTrue(new SimpleAimAndShootCommand(indexer, transfer, shooter, turret,
+            90-(Math.pow(0.475086, 5.14-4.67884)+62+(-1.37205*5.14)),
+            Math.pow(Math.E,0.565613*(5.14-0.832416)) + 48.8,
+            new Rotation2d(-Math.PI * 0.23)
+        ));
         
-        joystick.a().whileTrue(
+        joystick.a().and(joystick.rightBumper().negate()).whileTrue(
             new ParallelCommandGroup(
                 new ClearTransferCommand(transfer, indexer, intake, shooter),
                 new ExtensionCommand(intakeExtension, 90.0) //?
             ));
-
-        joystick.x().whileTrue(new LadderAimAndShootCommand(indexer, transfer, shooter, turret));
 
         turret.setDefaultCommand(new AimAtHubTurret(turret));
         //joystick.x().whileTrue(new JoystickAimCommand(turret, joystick));

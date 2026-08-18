@@ -38,7 +38,7 @@ public class Shooter extends SubsystemBase {
         this.leadMotor.motorConfig.brake = false;
         this.leadMotor.applyConfig();
         this.leadMotor.slot0TFX.kV = 0.011;
-        this.leadMotor.pid(0.04, 0.0, 0.0); // Setup the Shooter PID
+        this.leadMotor.pid(0.05, 0.0, 0.0); // Setup the Shooter PID
         /*this.leadMotor.slot0TFX.kV = 0.0;
         this.leadMotor.pid(0.0, 0.0, 0.0); // Setup the Shooter PID*/
 
