@@ -298,53 +298,37 @@ public class RobotContainer {
             }
         ));
 
-        joystick.rightTrigger(0.4).onTrue(Commands.runOnce(() -> {
-            Robot.shooterEnabled = true;
-        }));
-        joystick.rightTrigger(0.4).onFalse(Commands.runOnce(() -> {
-            Robot.shooterEnabled = false;
-        }));
-        joystick.rightTrigger(0.4).whileTrue(new ParallelCommandGroup(new AimAndShootCommand(drivetrain::getPose, () -> { //?
-            var state = drivetrain.getState();
-            return ChassisSpeeds.fromRobotRelativeSpeeds(
-                state.Speeds,
-                state.Pose.getRotation()
-            );
-        }, indexer, transfer, shooter, turret)
-        /*,new RepeatCommand(
-            new SequentialCommandGroup(
-                Commands.runOnce(() -> intakeExtension.setIntakePos(IntakeConstants.maxDegree)),
-                new WaitCommand(1),
-                Commands.runOnce(() -> intakeExtension.setIntakePos(IntakeConstants.minDegree)),
-                new WaitCommand(1)
-            )
-        )*/));  
-
     //3,14
     //5.14
 
-        joystick.rightBumper().and(joystick.y()).whileTrue(new SimpleAimAndShootCommand(indexer, transfer, shooter, turret,
-            90-(Math.pow(0.475086, 1-4.67884)+62+(-1.37205*1)),
-            (1.456*(1-2.0) + 50),
+        joystick.rightBumper().whileTrue(new SimpleAimAndShootCommand(indexer, transfer, shooter, turret,
+            10,
+            40,
             new Rotation2d()
         ));
 
-        joystick.rightBumper().and(joystick.a()).whileTrue(new SimpleAimAndShootCommand(indexer, transfer, shooter, turret,
-            90-(Math.pow(0.475086, 3.14-4.67884)+62+(-1.37205*3.14)),
-            Math.pow(Math.E,0.565613*(3.14-0.832416)) + 48.5,
+        joystick.rightTrigger(0.2).and(joystick.y()).whileTrue(new SimpleAimAndShootCommand(indexer, transfer, shooter, turret,
+            40,
+            (joystick.getRightTriggerAxis() > 0.85) ? 60 : ((joystick.getRightTriggerAxis() > 0.6) ? 50 : 45),
             new Rotation2d()
         ));
 
-        joystick.rightBumper().and(joystick.b()).whileTrue(new SimpleAimAndShootCommand(indexer, transfer, shooter, turret,
-            90-(Math.pow(0.475086, 5.14-4.67884)+62+(-1.37205*5.14)),
-            Math.pow(Math.E,0.565613*(5.14-0.832416)) + 48.8,
-            new Rotation2d(Math.PI * 0.23)
+        joystick.rightTrigger(0.2).and(joystick.a()).whileTrue(new SimpleAimAndShootCommand(indexer, transfer, shooter, turret,
+            40,
+            (joystick.getRightTriggerAxis() > 0.85) ? 60 : ((joystick.getRightTriggerAxis() > 0.6) ? 50 : 45),
+            new Rotation2d(Math.PI/2)
         ));
 
-        joystick.rightBumper().and(joystick.x()).whileTrue(new SimpleAimAndShootCommand(indexer, transfer, shooter, turret,
-            90-(Math.pow(0.475086, 5.14-4.67884)+62+(-1.37205*5.14)),
-            Math.pow(Math.E,0.565613*(5.14-0.832416)) + 48.8,
-            new Rotation2d(-Math.PI * 0.23)
+        joystick.rightTrigger(0.2).and(joystick.b()).whileTrue(new SimpleAimAndShootCommand(indexer, transfer, shooter, turret,
+            40,
+            (joystick.getRightTriggerAxis() > 0.85) ? 60 : ((joystick.getRightTriggerAxis() > 0.6) ? 50 : 45),
+            new Rotation2d(Math.PI)
+        ));
+
+        joystick.rightTrigger(0.2).and(joystick.x()).whileTrue(new SimpleAimAndShootCommand(indexer, transfer, shooter, turret,
+            40,
+            (joystick.getRightTriggerAxis() > 0.85) ? 60 : ((joystick.getRightTriggerAxis() > 0.6) ? 50 : 45),
+            new Rotation2d(-Math.PI/2)
         ));
         
         joystick.a().and(joystick.rightBumper().negate()).whileTrue(
