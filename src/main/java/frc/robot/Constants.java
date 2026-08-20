@@ -27,7 +27,7 @@ public final class Constants {
     public static final int loopTime_ms = 20;
     public static final int motorCurLim = 15;
     public static final int motorImpCurLim = 35;
-    public static final int driveCurLim = 35;
+    public static final int driveCurLim = 20;
   }
 
   public static class VisionConstants {
@@ -47,7 +47,7 @@ public final class Constants {
     public static final double minDegree = 25.0;
     public static final double jostleDegree = 60;
     public static final double maxDegree = 118;
-    public static final int intake_rps = 50;
+    public static final int intake_rps = 70;
   }
 
   public static class IndexerConstants {

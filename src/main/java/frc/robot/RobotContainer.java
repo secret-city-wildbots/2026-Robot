@@ -302,36 +302,37 @@ public class RobotContainer {
     //5.14
 
         joystick.rightBumper().whileTrue(new SimpleAimAndShootCommand(indexer, transfer, shooter, turret,
-            10,
+            12,
+            30,
+            new Rotation2d(0.33),
+            20
+        ));
+
+        joystick.rightTrigger(0.23).and(joystick.y()).whileTrue(new SimpleAimAndShootCommand(indexer, transfer, shooter, turret,
             40,
+            (joystick.getRightTriggerAxis() > 0.85) ? 60 : ((joystick.getRightTriggerAxis() > 0.5) ? 50 : 45),
             new Rotation2d()
         ));
 
-        joystick.rightTrigger(0.2).and(joystick.y()).whileTrue(new SimpleAimAndShootCommand(indexer, transfer, shooter, turret,
+        joystick.rightTrigger(0.23).and(joystick.a()).whileTrue(new SimpleAimAndShootCommand(indexer, transfer, shooter, turret,
             40,
-            (joystick.getRightTriggerAxis() > 0.85) ? 60 : ((joystick.getRightTriggerAxis() > 0.6) ? 50 : 45),
-            new Rotation2d()
-        ));
-
-        joystick.rightTrigger(0.2).and(joystick.a()).whileTrue(new SimpleAimAndShootCommand(indexer, transfer, shooter, turret,
-            40,
-            (joystick.getRightTriggerAxis() > 0.85) ? 60 : ((joystick.getRightTriggerAxis() > 0.6) ? 50 : 45),
-            new Rotation2d(Math.PI/2)
-        ));
-
-        joystick.rightTrigger(0.2).and(joystick.b()).whileTrue(new SimpleAimAndShootCommand(indexer, transfer, shooter, turret,
-            40,
-            (joystick.getRightTriggerAxis() > 0.85) ? 60 : ((joystick.getRightTriggerAxis() > 0.6) ? 50 : 45),
+            (joystick.getRightTriggerAxis() > 0.85) ? 60 : ((joystick.getRightTriggerAxis() > 0.5) ? 50 : 45),
             new Rotation2d(Math.PI)
         ));
 
-        joystick.rightTrigger(0.2).and(joystick.x()).whileTrue(new SimpleAimAndShootCommand(indexer, transfer, shooter, turret,
+        joystick.rightTrigger(0.23).and(joystick.b()).whileTrue(new SimpleAimAndShootCommand(indexer, transfer, shooter, turret,
             40,
-            (joystick.getRightTriggerAxis() > 0.85) ? 60 : ((joystick.getRightTriggerAxis() > 0.6) ? 50 : 45),
+            (joystick.getRightTriggerAxis() > 0.85) ? 60 : ((joystick.getRightTriggerAxis() > 0.5) ? 50 : 45),
             new Rotation2d(-Math.PI/2)
         ));
+
+        joystick.rightTrigger(0.23).and(joystick.x()).whileTrue(new SimpleAimAndShootCommand(indexer, transfer, shooter, turret,
+            40,
+            (joystick.getRightTriggerAxis() > 0.85) ? 60 : ((joystick.getRightTriggerAxis() > 0.5) ? 50 : 45),
+            new Rotation2d(Math.PI/2)
+        ));
         
-        joystick.a().and(joystick.rightBumper().negate()).whileTrue(
+        joystick.a().and(joystick.rightTrigger(0.2).negate()).and(joystick.rightBumper().negate()).whileTrue(
             new ParallelCommandGroup(
                 new ClearTransferCommand(transfer, indexer, intake, shooter),
                 new ExtensionCommand(intakeExtension, 90.0) //?
