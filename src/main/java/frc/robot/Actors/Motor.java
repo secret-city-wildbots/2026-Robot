@@ -481,9 +481,6 @@ public class Motor {
                 this.configTFX.OpenLoopRamps.DutyCycleOpenLoopRampPeriod = this.motorConfig.dutyCycleOpenLoopRampPeriod;
                 this.configTFX.ClosedLoopRamps.DutyCycleClosedLoopRampPeriod = this.motorConfig.dutyCycleClosedLoopRampPeriod;
                 this.motorTFX.getConfigurator().apply(configTFX);
-                curlim.SupplyCurrentLimit = (this.important) ? 60:((Robot.defense) ? 10:15);
-                curlim.SupplyCurrentLimitEnable = true;
-                this.motorTFX.getConfigurator().apply(curlim);
                 break;
             case None:
                 System.err.println("tried to apply motor config on None motor with CanID " + this.CanID);

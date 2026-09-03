@@ -11,6 +11,7 @@ import frc.robot.Actors.Motor;
 import frc.robot.Utils.MotorType;
 import frc.robot.Utils.RotationDir;
 import frc.robot.Constants.IntakeConstants;
+import frc.robot.Constants.RobotConstants;
 
 public class Intake extends SubsystemBase {
 
@@ -27,6 +28,9 @@ public class Intake extends SubsystemBase {
         this.motor.applyConfig();
         this.motor.slot0TFX.kV = 0.012;
         this.motor.pid(0.05, 0.0, 0.0);
+        this.motor.curlim.SupplyCurrentLimit = 25;
+        this.motor.curlim.SupplyCurrentLimitEnable = true;
+        this.motor.motorTFX.getConfigurator().apply(this.motor.curlim);
         this.motorFollow.motorTFX.setControl(new Follower(IntakeConstants.intakeMotorID, MotorAlignmentValue.Opposed));
         //0.05, 0.012
     }

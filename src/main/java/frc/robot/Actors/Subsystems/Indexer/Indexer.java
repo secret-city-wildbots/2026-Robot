@@ -13,6 +13,7 @@ import frc.robot.Actors.Motor;
 import frc.robot.Utils.MotorType;
 import frc.robot.Utils.RotationDir;
 import frc.robot.Constants.IndexerConstants;
+import frc.robot.Constants.RobotConstants;
 
 public class Indexer extends SubsystemBase {
     
@@ -31,8 +32,8 @@ public class Indexer extends SubsystemBase {
         this.motor2 = new Motor(IndexerConstants.rollerMotorID, MotorType.TFX, "rio");
         this.motor.motorConfig.direction = RotationDir.Clockwise;
         this.motor2.motorConfig.direction = RotationDir.Clockwise; //TODO: Find out which way roller bed needs to go
-        this.motor.motorConfig.dutyCycleClosedLoopRampPeriod = 0.3;
-        this.motor2.motorConfig.dutyCycleClosedLoopRampPeriod = 0.3;
+        this.motor.motorConfig.dutyCycleClosedLoopRampPeriod = 0.1;
+        this.motor2.motorConfig.dutyCycleClosedLoopRampPeriod = 0.1;
         this.motor.motorConfig.peakReverseDC = -0.1; //?
         this.motor2.motorConfig.peakReverseDC = -1;
         this.motor.motorConfig.brake = false;
@@ -41,11 +42,11 @@ public class Indexer extends SubsystemBase {
         this.motor2.applyConfig();
         this.motor.slot0TFX.kV = 0.011;
         this.motor2.slot0TFX.kV = 0.011;
-        this.motor.pid(0.15, 0.0, 0.0); // Setup the indexer PID
+        this.motor.pid(0.1, 0.0, 0.0); // Setup the indexer PID
         this.motor2.pid(0.01, 0.0, 0.0); // Setup the roller bed PID
 
         //mecanum curlim
-        this.motor.curlim.SupplyCurrentLimit = 30;
+        this.motor.curlim.SupplyCurrentLimit = RobotConstants.mecCurLim;
         this.motor.curlim.SupplyCurrentLimitEnable = true;
         this.motor.motorTFX.getConfigurator().apply(this.motor.curlim);
 
