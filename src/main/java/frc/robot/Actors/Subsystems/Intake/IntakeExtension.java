@@ -26,7 +26,7 @@ public class IntakeExtension extends SubsystemBase {
         this.motor.motorConfig.direction = RotationDir.Clockwise;
         this.motor.motorConfig.brake = false;
         this.motor.applyConfig();
-        this.motor.pid(0.1, 0.02, 0.01);
+        this.motor.motionMagic(0.15, 0.02, 0.01, 0.0, 0.0, 40.0, 50.0);
 
         this.motor.curlim.SupplyCurrentLimit = 15;
         this.motor.curlim.SupplyCurrentLimitEnable = true;
@@ -67,7 +67,7 @@ public class IntakeExtension extends SubsystemBase {
     public void setIntakePos(double degrees) {
         degrees = MathUtil.clamp(degrees, IntakeConstants.minDegree, IntakeConstants.maxDegree);
         double motorRotations = degreesToMotorRotations(degrees);
-        motor.pos(motorRotations);
+        motor.posMM(motorRotations);
     }
 
     /**
