@@ -110,7 +110,7 @@ public class Robot extends TimedRobot {
     // Drives every WildBoard panel. Without this nothing on the dashboard
     // updates and no panel message is ever flushed to the browser, so the
     // Autos tab cannot arm, rescan, or report what is armed.
-    m_robotContainer.dashboard.update();
+    //m_robotContainer.dashboard.update();
     //System.out.println("dist: "+distance);
   }
 

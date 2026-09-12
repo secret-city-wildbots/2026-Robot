@@ -10,6 +10,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 // Import Actors, Utils & Constants
 import frc.robot.Actors.Subsystems.Shooter.Shooter;
 import frc.robot.Actors.Subsystems.Shooter.Turret;
+
+import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 import frc.robot.Utils.ShotPredictor;
 import frc.robot.Utils.ShotPredictor.Shot;
@@ -21,7 +23,8 @@ public class SimpleShootCommand extends Command {
     private final Turret turret;
     private final double hoodAngle;
     private final double rps;
-    private final Rotation2d turretAngle;
+    private final DoubleSupplier rpsGet;
+    private final Supplier<Rotation2d> turretAngle;
 
     /**
      * Creates and sets up the ShootCommand
@@ -36,13 +39,31 @@ public class SimpleShootCommand extends Command {
         Turret turret,
         double hoodAngle,
         double rps,
-        Rotation2d turretAngle
+        Supplier<Rotation2d> turretAngle
     ) {
         // Assign the variables and add the subsystem as a requirement to the command
         this.shooter = shooter;
         this.turret = turret;
         this.hoodAngle = hoodAngle;
         this.rps = rps;
+        this.rpsGet = () -> 0;
+        this.turretAngle = turretAngle;
+        addRequirements(shooter);
+        addRequirements(turret);
+    }
+    public SimpleShootCommand(
+        Shooter shooter,
+        Turret turret,
+        double hoodAngle,
+        DoubleSupplier rpsGet,
+        Supplier<Rotation2d> turretAngle
+    ) {
+        // Assign the variables and add the subsystem as a requirement to the command
+        this.shooter = shooter;
+        this.turret = turret;
+        this.hoodAngle = hoodAngle;
+        this.rps = 999;
+        this.rpsGet = rpsGet;
         this.turretAngle = turretAngle;
         addRequirements(shooter);
         addRequirements(turret);
@@ -70,10 +91,10 @@ public class SimpleShootCommand extends Command {
         //     this.shooter.setRPS(0);
         // } else {
             this.shooter.setHoodAngle(hoodAngle);
-            this.shooter.setRPS(rps);
+            this.shooter.setRPS((rps > 998) ? rpsGet.getAsDouble():rps);
             //this.shooter.setHoodAngle(90-(Math.pow(0.475086, 1-4.67884)+62+(-1.37205*1)));
             //this.shooter.setRPS((1.456*(1-2.0) + 51));
-            this.turret.setTargetAngle(turretAngle);
+            this.turret.setTargetAngle(turretAngle.get());
        // }
         // Only use execute if we have dynamically changing speeds. This is called each loop (~20ms).
         // So if we have just a constant speed, use initialize to avoid spamming the canbus network.

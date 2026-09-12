@@ -46,7 +46,7 @@ public final class Constants {
     // Intake Ranges
     public static final double minDegree = 25.0;
     public static final double jostleDegree = 60;
-    public static final double maxDegree = 118;
+    public static final double maxDegree = 122;
     public static final int intake_rps = 50;
   }
 
@@ -61,8 +61,8 @@ public final class Constants {
 
     // Properties
     public static final int transferRPS = 70;
-    public static final int rollerRPS = 70;
-    public static final int indexerRPS = 90; //?
+    public static final int rollerRPS = 35;
+    public static final int indexerRPS = 15; //?
     public static final double spinupTime = 0.1;
   }
 
