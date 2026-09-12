@@ -45,7 +45,7 @@ public final class Constants {
     public static final double extensionGearRatio = 81.0;
 
     // Intake Ranges
-    public static final double minDegree = 25.0;
+    public static final double minDegree = 35.0;
     public static final double jostleDegree = 60;
     public static final double maxDegree = 123;
     public static final int intake_rps = 80;
