@@ -25,10 +25,13 @@ import static edu.wpi.first.units.Units.*;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+import org.json.JSONObject;
+
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -45,6 +48,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 // Import Custom TunerConstants
 import frc.robot.generated.TunerConstants;
 import frc.robot.Utils.JoystickScaler;
+import frc.robot.Utils.LimelightHelpers;
 import frc.robot.Constants.IntakeConstants;
 // Import subystems
 import frc.robot.Actors.Subsystems.CommandSwerveDrivetrain;
@@ -304,32 +308,43 @@ public class RobotContainer {
 
         joystick.rightTrigger(0.1).whileTrue(Commands.run(() -> {
                 RobotContainer.shotSpeed = ((joystick.getRightTriggerAxis() > 0.85) ? 55 : ((joystick.getRightTriggerAxis() > 0.5) ? 45 : 35));
-                System.out.println(RobotContainer.shotSpeed);
+                //System.out.println(RobotContainer.shotSpeed);
         }));
 
         joystick.rightTrigger(0.2).and(joystick.y()).whileTrue(new SimpleAimAndShootCommand(indexer, transfer, shooter, turret,
-            40,
+            () -> 40,
             () -> RobotContainer.shotSpeed,
             () -> new Rotation2d()
         ));
 
         joystick.rightTrigger(0.2).and(joystick.a()).whileTrue(new SimpleAimAndShootCommand(indexer, transfer, shooter, turret,
-            40,
+            () ->40,
             () -> RobotContainer.shotSpeed,
             () -> new Rotation2d(Math.PI)
         ));
 
         joystick.rightTrigger(0.2).and(joystick.b()).whileTrue(new SimpleAimAndShootCommand(indexer, transfer, shooter, turret,
-            40,
+            () -> 40,
             () -> RobotContainer.shotSpeed,
             () -> new Rotation2d(-Math.PI/2)
         ));
 
         joystick.rightTrigger(0.2).and(joystick.x()).whileTrue(new SimpleAimAndShootCommand(indexer, transfer, shooter, turret,
-            40,
+            () -> 40,
             () -> RobotContainer.shotSpeed,
             () -> new Rotation2d(Math.PI/2)
         ));
+
+        joystick.leftTrigger(0.3).whileTrue(new SimpleAimAndShootCommand(indexer, transfer, shooter, turret, 
+            () -> 40, 
+            () -> 13.5*Math.pow(0.15/Robot.humanDist,0.5)+16.5,
+            () -> 
+                new Rotation2d(-Robot.humanAngle/180*Math.PI)
+            
+        ));
+
+
+        LimelightHelpers.setPipelineIndex("limelight-front", 2);
 
         joystick.povUp().whileTrue(Commands.run(() -> turret.setTargetAngle(new Rotation2d().minus(drivetrain.getPose().getRotation())), turret));
 

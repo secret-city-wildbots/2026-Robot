@@ -21,7 +21,7 @@ public class SimpleShootCommand extends Command {
     // Real Variables
     private final Shooter shooter;
     private final Turret turret;
-    private final double hoodAngle;
+    private final DoubleSupplier hoodAngle;
     private final double rps;
     private final DoubleSupplier rpsGet;
     private final Supplier<Rotation2d> turretAngle;
@@ -44,7 +44,7 @@ public class SimpleShootCommand extends Command {
         // Assign the variables and add the subsystem as a requirement to the command
         this.shooter = shooter;
         this.turret = turret;
-        this.hoodAngle = hoodAngle;
+        this.hoodAngle = () -> hoodAngle;
         this.rps = rps;
         this.rpsGet = () -> 0;
         this.turretAngle = turretAngle;
@@ -54,7 +54,7 @@ public class SimpleShootCommand extends Command {
     public SimpleShootCommand(
         Shooter shooter,
         Turret turret,
-        double hoodAngle,
+        DoubleSupplier hoodAngle,
         DoubleSupplier rpsGet,
         Supplier<Rotation2d> turretAngle
     ) {
@@ -90,7 +90,7 @@ public class SimpleShootCommand extends Command {
         //     this.shooter.setHoodAngle(0);
         //     this.shooter.setRPS(0);
         // } else {
-            this.shooter.setHoodAngle(hoodAngle);
+            this.shooter.setHoodAngle(hoodAngle.getAsDouble());
             this.shooter.setRPS((rps > 998) ? rpsGet.getAsDouble():rps);
             //this.shooter.setHoodAngle(90-(Math.pow(0.475086, 1-4.67884)+62+(-1.37205*1)));
             //this.shooter.setRPS((1.456*(1-2.0) + 51));

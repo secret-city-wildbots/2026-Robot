@@ -32,7 +32,7 @@ public final class Constants {
 
   public static class VisionConstants {
     // Limelight Names
-    public static final String[] limelightNames = {"limelight-front", "limelight-back", "limelight-left", "limelight-right"};
+    public static final String[] limelightNames = {"limelight-back", "limelight-left", "limelight-right"};
   }
 
   public static class IntakeConstants {

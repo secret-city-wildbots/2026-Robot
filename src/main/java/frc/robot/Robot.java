@@ -8,6 +8,9 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+
+import org.json.JSONObject;
+
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -34,10 +37,13 @@ public class Robot extends TimedRobot {
   private final RobotContainer m_robotContainer;
   public static boolean shooterEnabled = false;
   private final Vision vision;
-  public static final boolean test = false; //?
-  public static final boolean defense = false;//?
+  public static final boolean test = false; // ?
+  public static final boolean defense = false;// ?
   public static final boolean noTags = false;
   public static Shot shot;
+
+  public static double humanAngle = 0;
+  public static double humanDist = 0.2;
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -57,11 +63,10 @@ public class Robot extends TimedRobot {
     // (rps))
     // This allows each limelight to be as accurate as possible when being setup
     vision = new Vision(
-      () -> m_robotContainer.drivetrain.getState().Pose.getRotation().getDegrees(),
-      () -> Units.radiansToRotations(m_robotContainer.drivetrain.getState().Speeds.omegaRadiansPerSecond),
-      () -> m_robotContainer.drivetrain.getPose(),
-      () -> m_robotContainer.drivetrain.getPigeon2().getRotation2d()
-    );
+        () -> m_robotContainer.drivetrain.getState().Pose.getRotation().getDegrees(),
+        () -> Units.radiansToRotations(m_robotContainer.drivetrain.getState().Speeds.omegaRadiansPerSecond),
+        () -> m_robotContainer.drivetrain.getPose(),
+        () -> m_robotContainer.drivetrain.getPigeon2().getRotation2d());
   }
 
   @Override
@@ -75,33 +80,47 @@ public class Robot extends TimedRobot {
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
 
-    
-    shot = ShotPredictor.predict(m_robotContainer.drivetrain::getPose, () -> { //?
-          var state = m_robotContainer.drivetrain.getState();
-          return ChassisSpeeds.fromRobotRelativeSpeeds(
-              state.Speeds,
-              state.Pose.getRotation()
-          );
-      });
+    try {
+      JSONObject limelightdump = new JSONObject(LimelightHelpers.getJSONDump("limelight-front"));
+
+      JSONObject person = limelightdump.getJSONArray("Detector").getJSONObject(0);
+
+      Robot.humanDist = person.getDouble("ta");
+      Robot.humanAngle = person.getDouble("tx");
+    } catch (Throwable err) {
+    }
+
+    shot = ShotPredictor.predict(m_robotContainer.drivetrain::getPose, () -> { // ?
+      var state = m_robotContainer.drivetrain.getState();
+      return ChassisSpeeds.fromRobotRelativeSpeeds(
+          state.Speeds,
+          state.Pose.getRotation());
+    });
 
     // Get the best pose estimate from all of the cameras
     try {
       LimelightHelpers.PoseEstimate bestPose = vision.getBestPose();
-      //Vision.FusedVisionResult fusedPose = vision.fuseFourLimelights();
+      // Vision.FusedVisionResult fusedPose = vision.fuseFourLimelights();
 
       // If bestPose is not null, add vision measurement to the drivetrain
       // TODO: need to tune 0.7,0.7 values
-      /*LimelightHelpers.PoseEstimate[] poses = vision.getPoses();
-      for (LimelightHelpers.PoseEstimate pose: poses) {
-        m_robotContainer.drivetrain.addVisionMeasurement(pose.pose, pose.timestampSeconds, VecBuilder.fill(vision.getStdDev(pose),vision.getStdDev(pose),9999999));
-      }*/
+      /*
+       * LimelightHelpers.PoseEstimate[] poses = vision.getPoses();
+       * for (LimelightHelpers.PoseEstimate pose: poses) {
+       * m_robotContainer.drivetrain.addVisionMeasurement(pose.pose,
+       * pose.timestampSeconds,
+       * VecBuilder.fill(vision.getStdDev(pose),vision.getStdDev(pose),9999999));
+       * }
+       */
       if (bestPose != null) {
         // TODO: Do we want to just only add or reset the whole pose?
-        m_robotContainer.drivetrain.addVisionMeasurement(bestPose.pose, bestPose.timestampSeconds, VecBuilder.fill(0.7,0.7,9999999));
-        //m_robotContainer.drivetrain.addVisionMeasurement(fusedPose.pose(), fusedPose.tiemstamp(), VecBuilder.fill(0.7,0.7,9999999));
-        //m_robotContainer.drivetrain.resetPose(bestPose.pose);
+        m_robotContainer.drivetrain.addVisionMeasurement(bestPose.pose, bestPose.timestampSeconds,
+            VecBuilder.fill(0.7, 0.7, 9999999));
+        // m_robotContainer.drivetrain.addVisionMeasurement(fusedPose.pose(),
+        // fusedPose.tiemstamp(), VecBuilder.fill(0.7,0.7,9999999));
+        // m_robotContainer.drivetrain.resetPose(bestPose.pose);
       }
-    } catch(Error err) {
+    } catch (Error err) {
       System.out.println(err);
     }
     // TODO: Printing pose
@@ -110,8 +129,8 @@ public class Robot extends TimedRobot {
     // Drives every WildBoard panel. Without this nothing on the dashboard
     // updates and no panel message is ever flushed to the browser, so the
     // Autos tab cannot arm, rescan, or report what is armed.
-    //m_robotContainer.dashboard.update();
-    //System.out.println("dist: "+distance);
+    // m_robotContainer.dashboard.update();
+    // System.out.println("dist: "+distance);
   }
 
   @Override
