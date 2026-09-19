@@ -5,7 +5,7 @@ from PyQt6.QtWebEngineWidgets import QWebEngineView
 import ctypes
 
 # ---------------- CONFIG ----------------
-URL = "http://localhost:5804"
+URL = "http://10.42.65.2:5804"
 BOTTOM_GAP = 200  # space for FRC Driver Station
 # ----------------------------------------
 
@@ -27,7 +27,7 @@ screen_height = screen_geometry.height()
 SPI_GETWORKAREA = 0x0030
 work_area = RECT()
 ctypes.windll.user32.SystemParametersInfoW(SPI_GETWORKAREA, 0, ctypes.byref(work_area), 0)
-taskbar_height = screen_height - work_area.bottom
+taskbar_height = 47
 
 # Calculate overlay height
 overlay_height = screen_height - BOTTOM_GAP - taskbar_height
