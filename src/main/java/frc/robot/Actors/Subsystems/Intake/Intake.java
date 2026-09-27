@@ -24,9 +24,10 @@ public class Intake extends SubsystemBase {
         this.motorFollow = new Motor(60, MotorType.TFX, "rio");
         this.motor.motorConfig.direction = RotationDir.Clockwise;
         this.motor.motorConfig.brake = false;
+        this.motor.motorConfig.peakReverseDC = 0.3;
         this.motor.applyConfig();
-        this.motor.slot0TFX.kV = 0.012;
-        this.motor.pid(0.05, 0.0, 0.0);
+        this.motor.slot0TFX.kV = 0.015;
+        this.motor.pid(0.1, 0.0, 0.0);
         this.motorFollow.motorTFX.setControl(new Follower(IntakeConstants.intakeMotorID, MotorAlignmentValue.Opposed));
         //0.05, 0.012
     }

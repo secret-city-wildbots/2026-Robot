@@ -40,8 +40,8 @@ public class ShotPredictor {
         double targetX = (DriverStation.getAlliance().get() == Alliance.Blue) ? (4.63-3.0):(11.9+3.0); //?
         double hubX = (DriverStation.getAlliance().get() == Alliance.Blue) ? (4.63):(11.9);
         Translation2d hubPosition = new Translation2d(hubX, 4.035);
-        Translation2d bumpLeft = new Translation2d(targetX, 5.6);
-        Translation2d bumpRight = new Translation2d(targetX, 2.6);
+        Translation2d bumpLeft = new Translation2d(targetX, 4.8);
+        Translation2d bumpRight = new Translation2d(targetX, 3.2);
 
         Shot shot = new Shot();
 
@@ -87,7 +87,7 @@ public class ShotPredictor {
         // horizontal distance (adjusted by airtime)
         double futureDist = delta.getNorm();
 
-        shot.velocity_rPs = ((lobbing) ? 0.9:1.0)*getVelocity(futureDist);
+        shot.velocity_rPs = ((lobbing) ? 0.8:1.0)*getVelocity(futureDist);
         shot.tilt = (lobbing) ? new Rotation2d(45.0/180*Math.PI):getTilt(futureDist);
 
         return shot;
@@ -95,7 +95,7 @@ public class ShotPredictor {
 
     public static double getVelocity(double dist) {
 
-        return Math.pow(Math.E,0.538625*(dist-0.585831)) + 47.30162;
+        return Math.pow(Math.E,0.422*(dist+1.911)) + 44.47;
         //return 1.0;
     }
 

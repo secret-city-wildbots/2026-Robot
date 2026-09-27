@@ -1,0 +1,49 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "RT-Base-Fwd"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "RT-Base-Rev-OB-2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "RB-RTrench-Stop"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Copy of RT-Dip1"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.2
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Copy of RT-Base-Rev-OB-2"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}

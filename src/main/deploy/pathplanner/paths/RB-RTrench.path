@@ -33,8 +33,32 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
+      "name": "Intake",
+      "waypointRelativePos": 0.527415143603129,
+      "endWaypointRelativePos": null,
+      "command": null
+    },
+    {
+      "name": "Intake",
+      "waypointRelativePos": 0.6771105308964288,
+      "endWaypointRelativePos": null,
+      "command": null
+    },
+    {
       "name": "AimAndShoot",
-      "waypointRelativePos": 0.7850304612706711,
+      "waypointRelativePos": 0.7902523933855508,
+      "endWaypointRelativePos": null,
+      "command": null
+    },
+    {
+      "name": "Intake",
+      "waypointRelativePos": 0.889469103568319,
+      "endWaypointRelativePos": null,
+      "command": null
+    },
+    {
+      "name": "Intake",
+      "waypointRelativePos": 0.9521322889469104,
       "endWaypointRelativePos": null,
       "command": null
     }
