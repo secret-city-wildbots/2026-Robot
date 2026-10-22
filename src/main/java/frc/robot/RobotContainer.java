@@ -25,10 +25,13 @@ import static edu.wpi.first.units.Units.*;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+import org.json.JSONObject;
+
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -45,6 +48,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 // Import Custom TunerConstants
 import frc.robot.generated.TunerConstants;
 import frc.robot.Utils.JoystickScaler;
+import frc.robot.Utils.LimelightHelpers;
 import frc.robot.Constants.IntakeConstants;
 // Import subystems
 import frc.robot.Actors.Subsystems.CommandSwerveDrivetrain;
@@ -76,14 +80,14 @@ public class RobotContainer {
     // TODO: Set max speed back to normal
     // private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
     private double topSpeed = (Robot.test) ? 1.0:TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed //?
-    private double MaxSpeed = topSpeed;
+    private double MaxSpeed = topSpeed*0.4;
 
     // TODO: Set max rotation back to normal
     // private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
     private double MaxAngularRate = RotationsPerSecond.of(0.5).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
     /* Setting up bindings for necessary control of the swerve drive platform */
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
-        .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
+        .withDeadband(MaxSpeed * 0.05).withRotationalDeadband(MaxAngularRate * 0.05) // Add a 5% deadband
         .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
     private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
     private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
@@ -107,11 +111,13 @@ public class RobotContainer {
 
     private final PowerDistribution pdh = new PowerDistribution();
 
-    public final Dashboard dashboard;
+    //public final Dashboard dashboard;
 
     public SlewRateLimiter shotSmoothingx;
     public SlewRateLimiter shotSmoothingy;
     public SlewRateLimiter shotSmoothingh;
+
+    public static double shotSpeed = 0;
 
       /* Path follower */
     private Command auto;
@@ -154,7 +160,7 @@ public class RobotContainer {
     private boolean dashboardArmed = false;
     
     public RobotContainer() {
-        dashboard = new Dashboard(drivetrain, shooter, indexer, transfer, turret, intake, intakeExtension, pdh, autoChosen);
+        //dashboard = new Dashboard(drivetrain, shooter, indexer, transfer, turret, intake, intakeExtension, pdh, autoChosen);
 
         shotSmoothingx = new SlewRateLimiter(4.0);
         shotSmoothingy = new SlewRateLimiter(4.0);
@@ -220,16 +226,9 @@ public class RobotContainer {
                     double inputX = joystick.getLeftY();
                     double inputY = joystick.getLeftX();
                     double inputH = joystick.getRightX();
-                    if (joystick.getRightTriggerAxis() > 0.4 && dashboard.shotSmoothing) {
-                        System.out.println("shot smoothing active");
-                        return drive.withVelocityX(shotSmoothingx.calculate(-JoystickScaler.scaleStrafe(inputX) * MaxSpeed * 0.3)) // Drive forward with negative Y (forward)
-                        .withVelocityY(shotSmoothingy.calculate(-JoystickScaler.scaleStrafe(inputY) * MaxSpeed * 0.3)) // Drive left with negative X (left)
-                        .withRotationalRate(shotSmoothingh.calculate(-JoystickScaler.scaleStrafe(inputH) * MaxAngularRate * 0.5)); // Drive counterclockwise with negative X (left)
-                    } else {
-                        return drive.withVelocityX(-JoystickScaler.scaleStrafe(inputX) * MaxSpeed) // Drive forward with negative Y (forward)
+                    return drive.withVelocityX(-JoystickScaler.scaleStrafe(inputX) * MaxSpeed) // Drive forward with negative Y (forward)
                         .withVelocityY(-JoystickScaler.scaleStrafe(inputY) * MaxSpeed) // Drive left with negative X (left)
                         .withRotationalRate(-JoystickScaler.scaleRotate(inputH) * MaxAngularRate); // Drive counterclockwise with negative X (left)
-                    }
                 }
             })
         );
@@ -275,7 +274,7 @@ public class RobotContainer {
         joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));*/
         
         // reset the field-centric heading on left bumper press
-        joystick.povLeft().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+        joystick.button(7).onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
         //joystick.povUp().toggleOnTrue(new LockTurret(turret));
 
@@ -302,43 +301,72 @@ public class RobotContainer {
     //5.14
 
         joystick.rightBumper().whileTrue(new SimpleAimAndShootCommand(indexer, transfer, shooter, turret,
-            12,
-            30,
-            new Rotation2d(0.33),
-            20
+            14,
+            27,
+            () -> new Rotation2d(0.25)
         ));
 
-        joystick.rightTrigger(0.23).and(joystick.y()).whileTrue(new SimpleAimAndShootCommand(indexer, transfer, shooter, turret,
-            40,
-            (joystick.getRightTriggerAxis() > 0.85) ? 60 : ((joystick.getRightTriggerAxis() > 0.5) ? 50 : 45),
-            new Rotation2d()
+        joystick.rightTrigger(0.1).whileTrue(Commands.run(() -> {
+                RobotContainer.shotSpeed = ((joystick.getRightTriggerAxis() > 0.85) ? 55 : ((joystick.getRightTriggerAxis() > 0.5) ? 45 : 35));
+                //System.out.println(RobotContainer.shotSpeed);
+        }));
+
+        joystick.rightTrigger(0.2).and(joystick.y()).whileTrue(new SimpleAimAndShootCommand(indexer, transfer, shooter, turret,
+            () -> 40,
+            () -> RobotContainer.shotSpeed,
+            () -> new Rotation2d()
         ));
 
-        joystick.rightTrigger(0.23).and(joystick.a()).whileTrue(new SimpleAimAndShootCommand(indexer, transfer, shooter, turret,
-            40,
-            (joystick.getRightTriggerAxis() > 0.85) ? 60 : ((joystick.getRightTriggerAxis() > 0.5) ? 50 : 45),
-            new Rotation2d(Math.PI)
+        joystick.rightTrigger(0.2).and(joystick.a()).whileTrue(new SimpleAimAndShootCommand(indexer, transfer, shooter, turret,
+            () ->40,
+            () -> RobotContainer.shotSpeed,
+            () -> new Rotation2d(Math.PI)
         ));
 
-        joystick.rightTrigger(0.23).and(joystick.b()).whileTrue(new SimpleAimAndShootCommand(indexer, transfer, shooter, turret,
-            40,
-            (joystick.getRightTriggerAxis() > 0.85) ? 60 : ((joystick.getRightTriggerAxis() > 0.5) ? 50 : 45),
-            new Rotation2d(-Math.PI/2)
+        joystick.rightTrigger(0.2).and(joystick.b()).whileTrue(new SimpleAimAndShootCommand(indexer, transfer, shooter, turret,
+            () -> 40,
+            () -> RobotContainer.shotSpeed,
+            () -> new Rotation2d(-Math.PI/2)
         ));
 
-        joystick.rightTrigger(0.23).and(joystick.x()).whileTrue(new SimpleAimAndShootCommand(indexer, transfer, shooter, turret,
-            40,
-            (joystick.getRightTriggerAxis() > 0.85) ? 60 : ((joystick.getRightTriggerAxis() > 0.5) ? 50 : 45),
-            new Rotation2d(Math.PI/2)
+        joystick.rightTrigger(0.2).and(joystick.x()).whileTrue(new SimpleAimAndShootCommand(indexer, transfer, shooter, turret,
+            () -> 40,
+            () -> RobotContainer.shotSpeed,
+            () -> new Rotation2d(Math.PI/2)
         ));
+
+        joystick.leftTrigger(0.3).whileTrue(new SimpleAimAndShootCommand(indexer, transfer, shooter, turret, 
+            () -> 40, 
+            () -> 13.5*Math.pow(0.15/Robot.humanDist,0.5)+16.5,
+            () -> 
+                new Rotation2d(-Robot.humanAngle/180*Math.PI)
+            
+        ));
+
+
+        LimelightHelpers.setPipelineIndex("limelight-front", 2);
+
+        joystick.povUp().whileTrue(Commands.run(() -> turret.setTargetAngle(new Rotation2d().minus(drivetrain.getPose().getRotation())), turret));
+
+        /*joystick.rightTrigger(0.2).and(joystick.povLeft()).whileTrue(new SimpleAimAndShootCommand(indexer, transfer, shooter, turret,
+            40,
+            () -> RobotContainer.shotSpeed,
+            () -> (new Rotation2d(-0.2).minus(drivetrain.getPose().getRotation()))
+        ));
+
+        joystick.rightTrigger(0.2).and(joystick.povRight()).whileTrue(new SimpleAimAndShootCommand(indexer, transfer, shooter, turret,
+            40,
+            () -> RobotContainer.shotSpeed,
+            () -> (new Rotation2d(0.2).minus(drivetrain.getPose().getRotation()))
+        ));*/
         
-        joystick.a().and(joystick.rightTrigger(0.2).negate()).and(joystick.rightBumper().negate()).whileTrue(
+        joystick.a().and(joystick.rightBumper().negate()).and(joystick.rightTrigger(0.2).negate()).whileTrue(
             new ParallelCommandGroup(
                 new ClearTransferCommand(transfer, indexer, intake, shooter),
                 new ExtensionCommand(intakeExtension, 90.0) //?
             ));
 
-        turret.setDefaultCommand(new AimAtHubTurret(turret));
+        //turret.setDefaultCommand(new AimAtHubTurret(turret));
         //joystick.x().whileTrue(new JoystickAimCommand(turret, joystick));
         /*joystick.rightTrigger(0.4).whileFalse(new ParallelRaceGroup( //?
             new ClearTransferCommand(transfer, indexer),
